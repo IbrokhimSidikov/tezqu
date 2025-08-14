@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tezqu/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,21 +35,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Hello World!',
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/home',
+        title: 'TezQu',
+        theme: ThemeData(
+          fontFamily: 'SFCompact',
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(
+              fontSize: 20,
             ),
-          ],
+          ),
         ),
-      ),
-    );
+        routes: {
+          '/home': (context) => const HomePage(),
+        });
   }
 }
