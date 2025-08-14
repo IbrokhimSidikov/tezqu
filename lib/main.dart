@@ -44,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textTheme: const TextTheme(
             bodyMedium: TextStyle(
               fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
