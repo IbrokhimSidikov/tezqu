@@ -11,13 +11,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           leading: Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color.fromARGB(255, 236, 237, 238),
+                color: const Color(0xFFF5F7F9),
               ),
               child: IconButton(
                 iconSize: 29,
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color.fromARGB(255, 236, 237, 238),
+                  color: const Color(0xFFF5F7F9),
                 ),
                 child: IconButton(
                   iconSize: 29,
@@ -46,7 +48,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+              top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
           child: Column(
             children: [
               Row(
@@ -66,8 +69,10 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 5),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    height: 48,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: const Color(0xFF43C19F),
@@ -87,7 +92,23 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  SizedBox(width: 10),
                   Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF292B2F),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 13.0, right: 13.0, top: 9.0, bottom: 9.0),
+                      child:
+                          Icon(Icons.favorite, color: Colors.white, size: 35),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    height: 48,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: const Color(0xFFF5F7F9),
