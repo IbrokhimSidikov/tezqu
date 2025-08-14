@@ -71,61 +71,64 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color(0xFF43C19F),
-                    ),
-                    child: Padding(
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF43C19F),
                       padding: const EdgeInsets.only(
-                          left: 13.0, right: 13.0, top: 9.0, bottom: 9.0),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/jam_arrow-up.png',
-                              width: 23, height: 23),
-                          SizedBox(width: 4),
-                          Text('To`lovlarim',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
-                        ],
+                          left: 13.0, right: 17.0, top: 9.0, bottom: 9.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                      elevation: 0,
+                      minimumSize: const Size(0, 48),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/jam_arrow-up.png',
+                            width: 23, height: 23),
+                        SizedBox(width: 4),
+                        Text('To`lovlarim',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
+                      ],
                     ),
                   ),
                   SizedBox(width: 10),
-                  Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF292B2F),
-                    ),
-                    child: Padding(
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF292B2F),
                       padding: const EdgeInsets.only(
                           left: 13.0, right: 13.0, top: 9.0, bottom: 9.0),
-                      child:
-                          Icon(Icons.favorite, color: Colors.white, size: 35),
+                      shape: const CircleBorder(),
+                      elevation: 0,
+                      minimumSize: const Size(48, 48),
                     ),
+                    child: Icon(Icons.favorite, color: Colors.white, size: 35),
                   ),
                   SizedBox(width: 10),
-                  Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color(0xFFF5F7F9),
-                    ),
-                    child: Padding(
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFF5F7F9),
                       padding: const EdgeInsets.only(
-                          left: 13.0, right: 13.0, top: 9.0, bottom: 9.0),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/money-bag.png',
-                              width: 23, height: 23),
-                          SizedBox(width: 5),
-                          Text('Kirimlar',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
-                        ],
+                          left: 13.0, right: 17.0, top: 9.0, bottom: 9.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                      elevation: 0,
+                      minimumSize: const Size(0, 48),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/money-bag.png',
+                            width: 23, height: 23),
+                        SizedBox(width: 5),
+                        Text('Kirimlar',
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20)),
+                      ],
                     ),
                   ),
                 ],
