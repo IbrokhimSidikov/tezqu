@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tezqu/pages/home.dart';
+import 'package:tezqu/core/router/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,46 +10,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'TezQu',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 214, 135, 18)),
         useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'TezQu'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/home',
-        title: 'TezQu',
-        theme: ThemeData(
-          fontFamily: 'SFCompact',
-          textTheme: const TextTheme(
-            bodyMedium: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+        fontFamily: 'SFCompact',
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        routes: {
-          '/home': (context) => const HomePage(),
-        });
+      ),
+      routerConfig: AppRoutes.router,
+    );
   }
 }
