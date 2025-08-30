@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tezqu/pages/home.dart';
-import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
+import 'package:tezqu/pages/onboard.dart';
 
 class AppRoutes {
   static const String onboard = '/onboard';

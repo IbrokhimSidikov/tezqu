@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezqu/core/router/app_routes.dart';
 
-void main() {
+import 'core/di/di.dart';
+import 'features/onboard/presentation/cubit/splash_screen_cubit.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -10,22 +18,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'TezQu',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 214, 135, 18)),
-        useMaterial3: true,
-        fontFamily: 'SFCompact',
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+    return ScreenUtilInit(
+        designSize: const Size(393, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
+      builder: (_, child) {
+        return BlocProvider(
+          create: (context) => getIt<SplashScreenCubit>(),
+          child: MaterialApp.router(
+            title: 'TezQu',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                  seedColor: const Color.fromARGB(255, 214, 135, 18)),
+              useMaterial3: true,
+              fontFamily: 'SFCompact',
+              textTheme: const TextTheme(
+                bodyMedium: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            routerConfig: AppRoutes.router,
           ),
-        ),
-      ),
-      routerConfig: AppRoutes.router,
+        );
+      }
     );
   }
 }
