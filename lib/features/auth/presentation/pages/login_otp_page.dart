@@ -10,6 +10,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/button_widget.dart';
@@ -115,7 +116,9 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
               // Button at the bottom
               Padding(
                 padding: EdgeInsets.only(bottom: 20.h),
-                child: ButtonWidget(text: 'Keyingisiga o\'tish', onPressed: (){},),
+                child: ButtonWidget(text: 'Keyingisiga o\'tish', onPressed: (){
+                  context.push(AppRoutes.home);
+                },),
               ),
             ],
           ),
