@@ -5,7 +5,6 @@ import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../core/constants/app_colors.dart';
 import '../core/shared/dashboard_card.dart';
-import '../core/shared/overlapping_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -74,7 +73,64 @@ class _HomePageState extends State<HomePage> {
                           TextStyle(fontSize: 53.sp, fontWeight: FontWeight.bold)),
                 ],
               ),
-              SizedBox(height: 103),
+              SizedBox(height: 15.h),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: AppColors.cx78D9BF,
+                        child: Icon(Icons.access_time, color: AppColors.cxWhite),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Text(
+                          "Keyingi to'lov",
+                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      Text(
+                        "\$450",
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.cx78D9BF,
+                        ),
+                      ),
+                      SizedBox(width: 32.w),
+                      CircleAvatar(
+                        backgroundColor: Colors.black87,
+                        child: Icon(Icons.favorite, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Container(
+                          height: 8,
+                          width: constraints.maxWidth * 0.6, // 60% progress
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color(0xFFC9EBE4), // 30%
+                                Color(0xFF4BC1A9), // 100%
+                              ],
+                              stops: [0.3, 1.0], // gradient starts at 30%
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 39.h),
               GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 2,
@@ -181,7 +237,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               )
-
             ],
           ),
         ));
