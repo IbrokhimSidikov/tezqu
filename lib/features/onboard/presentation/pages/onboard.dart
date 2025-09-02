@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
-import '../core/constants/app_colors.dart';
-import '../core/constants/app_images.dart';
-import '../core/shared/button_widget.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_images.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/shared/button_widget.dart';
 
 class Onboard extends StatefulWidget {
   const Onboard({super.key});
@@ -62,7 +64,9 @@ class _OnboardState extends State<Onboard> {
                   children: [
                     ButtonWidget(
                       text: 'Davom ettirish',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push(AppRoutes.login);
+                      },
                     ),
                     SizedBox(height: 20.h),
                     Text(

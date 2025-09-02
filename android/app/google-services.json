@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "614381074501",
+    "project_id": "tez-qu",
+    "storage_bucket": "tez-qu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614381074501:android:615c3075995996e6b74b2c",
+        "android_client_info": {
+          "package_name": "com.tezqu.v1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRpt6xCUWOH7wGN69TeH708ioUY1nCRDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tezqu/features/auth/presentation/pages/login_otp_page.dart';
 import 'package:tezqu/pages/home.dart';
-import 'package:tezqu/pages/onboard.dart';
+import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
+
+import '../../features/auth/presentation/pages/login_page.dart';
 
 class AppRoutes {
   static const String onboard = '/onboard';
   static const String home = '/home';
+  static const String login = '/login';
+  static const String loginOtp = '/loginOtp';
 
   static final GoRouter router = GoRouter(
     initialLocation: onboard,
@@ -19,6 +24,16 @@ class AppRoutes {
         path: home,
         name: 'home',
         builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: login,
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+          path: loginOtp,
+          name: 'loginOtp',
+          builder: (context, state) => const LoginOtpPage()
       ),
     ],
   );
