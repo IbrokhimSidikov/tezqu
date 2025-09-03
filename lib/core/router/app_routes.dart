@@ -5,6 +5,7 @@ import 'package:tezqu/features/home/presentation/pages/home.dart';
 import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/products/presentation/pages/details.dart';
 import '../../features/products/presentation/pages/products.dart';
 
 class AppRoutes {
@@ -13,9 +14,10 @@ class AppRoutes {
   static const String login = '/login';
   static const String loginOtp = '/loginOtp';
   static const String products = '/products';
+  static const String details = '/details';
 
   static final GoRouter router = GoRouter(
-    initialLocation: onboard,
+    initialLocation: details,
     routes: [
       GoRoute(
         path: onboard,
@@ -42,6 +44,11 @@ class AppRoutes {
           name: 'products',
           builder: (context, state) => const Products()
       ),
+      GoRoute(
+        path: details,
+        name: 'details',
+        builder: (context, state) => const Details(),
+      )
     ],
   );
 }

@@ -8,8 +8,8 @@ import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../constants/app_colors.dart';
 
-class ButtonWidget extends StatelessWidget {
-  const ButtonWidget({super.key, required this.text, required this.onPressed});
+class ButtonWidgetIconless extends StatelessWidget {
+  const ButtonWidgetIconless({super.key, required this.text, required this.onPressed});
   final String text;
   final Function() onPressed;
 
@@ -23,8 +23,6 @@ class ButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Iconify( Tabler.arrow_right, size: 21.sp, color: Colors.white,),
-          SizedBox(width: 3.w,),
           Text(text),
         ],
       ),
