@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 
-import '../core/constants/app_colors.dart';
-import '../core/shared/dashboard_card.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/shared/dashboard_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -157,11 +159,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   DashboardCard(
                     title: "Maxsulotlar",
+                    onTap: () {
+                      context.push(AppRoutes.products);
+                    },
                     icons: [
-                          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
-                          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
-                          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
-
+                      CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
+                      CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
+                      CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
                     ],
                   ),
                   DashboardCard(
