@@ -7,6 +7,7 @@ import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/expense/presentation/pages/expense.dart';
 import '../../features/income/presentation/pages/income.dart';
+import '../../features/payments/presentation/pages/details_payment.dart';
 import '../../features/payments/presentation/pages/payments.dart';
 import '../../features/products/presentation/pages/details.dart';
 import '../../features/products/presentation/pages/products.dart';
@@ -21,9 +22,10 @@ class AppRoutes {
   static const String income = '/income';
   static const String expense = '/expense';
   static const String payments = '/payments';
+  static const String detailsPayment = '/detailsPayment';
 
   static final GoRouter router = GoRouter(
-    initialLocation: onboard,
+    initialLocation: detailsPayment,
     routes: [
       GoRoute(
         path: onboard,
@@ -69,6 +71,11 @@ class AppRoutes {
         path: payments,
         name: 'payments',
         builder: (context, state) => const Payments(),
+      ),
+      GoRoute(
+        path: detailsPayment,
+        name: 'detailsPayment',
+        builder: (context, state) => const DetailsPayment(),
       )
     ],
   );
