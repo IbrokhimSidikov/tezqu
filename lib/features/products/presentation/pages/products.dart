@@ -166,8 +166,13 @@ class _ProductsState extends State<Products> {
                 CupertinoButton(
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
-                  color: selectedTabIndex == 0 ? AppColors.cxDADADA : AppColors.cxF5F7F9,
-                  child: Text('Auto', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: selectedTabIndex == 0 ? AppColors.cxWhite : AppColors.cxBlack),),
+                  color:AppColors.cxF5F7F9,
+                  child: Text('Auto',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 0 ? AppColors.cxBlack : AppColors.cxDADADA),
+                  ),
                   onPressed: (){
                     setState(() {
                       selectedTabIndex = 0;
@@ -177,8 +182,13 @@ class _ProductsState extends State<Products> {
                 CupertinoButton(
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
-                  color: selectedTabIndex == 1 ? AppColors.cxDADADA : AppColors.cxF5F7F9,
-                  child: Text('Telefon', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: selectedTabIndex == 1 ? AppColors.cxWhite : AppColors.cxBlack),),
+                  color:AppColors.cxF5F7F9,
+                  child: Text('Telefon',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 1 ? AppColors.cxBlack : AppColors.cxDADADA),
+                  ),
                   onPressed: (){
                     setState(() {
                       selectedTabIndex = 1;
@@ -188,8 +198,13 @@ class _ProductsState extends State<Products> {
                 CupertinoButton(
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
-                  color: selectedTabIndex == 2 ? AppColors.cxDADADA : AppColors.cxF5F7F9,
-                  child: Text('Notebook', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: selectedTabIndex == 2 ? AppColors.cxWhite : AppColors.cxBlack),),
+                  color: AppColors.cxF5F7F9,
+                  child: Text('Notebook',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 2 ? AppColors.cxBlack : AppColors.cxDADADA),
+                  ),
                   onPressed: (){
                     setState(() {
                       selectedTabIndex = 2;

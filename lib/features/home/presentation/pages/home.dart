@@ -141,6 +141,9 @@ class _HomePageState extends State<HomePage> {
                 childAspectRatio: 1.2, // adjust shape
                 children: [
                   DashboardCard(
+                    onTap: () {
+                      context.push(AppRoutes.payments);
+                    },
                     title: "To'lovlarim",
                     icons: [
                       Container(
@@ -169,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   DashboardCard(
+                    onTap: (){context.push(AppRoutes.income);},
                     title: "Kirimlar",
                     subtitle: "\$123,500",
                     icons: [
@@ -187,6 +191,9 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   DashboardCard(
+                    onTap: (){
+                      context.push(AppRoutes.expense);
+                    },
                     title: "Chiqimlar",
                     subtitle: "\$1,500",
                     icons: [
