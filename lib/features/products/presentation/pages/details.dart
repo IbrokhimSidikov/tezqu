@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:tezqu/core/shared/app_banner.dart';
 import 'package:tezqu/core/shared/button_widget_iconless.dart';
 
@@ -109,7 +111,6 @@ class _DetailsState extends State<Details> {
                       SizedBox(height: 20.h),
                       Row(
                         children: [
-                          // Cash option
                           Expanded(
                             child: Container(
                               width: 172.w,
@@ -180,9 +181,129 @@ class _DetailsState extends State<Details> {
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 20.h),
-              child: ButtonWidgetIconless(text: 'Buyurtma berish', onPressed: (){
-                context.push(AppRoutes.loginOtp);
-              },
+              child: ButtonWidgetIconless(
+                text: 'Buyurtma berish',
+                onPressed: (){
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        backgroundColor: AppColors.cxWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.r),
+                        ),
+                        insetPadding: EdgeInsets.all(20.w), // margin from screen edges
+                        child: Padding(
+                          padding: EdgeInsets.all(20.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Harid qilish uchun",
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () => Navigator.of(context).pop(),
+                                  //   child: Container(
+                                  //     padding: EdgeInsets.all(10.w),
+                                  //     decoration: BoxDecoration(
+                                  //       color:AppColors.cxF7F6F9,
+                                  //       borderRadius: BorderRadius.circular(25.r),
+                                  //     ),
+                                  //     child: Icon(Icons.close, size: 22.sp),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                              SizedBox(height: 36.h),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => _showSuccessDialog(context),
+                                      child: Container(
+                                        width: 150.w,
+                                        height: 100.h,
+                                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.cxFEDA84,
+                                          borderRadius: BorderRadius.circular(25.r),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Ariza yuborish",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(height: 6.h),
+                                            Text(
+                                              "Men bilan bog’laning",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => _showSuccessDialog(context),
+                                      child: Container(
+                                        width: 150.w,
+                                        height: 100.h,
+                                        padding:EdgeInsets.symmetric(vertical: 12.h),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.cxF7F6F9,
+                                          borderRadius: BorderRadius.circular(25.r),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "O’zim bog’lanaman",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(height: 6.h),
+                                            Text(
+                                              "Aloqa markazi",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500
+
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
@@ -191,4 +312,77 @@ class _DetailsState extends State<Details> {
       )
     );
   }
+}
+
+
+void _showSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: AppColors.cxWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.r),
+        ),
+        insetPadding: EdgeInsets.all(20.sp),
+        child: SizedBox(
+          width: 360.w,
+          height: 214.h,
+          child: Padding(
+            padding: EdgeInsets.all(20.sp),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Stack(
+                 alignment: Alignment.center,
+                  children: [
+                    Text(
+                      "Ariza qabul qilindi",
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(); // closes current dialog
+                          Navigator.of(context).pop(); // closes one more (previous)
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.close, size: 22.sp),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                Container(
+                  padding:EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.cx43C19F, width: 3.w),
+                  ),
+                  child: Iconify(Tabler.icons, size: 40.sp, color: AppColors.cx43C19F),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  "Yaqin vaqt ichida bizning xodimlarimiz\nsiz bo’lan bog’lanishadi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
