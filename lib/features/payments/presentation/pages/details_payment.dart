@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:tezqu/core/shared/app_banner.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -66,7 +68,6 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                 ],
               ),
               SizedBox(height: 24.h),
-              // Payment timeline
               Expanded(
                 child: Column(
                   children: [
@@ -74,7 +75,110 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     _buildTimelineItem('12.10.2024', '\$550', true, false),
                     _buildTimelineItem('12.09.2024', '\$550', true, false),
                     _buildTimelineItem('12.08.2024', '\$550', true, false),
-                    Spacer(),
+                    32.verticalSpace,
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context){
+                                    return Container(
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.cxWhite,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(25.r),
+                                          topRight: Radius.circular(25.r),
+                                        )
+                                      ),
+                                      child: Padding(padding: EdgeInsets.only(top: 20, left: 20, right: 20)),
+                                    );
+                                  }
+                              );
+                            },
+                            child: Container(
+                              width: 172.w,
+                              height: 126.h,
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.cxF7F6F9,
+                                borderRadius: BorderRadius.circular(25.r),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Shartnoma',
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                  Text('11.07.2026',
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.cxAFB1B1
+                                      )),
+                                  const Spacer(),
+                                  Row(
+                                      children: [Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: Colors.white, width: 2),
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 20.r,
+                                          backgroundColor: AppColors.cxFEC700,
+                                          child: const Icon(Icons.file_copy_outlined, color: Colors.black),
+                                        ),
+                                      ),]
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 172.w,
+                            height: 126.h,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppColors.cxF7F6F9,
+                              borderRadius: BorderRadius.circular(25.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Asosiy shart',
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                                Text('To\'lov:',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.cxAFB1B1
+                                    )),
+                                Text('Har oy:',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.cxAFB1B1
+                                    )),
+                                Text('Muddat:',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.cxAFB1B1
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ]
+                    )
                   ],
                 ),
               ),

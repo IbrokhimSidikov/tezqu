@@ -7,4 +7,5 @@ abstract class AppImages{
   static const String infoIcon = 'assets/icons/infoIcon.svg';
   static const String iconBlack = 'assets/icons/iconBlack.svg';
   static const String cardIcon = 'assets/icons/card.svg';
+  static const String ava1 = 'assets/images/ava1.jpeg';
 }

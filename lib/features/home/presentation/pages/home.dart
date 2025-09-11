@@ -24,18 +24,23 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColors.cxWhite,
           leading: Padding(
             padding: const EdgeInsets.only(left: 10.0),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFF5F7F9),
+            child:
+               Container(
+                 decoration: BoxDecoration(
+                   shape: BoxShape.circle,
+                   color: const Color(0xFFF5F7F9),
+                 ),
+                child: IconButton(
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.profile);
+                  },
+                  icon: Icon(Icons.person),
+                  color: AppColors.cxBlack,
+                  style: IconButton.styleFrom(
+                    iconSize: 32,
+                  ),
+                ),
               ),
-              child: IconButton(
-                iconSize: 29,
-                icon: Icon(Icons.person),
-                color: Colors.black,
-                onPressed: () {},
-              ),
-            ),
           ),
           actions: [
             Padding(
@@ -211,7 +216,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  DashboardCard(title: 'Omborxona',
+                  DashboardCard(
+                    onTap: (){
+                      context.push(AppRoutes.warehouse);
+                    },
+                    title: 'Omborxona',
                     subtitle: 'Maxsulot: 120',
                     icons: [
                     Container(

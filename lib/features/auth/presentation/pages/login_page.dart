@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 20.h),
                   child: ButtonWidget(text: 'Dasturga kirish', onPressed: (){
-                    context.push(AppRoutes.loginOtp);
+                    context.push(AppRoutes.home);
                     },
                   ),
                 ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,12 +29,14 @@ class _AppTextFieldState extends State<AppTextField> {
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,
       style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500),
-      obscureText: widget.obscureText ?? false,
+      obscureText: widget.obscureText,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         prefixIcon: widget.prefixIcon,
         prefixText: widget.prefixText,
         prefixStyle: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500, color: Colors.black),
         hintText: widget.hint ?? "",
+        hintStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500, color: AppColors.cxAFB1B1),
         filled: true,
         fillColor: AppColors.cxF5F7F9,
         border: OutlineInputBorder(
