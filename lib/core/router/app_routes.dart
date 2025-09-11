@@ -7,6 +7,7 @@ import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/expense/presentation/pages/expense.dart';
+import '../../features/home/presentation/pages/favourites.dart';
 import '../../features/income/presentation/pages/income.dart';
 import '../../features/payments/presentation/pages/details_payment.dart';
 import '../../features/payments/presentation/pages/payments.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String warehouse = '/warehouse';
   static const String auth = '/auth';
   static const String profile = '/profile';
+  static const String favourites = '/favourites';
 
   static final GoRouter router = GoRouter(
     initialLocation: onboard,
@@ -113,6 +115,11 @@ class AppRoutes {
             },
           );
         },
+      ),
+      GoRoute(
+        path:favourites,
+        name: 'favourites',
+        builder: (context, state) => const Favourites(),
       ),
     ],
   );

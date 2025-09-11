@@ -20,7 +20,7 @@ class _PaymentsState extends State<Payments> {
       appBar: AppBar(
         backgroundColor: AppColors.cxWhite,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+          padding: EdgeInsets.only(left: 10.w),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -30,7 +30,9 @@ class _PaymentsState extends State<Payments> {
               iconSize: 29.sp,
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
         ),

@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: AppColors.cxWhite,
           leading: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left: 10.w),
             child:
                Container(
                  decoration: BoxDecoration(
@@ -108,7 +108,14 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(width: 32.w),
                       CircleAvatar(
                         backgroundColor: Colors.black87,
-                        child: Icon(Icons.favorite, color: Colors.white),
+                        child: IconButton(
+                            iconSize: 24.sp,
+                            onPressed: () {
+                              context.push(AppRoutes.favourites);
+                            },
+                            icon: Icon(Icons.favorite),
+                            color: AppColors.cxWhite,
+                        ),
                       ),
                     ],
                   ),
