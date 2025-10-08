@@ -117,9 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 120.h),
+                        SizedBox(height: 100.h),
                         InkWell(
                           onTap: () {
+                            context.push(AppRoutes.auth);
                           },
                           borderRadius: BorderRadius.circular(8.r),
                           child: Padding(

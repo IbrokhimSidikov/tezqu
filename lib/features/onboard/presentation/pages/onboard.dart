@@ -65,7 +65,7 @@ class _OnboardState extends State<Onboard> {
                     ButtonWidget(
                       text: 'Davom ettirish',
                       onPressed: () {
-                        context.push(AppRoutes.auth);
+                        context.push(AppRoutes.login);
                       },
                     ),
                     SizedBox(height: 20.h),

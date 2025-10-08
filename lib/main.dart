@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         designSize: const Size(393, 852),
         minTextAdapt: true,
         splitScreenMode: true,
-      builder: (_, child) {
+        builder: (_, child) {
         return BlocProvider(
           create: (context) => getIt<SplashScreenCubit>(),
           child: MaterialApp.router(
@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromARGB(255, 214, 135, 18)),
+                  seedColor: const Color.fromARGB(255, 214, 135, 18),
+              ),
               useMaterial3: true,
               fontFamily: 'SFCompact',
               textTheme: const TextTheme(

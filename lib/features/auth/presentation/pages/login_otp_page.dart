@@ -117,7 +117,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
               Padding(
                 padding: EdgeInsets.only(bottom: 20.h),
                 child: ButtonWidget(text: 'Keyingisiga o\'tish', onPressed: (){
-                  context.push(AppRoutes.login);
+                  context.push(AppRoutes.home);
                 },),
               ),
             ],
