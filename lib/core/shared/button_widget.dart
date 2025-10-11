@@ -9,9 +9,9 @@ import 'package:iconify_flutter/icons/tabler.dart';
 import '../constants/app_colors.dart';
 
 class ButtonWidget extends StatelessWidget {
-  const ButtonWidget({super.key, required this.text, required this.onPressed});
+  const ButtonWidget({super.key, required this.text, this.onPressed});
   final String text;
-  final Function() onPressed;
+  final Function()? onPressed;
 
 
   @override
