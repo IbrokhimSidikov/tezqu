@@ -118,7 +118,9 @@ class _AuthPageState extends State<AuthPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message ?? 'Muvaffaqiyatli')),
             );
-            context.push(AppRoutes.loginOtp);
+            // Pass phone number to OTP page
+            final phoneNumber = '998${_phoneController.text}';
+            context.push('${AppRoutes.loginOtp}?phone=$phoneNumber');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

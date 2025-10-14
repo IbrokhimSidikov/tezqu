@@ -53,7 +53,10 @@ class AppRoutes {
       GoRoute(
           path: loginOtp,
           name: 'loginOtp',
-          builder: (context, state) => const LoginOtpPage()
+          builder: (context, state) {
+            final phone = state.uri.queryParameters['phone'] ?? '';
+            return LoginOtpPage(phoneNumber: phone);
+          }
       ),
       GoRoute(
         path: auth,

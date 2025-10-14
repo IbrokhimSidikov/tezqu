@@ -67,7 +67,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await dioClient.post(
       '/auth/verify',
       data: {
-        'phone': phone,
+        'phone_number': phone,
         'code': code,
       },
     );
