@@ -7,6 +7,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_images.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_banner.dart';
@@ -126,7 +127,7 @@ class _ProductsState extends State<Products> {
             top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
         child: Column(
           children: [
-            AppBanner(),
+            AppBanner(image: AppImages.reklama),
             SizedBox(height: 30.h),
             
             // Error message

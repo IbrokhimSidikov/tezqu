@@ -10,6 +10,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/expense/presentation/pages/expense.dart';
 import '../../features/home/presentation/pages/favourites.dart';
 import '../../features/income/presentation/pages/income.dart';
+import '../../features/notification/presentation/pages/notifications.dart';
 import '../../features/payments/presentation/pages/details_payment.dart';
 import '../../features/payments/presentation/pages/payments.dart';
 import '../../features/products/presentation/pages/details.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const String auth = '/auth';
   static const String profile = '/profile';
   static const String favourites = '/favourites';
+  static const String notifications = '/notifications';
 
   static final GoRouter router = GoRouter(
     initialLocation: splash,
@@ -133,6 +135,11 @@ class AppRoutes {
         path:favourites,
         name: 'favourites',
         builder: (context, state) => const Favourites(),
+      ),
+      GoRoute(
+          path: notifications,
+          name: 'notifications',
+          builder: (context, state) => const Notifications(),
       ),
     ],
   );

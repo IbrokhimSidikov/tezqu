@@ -54,7 +54,9 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 29,
                   icon: Icon(Icons.notifications),
                   color: Colors.black,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(AppRoutes.notifications);
+                  },
                 ),
               ),
             ),

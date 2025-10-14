@@ -6,6 +6,7 @@ import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:tezqu/core/shared/app_banner.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_images.dart';
 
 class DetailsPayment extends StatefulWidget {
   const DetailsPayment({super.key});
@@ -45,7 +46,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBanner(),
+              AppBanner(image: AppImages.reklama),
               SizedBox(height: 22.h),
               Row(
                 children: [
