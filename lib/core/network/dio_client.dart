@@ -30,8 +30,18 @@ class DioClient {
         onRequest: (options, handler) async {
           // Add auth token if exists
           final token = _prefs.getString('auth_token');
+          if (kDebugMode) {
+            print('🔑 Token from SharedPreferences: ${token != null ? "EXISTS (${token.substring(0, 20)}...)" : "NULL"}');
+          }
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
+            if (kDebugMode) {
+              print('✅ Authorization header added');
+            }
+          } else {
+            if (kDebugMode) {
+              print('❌ No token found - request will be unauthorized');
+            }
           }
           return handler.next(options);
         },

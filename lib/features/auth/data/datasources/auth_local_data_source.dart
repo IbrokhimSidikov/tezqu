@@ -23,6 +23,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     final userJson = json.encode(user.toJson());
     await sharedPreferences.setString(cachedUserKey, userJson);
     await sharedPreferences.setBool(isLoggedInKey, true);
+    
+    // Save token separately for DioClient to use
+    if (user.token != null) {
+      await sharedPreferences.setString('auth_token', user.token!);
+    }
   }
 
   @override
@@ -38,6 +43,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   Future<void> clearCache() async {
     await sharedPreferences.remove(cachedUserKey);
     await sharedPreferences.setBool(isLoggedInKey, false);
+    await sharedPreferences.remove('auth_token');
   }
 
   @override

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String? get id; String? get phone; String? get name; String? get email; String? get token;
+ String? get id; String? get phone; String? get name; String? get email;@JsonKey(name: 'access_token', defaultValue: null) String? get token;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? phone, String? name, String? email, String? token
+ String? id, String? phone, String? name, String? email,@JsonKey(name: 'access_token', defaultValue: null) String? token
 });
 
 
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? phone,  String? name,  String? email,  String? token)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? phone,  String? name,  String? email, @JsonKey(name: 'access_token', defaultValue: null)  String? token)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
@@ -178,7 +178,7 @@ return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? phone,  String? name,  String? email,  String? token)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? phone,  String? name,  String? email, @JsonKey(name: 'access_token', defaultValue: null)  String? token)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
 return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
@@ -198,7 +198,7 @@ return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? phone,  String? name,  String? email,  String? token)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? phone,  String? name,  String? email, @JsonKey(name: 'access_token', defaultValue: null)  String? token)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
@@ -213,14 +213,14 @@ return $default(_that.id,_that.phone,_that.name,_that.email,_that.token);case _:
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({this.id, this.phone, this.name, this.email, this.token}): super._();
+  const _UserModel({this.id, this.phone, this.name, this.email, @JsonKey(name: 'access_token', defaultValue: null) this.token}): super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String? id;
 @override final  String? phone;
 @override final  String? name;
 @override final  String? email;
-@override final  String? token;
+@override@JsonKey(name: 'access_token', defaultValue: null) final  String? token;
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -255,7 +255,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? phone, String? name, String? email, String? token
+ String? id, String? phone, String? name, String? email,@JsonKey(name: 'access_token', defaultValue: null) String? token
 });
 
 

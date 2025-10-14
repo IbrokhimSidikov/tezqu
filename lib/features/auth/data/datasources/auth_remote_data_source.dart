@@ -97,11 +97,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
 
     final userData = response.data['data'] ?? response.data;
+    print('🔍 Login API Response: $userData');
+    
     final userModel = UserModel.fromJson(userData);
+    print('🔍 UserModel token: ${userModel.token}');
     
     // Save token if available
     if (userModel.token != null) {
+      print('💾 Saving token to SharedPreferences...');
       await dioClient.saveToken(userModel.token!);
+      print('✅ Token saved successfully');
+    } else {
+      print('⚠️ No token found in user model!');
     }
     
     return userModel;

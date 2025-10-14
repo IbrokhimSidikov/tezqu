@@ -1,0 +1,50 @@
+import 'package:equatable/equatable.dart';
+import 'package:tezqu/features/products/data/models/category_model.dart';
+import 'package:tezqu/features/products/data/models/product_model.dart';
+
+abstract class ProductState extends Equatable {
+  const ProductState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ProductInitial extends ProductState {
+  const ProductInitial();
+}
+
+class ProductLoading extends ProductState {
+  const ProductLoading();
+}
+
+class CategoriesLoaded extends ProductState {
+  final List<CategoryModel> categories;
+
+  const CategoriesLoaded(this.categories);
+
+  @override
+  List<Object?> get props => [categories];
+}
+
+class ProductLoaded extends ProductState {
+  final List<CategoryModel> categories;
+  final List<ProductModel> products;
+
+  const ProductLoaded({
+    required this.categories,
+    required this.products,
+  });
+
+  @override
+  List<Object?> get props => [categories, products];
+}
+
+class ProductError extends ProductState {
+  final String message;
+  final List<CategoryModel>? categories;
+
+  const ProductError(this.message, {this.categories});
+
+  @override
+  List<Object?> get props => [message, categories];
+}

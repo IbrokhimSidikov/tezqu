@@ -11,13 +11,22 @@ class UserModel with _$UserModel {
     String? phone,
     String? name,
     String? email,
-    String? token,
+    @JsonKey(name: 'access_token') String? token,
   }) = _UserModel;
   
   const UserModel._();
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    // Handle both 'token' and 'access_token' field names
+    final token = json['access_token'] as String? ?? json['token'] as String?;
+    return UserModel(
+      id: json['id'] as String?,
+      phone: json['phone'] as String?,
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      token: token,
+    );
+  }
 
   // Convert to entity
   UserEntity toEntity() {

@@ -1,13 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_banner.dart';
+import '../../data/models/product_model.dart';
+import '../cubit/product_cubit.dart';
+import '../cubit/product_state.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -18,96 +23,28 @@ class Products extends StatefulWidget {
 
 class _ProductsState extends State<Products> {
   int selectedTabIndex = 0;
-  
-  final List<Map<String, dynamic>> autoProducts = [
-    {
-      'name': 'BYD HAN',
-      'year': '2024',
-      'details': 'oq, 5,000km, 3 pozitsiya asdasdasd',
-      'price': '\$31,350',
-      'status': 'Active',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Lixiang L9',
-      'year': '2025',
-      'details': 'oq, 3,000km, Motoasdasdas',
-      'price': '\$55,000',
-      'status': 'Sotildi',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Deepal SL03',
-      'year': '2024',
-      'details': 'silver, 1,000km',
-      'price': '\$21,150',
-      'status': 'Active',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Zeekr 001',
-      'year': '2025',
-      'details': 'oq, 6,000km, Moto',
-      'price': '\$55,000',
-      'status': 'Active',
-      'image': 'assets/images/car.svg'
-    },
-  ];
 
-  final List<Map<String, dynamic>> phoneProducts = [
-    {
-      'name': 'iPhone 15 Pro',
-      'year': '2024',
-      'details': 'Space Black, 256GB',
-      'price': '\$1,199',
-      'status': 'Active',
-      'image': 'assets/icons/iconBlack.svg'
-    },
-    {
-      'name': 'Samsung Galaxy S24',
-      'year': '2024',
-      'details': 'Phantom Black, 512GB',
-      'price': '\$899',
-      'status': 'Sotildi',
-      'image': 'assets/icons/iconBlack.svg'
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Load initial products will be done in build method with BlocProvider
+  }
 
-  final List<Map<String, dynamic>> notebookProducts = [
-    {
-      'name': 'MacBook Pro M3',
-      'year': '2024',
-      'details': '16-inch, 1TB SSD',
-      'price': '\$2,499',
-      'status': 'Active',
-      'image': 'assets/icons/iconBlack.svg'
-    },
-    {
-      'name': 'Dell XPS 13',
-      'year': '2024',
-      'details': 'Intel i7, 512GB',
-      'price': '\$1,299',
-      'status': 'Active',
-      'image': 'assets/icons/iconBlack.svg'
-    },
-  ];
-
-  List<Map<String, dynamic>> getCurrentProducts() {
-    switch (selectedTabIndex) {
-      case 0:
-        return autoProducts;
-      case 1:
-        return phoneProducts;
-      case 2:
-        return notebookProducts;
+  String _getStatusText(String status) {
+    switch (status.toLowerCase()) {
+      case 'sold':
+        return 'Sotildi';
+      case 'active':
       default:
-        return autoProducts;
+        return 'Active';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+      create: (context) => getIt<ProductCubit>()..initialize(),
+      child: Scaffold(
       backgroundColor: AppColors.cxWhite,
       appBar: AppBar(
         backgroundColor: AppColors.cxWhite,
@@ -154,168 +91,259 @@ class _ProductsState extends State<Products> {
           children: [
             AppBanner(),
             SizedBox(height: 30.h),
+            
+            // Error message
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                if (state is ProductError) {
+                  // Check if it's an unauthorized error
+                  if (state.message.toLowerCase().contains('unauthorized')) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Iltimos, tizimga kiring'),
+                          backgroundColor: Colors.red,
+                          action: SnackBarAction(
+                            label: 'Kirish',
+                            textColor: Colors.white,
+                            onPressed: () {
+                              context.go(AppRoutes.login);
+                            },
+                          ),
+                        ),
+                      );
+                    });
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          state.message,
+                          style: TextStyle(color: Colors.red),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (state.message.toLowerCase().contains('unauthorized'))
+                          TextButton(
+                            onPressed: () {
+                              context.go(AppRoutes.login);
+                            },
+                            child: Text('Tizimga kirish'),
+                          ),
+                      ],
+                    ),
+                  );
+                }
+                return SizedBox.shrink();
+              },
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Toifalar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
-                Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA,),
+                IconButton(
+                  icon: Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA),
+                  onPressed: () {
+                    // TODO: Implement filter functionality
+                  },
+                ),
               ],
             ),
-            SizedBox(height: 10.h,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CupertinoButton(
-                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                  borderRadius: BorderRadius.circular(30.r),
-                  color:AppColors.cxF5F7F9,
-                  child: Text('Auto',
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                        color: selectedTabIndex == 0 ? AppColors.cxBlack : AppColors.cxDADADA),
+            SizedBox(height: 10.h),
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                final categories = state is ProductLoaded 
+                    ? state.categories 
+                    : state is ProductError && state.categories != null
+                        ? state.categories!
+                        : [];
+                
+                if (categories.isEmpty) {
+                  return SizedBox.shrink();
+                }
+                
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(categories.length, (index) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: CupertinoButton(
+                          padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 12.h),
+                          borderRadius: BorderRadius.circular(30.r),
+                          color: selectedTabIndex == index ? AppColors.cxBlack : AppColors.cxF5F7F9,
+                          child: Text(
+                            categories[index].name,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: selectedTabIndex == index ? Colors.white : AppColors.cxBlack,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (selectedTabIndex != index) {
+                              setState(() {
+                                selectedTabIndex = index;
+                              });
+                              // Load products for the selected category
+                              context.read<ProductCubit>().loadProductsByCategory(categories[index].id);
+                            }
+                          },
+                        ),
+                      );
+                    }),
                   ),
-                  onPressed: (){
-                    setState(() {
-                      selectedTabIndex = 0;
-                    });
-                  },
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                  borderRadius: BorderRadius.circular(30.r),
-                  color:AppColors.cxF5F7F9,
-                  child: Text('Telefon',
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                        color: selectedTabIndex == 1 ? AppColors.cxBlack : AppColors.cxDADADA),
-                  ),
-                  onPressed: (){
-                    setState(() {
-                      selectedTabIndex = 1;
-                    });
-                  },
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                  borderRadius: BorderRadius.circular(30.r),
-                  color: AppColors.cxF5F7F9,
-                  child: Text('Notebook',
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
-                        color: selectedTabIndex == 2 ? AppColors.cxBlack : AppColors.cxDADADA),
-                  ),
-                  onPressed: (){
-                    setState(() {
-                      selectedTabIndex = 2;
-                    });
-                  },
-                ),
-              ]
+                );
+              },
             ),
             SizedBox(height: 20.h),
-            Expanded(
-              child: ListView.builder(
-                itemCount: getCurrentProducts().length,
-                itemBuilder: (context, index) {
-                  final product = getCurrentProducts()[index];
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
-                    padding: EdgeInsets.only(right: 16.w, top: 16.h, bottom: 16.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 6,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60.w,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.cxF5F7F9,
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: Icon(
-                            selectedTabIndex == 0 ? Icons.directions_car : 
-                            selectedTabIndex == 1 ? Icons.phone_android : 
-                            Icons.laptop,
-                            size: 30.sp,
-                            color: AppColors.cxBlack,
-                          ),
+                  );
+                }
+
+                if (state is ProductLoaded && state.products.isEmpty) {
+                  return Expanded(
+                    child: Center(
+                      child: Text('No products found'),
+                    ),
+                  );
+                }
+
+                if (state is ProductLoaded) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: state.products.length,
+                      itemBuilder: (context, index) {
+                        final product = state.products[index];
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 15.h),
+                        padding: EdgeInsets.all(12.r),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 16.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product['name'],
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.cxBlack,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                '${product['year']}, ${product['details']}',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppColors.cxDADADA,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        child: Row(
                           children: [
-                            Text(
-                              product['price'],
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.cxBlack,
+                            Container(
+                              width: 100.w,
+                              height: 80.h,
+                              decoration: BoxDecoration(
+                                color: AppColors.cxF5F7F9,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Center(
+                                child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                                    ? Image.network(
+                                        product.imageUrl!,
+                                        width: 60.w,
+                                        height: 60.h,
+                                        fit: BoxFit.contain,
+                                        errorBuilder: (context, error, stackTrace) => Icon(
+                                          Icons.image_not_supported_outlined,
+                                          size: 40.sp,
+                                          color: Colors.grey,
+                                        ),
+                                      )
+                                    : Icon(
+                                        Icons.image_not_supported_outlined,
+                                        size: 40.sp,
+                                        color: Colors.grey,
+                                      ),
                               ),
                             ),
-                            SizedBox(height: 4.h),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                              decoration: BoxDecoration(
-                                color: product['status'] == 'Active' ? Colors.green : Colors.red,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Text(
-                                product['status'],
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColors.cxWhite,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${product.name} ${product.year}',
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                          vertical: 4.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: product.status.toLowerCase() == 'active'
+                                              ? Color(0xFFE8F5E9)
+                                              : Color(0xFFFFEBEE),
+                                          borderRadius: BorderRadius.circular(12.r),
+                                        ),
+                                        child: Text(
+                                          _getStatusText(product.status),
+                                          style: TextStyle(
+                                            color: product.status.toLowerCase() == 'active'
+                                                ? Color(0xFF2E7D32)
+                                                : Color(0xFFC62828),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    product.details,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: AppColors.cx6B7280,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '\$${product.price}',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.cxWhite,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ],
+                      );
+                      },
                     ),
                   );
-                },
-              ),
-            )
-          ]
+                }
+
+                return Expanded(
+                  child: Center(
+                    child: Text('Something went wrong'),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
+      ),
       ),
     );
   }
 }
-
