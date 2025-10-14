@@ -10,6 +10,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_banner.dart';
+import '../../../../core/shared/skeleton_loader.dart';
 import '../../data/models/product_model.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
@@ -34,10 +35,45 @@ class _ProductsState extends State<Products> {
     switch (status.toLowerCase()) {
       case 'sold':
         return 'Sotildi';
+      case 'available':
       case 'active':
+        return 'Active';
       default:
         return 'Active';
     }
+  }
+
+  String _buildProductSubtitle(ProductModel product) {
+    List<String> parts = [];
+    
+    // Add year if available
+    if (product.year.isNotEmpty) {
+      parts.add(product.year);
+    }
+    
+    // Add custom fields if available
+    if (product.customFields != null) {
+      final fields = product.customFields!;
+      
+      // Add color (Rangi)
+      if (fields['Rangi'] != null) {
+        parts.add(fields['Rangi'].toString());
+      }
+      
+      // Add mileage/distance (Probeg or Masofa)
+      if (fields['Probeg'] != null) {
+        parts.add('${fields['Probeg']}km');
+      } else if (fields['Masofa'] != null) {
+        parts.add(fields['Masofa'].toString());
+      }
+      
+      // Add other relevant fields
+      if (fields['Model'] != null) {
+        parts.add(fields['Model'].toString());
+      }
+    }
+    
+    return parts.isNotEmpty ? parts.join(', ') : 'No details';
   }
 
   @override
@@ -154,6 +190,8 @@ class _ProductsState extends State<Products> {
               builder: (context, state) {
                 final categories = state is ProductLoaded 
                     ? state.categories 
+                    : state is ProductLoading && state.categories != null
+                        ? state.categories!
                     : state is ProductError && state.categories != null
                         ? state.categories!
                         : [];
@@ -199,10 +237,12 @@ class _ProductsState extends State<Products> {
             SizedBox(height: 20.h),
             BlocBuilder<ProductCubit, ProductState>(
               builder: (context, state) {
-                if (state is ProductLoading) {
+                // Show skeleton for initial load (no categories)
+                if (state is ProductLoading && state.categories == null) {
                   return Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                    child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) => ProductCardSkeleton(),
                     ),
                   );
                 }
@@ -221,114 +261,135 @@ class _ProductsState extends State<Products> {
                       itemCount: state.products.length,
                       itemBuilder: (context, index) {
                         final product = state.products[index];
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 15.h),
-                        padding: EdgeInsets.all(12.r),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 10,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 100.w,
-                              height: 80.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.cxF5F7F9,
-                                borderRadius: BorderRadius.circular(8.r),
+                      return GestureDetector(
+                        onTap: () {
+                          context.push(AppRoutes.details, extra: product);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 15.h),
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: Offset(0, 2),
                               ),
-                              child: Center(
-                                child: product.imageUrl != null && product.imageUrl!.isNotEmpty
-                                    ? Image.network(
-                                        product.imageUrl!,
-                                        width: 60.w,
-                                        height: 60.h,
-                                        fit: BoxFit.contain,
-                                        errorBuilder: (context, error, stackTrace) => Icon(
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              // Circular product image
+                              Container(
+                                width: 70.w,
+                                height: 70.w,
+                                decoration: BoxDecoration(
+                                  color: AppColors.cxF5F7F9,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                                      ? Image.network(
+                                          product.imageUrl!,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) => Icon(
+                                            Icons.image_not_supported_outlined,
+                                            size: 30.sp,
+                                            color: Colors.grey,
+                                          ),
+                                        )
+                                      : Icon(
                                           Icons.image_not_supported_outlined,
-                                          size: 40.sp,
+                                          size: 30.sp,
                                           color: Colors.grey,
                                         ),
-                                      )
-                                    : Icon(
-                                        Icons.image_not_supported_outlined,
-                                        size: 40.sp,
-                                        color: Colors.grey,
-                                      ),
+                                ),
                               ),
-                            ),
-                            SizedBox(width: 12.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${product.name} ${product.year}',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                              SizedBox(width: 12.w),
+                              // Product info - flexible middle section
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      product.name,
+                                      style: TextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.cxBlack,
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
-                                          vertical: 4.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: product.status.toLowerCase() == 'active'
-                                              ? Color(0xFFE8F5E9)
-                                              : Color(0xFFFFEBEE),
-                                          borderRadius: BorderRadius.circular(12.r),
-                                        ),
-                                        child: Text(
-                                          _getStatusText(product.status),
-                                          style: TextStyle(
-                                            color: product.status.toLowerCase() == 'active'
-                                                ? Color(0xFF2E7D32)
-                                                : Color(0xFFC62828),
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Text(
-                                    product.details,
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppColors.cx6B7280,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 4.h),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      _buildProductSubtitle(product),
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: AppColors.cx6B7280,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              // Price and status - right section
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
                                   Text(
                                     '\$${product.price}',
                                     style: TextStyle(
-                                      fontSize: 16.sp,
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.cxWhite,
+                                      color: AppColors.cxBlack,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w,
+                                      vertical: 6.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: (product.status.toLowerCase() == 'available' || 
+                                             product.status.toLowerCase() == 'active')
+                                          ? Color(0xFF4CAF50)
+                                          : Color(0xFFFF5252),
+                                      borderRadius: BorderRadius.circular(20.r),
+                                    ),
+                                    child: Text(
+                                      _getStatusText(product.status),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                       },
+                    ),
+                  );
+                }
+                
+                // Handle loading state with categories (switching tabs)
+                if (state is ProductLoading && state.categories != null) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, index) => ProductCardSkeleton(),
                     ),
                   );
                 }

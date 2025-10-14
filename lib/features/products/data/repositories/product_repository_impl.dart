@@ -32,14 +32,16 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
       final response = await dioClient.get('/products');
-      final List<ProductModel> products = (response.data as List)
+      // API returns {data: [...], meta: {...}}
+      final data = response.data['data'] as List;
+      final List<ProductModel> products = data
           .map((item) => ProductModel.fromJson(item))
           .toList();
       return Right(products);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure('Failed to load products'));
+      return Left(ServerFailure('Failed to load products: ${e.toString()}'));
     }
   }
 
@@ -47,16 +49,18 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, List<ProductModel>>> getProductsByCategory(String category) async {
     try {
       final response = await dioClient.get('/products', queryParameters: {
-        'category': category.toLowerCase(),
+        'category': category,
       });
-      final List<ProductModel> products = (response.data as List)
+      // API returns {data: [...], meta: {...}}
+      final data = response.data['data'] as List;
+      final List<ProductModel> products = data
           .map((item) => ProductModel.fromJson(item))
           .toList();
       return Right(products);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(ServerFailure('Failed to load products by category'));
+      return Left(ServerFailure('Failed to load products by category: ${e.toString()}'));
     }
   }
 }

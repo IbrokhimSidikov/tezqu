@@ -14,7 +14,12 @@ class ProductInitial extends ProductState {
 }
 
 class ProductLoading extends ProductState {
-  const ProductLoading();
+  final List<CategoryModel>? categories;
+  
+  const ProductLoading({this.categories});
+  
+  @override
+  List<Object?> get props => [categories];
 }
 
 class CategoriesLoaded extends ProductState {

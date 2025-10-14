@@ -12,15 +12,20 @@ import 'package:tezqu/core/shared/button_widget_iconless.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/button_widget.dart';
+import '../../data/models/product_model.dart';
 
 class Details extends StatefulWidget {
-  const Details({super.key});
+  final dynamic product;
+  
+  const Details({super.key, this.product});
 
   @override
   State<Details> createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
+  ProductModel? get product => widget.product as ProductModel?;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +43,9 @@ class _DetailsState extends State<Details> {
               iconSize: 29.sp,
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
         ),
@@ -74,39 +81,101 @@ class _DetailsState extends State<Details> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (product?.imageUrl != null && product!.imageUrl!.isNotEmpty)
+                        Container(
+                          width: double.infinity,
+                          height: 200.h,
+                          margin: EdgeInsets.only(bottom: 20.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.cxF5F7F9,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: Image.network(
+                              product!.imageUrl!,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) => Center(
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 60.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       Text(
-                        "DEEPAL",
+                        product?.name ?? "Product Name",
                         style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          Text(
+                            "Yil: ",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.cx6B7280,
+                            ),
+                          ),
+                          Text(
+                            product?.year ?? "N/A",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: (product?.status.toLowerCase() == 'available' || 
+                                 product?.status.toLowerCase() == 'active')
+                              ? Color(0xFFE8F5E9)
+                              : Color(0xFFFFEBEE),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Text(
+                          (product?.status.toLowerCase() == 'available') 
+                              ? 'Mavjud' 
+                              : (product?.status.toLowerCase() == 'active') 
+                                  ? 'Active' 
+                                  : 'Sotildi',
+                          style: TextStyle(
+                            color: (product?.status.toLowerCase() == 'available' || 
+                                   product?.status.toLowerCase() == 'active')
+                                ? Color(0xFF2E7D32)
+                                : Color(0xFFC62828),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
                       Text(
-                        "SL03",
+                        "Mahsulot haqida",
                         style: TextStyle(
                           fontSize: 18.sp,
-                          color: AppColors.cx43C19F,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        "Mahsulot haqida qisqacha",
-                        style: TextStyle(
-                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(height: 6.h),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text("• Brend – Nothing"),
-                          Text("• Asosiy Kamera – 50 MP, 50 MP"),
-                          Text("• Protsessor – Qualcomm Snapdragon 8+ Gen 1"),
-                          Text("• Old kamera – 32 MP"),
-                          Text("• Kameralar soni – 2"),
-                        ],
+                      SizedBox(height: 8.h),
+                      Text(
+                        product?.details ?? "No details available",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColors.cx6B7280,
+                          height: 1.5,
+                        ),
                       ),
                       SizedBox(height: 20.h),
                       Row(
@@ -132,7 +201,7 @@ class _DetailsState extends State<Details> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    "\$21,150",
+                                    "\$${product?.price ?? '0'}",
                                     style: TextStyle(
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.w500,

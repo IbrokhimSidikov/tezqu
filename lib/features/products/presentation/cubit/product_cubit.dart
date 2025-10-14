@@ -8,6 +8,7 @@ import 'package:tezqu/features/products/presentation/cubit/product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _repository;
   List<CategoryModel> _categories = [];
+  String? _currentCategoryId;
 
   ProductCubit(this._repository) : super(const ProductInitial());
 
@@ -26,6 +27,7 @@ class ProductCubit extends Cubit<ProductState> {
         
         // If we have categories, load products for the first category
         if (categories.isNotEmpty) {
+          _currentCategoryId = categories[0].id;
           await loadProductsByCategory(categories[0].id);
         } else {
           emit(ProductLoaded(categories: categories, products: []));
@@ -40,7 +42,7 @@ class ProductCubit extends Cubit<ProductState> {
       return;
     }
     
-    emit(const ProductLoading());
+    emit(ProductLoading(categories: _categories));
     
     final result = await _repository.getProducts();
     
@@ -56,7 +58,13 @@ class ProductCubit extends Cubit<ProductState> {
       return;
     }
     
-    emit(const ProductLoading());
+    // Don't reload if already showing this category
+    if (_currentCategoryId == category && state is ProductLoaded) {
+      return;
+    }
+    
+    _currentCategoryId = category;
+    emit(ProductLoading(categories: _categories));
     
     final result = await _repository.getProductsByCategory(category);
     

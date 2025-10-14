@@ -71,7 +71,10 @@ class AppRoutes {
       GoRoute(
         path: details,
         name: 'details',
-        builder: (context, state) => const Details(),
+        builder: (context, state) {
+          final product = state.extra;
+          return Details(product: product);
+        },
       ),
       GoRoute(
         path: income,
