@@ -4,9 +4,11 @@ import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> register({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   });
 
   Future<UserModel> verify({
@@ -36,16 +38,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> register({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   }) async {
     final response = await dioClient.post(
       '/auth/register',
       data: {
-        'phone': phone,
-        'name': name,
-        if (email != null) 'email': email,
+        'first_name': firstName,
+        'last_name': lastName,
+        'date_of_birth': dateOfBirth,
+        'gender': gender,
+        'phone_number': phoneNumber,
       },
     );
 

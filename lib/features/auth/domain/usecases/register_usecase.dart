@@ -11,14 +11,18 @@ class RegisterUseCase {
   RegisterUseCase(this.repository);
 
   Future<Either<Failure, UserEntity>> call({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   }) async {
     return await repository.register(
-      phone: phone,
-      name: name,
-      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      gender: gender,
+      phoneNumber: phoneNumber,
     );
   }
 }

@@ -28,16 +28,20 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// Register new user
   Future<void> register({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   }) async {
     emit(AuthLoading());
 
     final result = await registerUseCase(
-      phone: phone,
-      name: name,
-      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      gender: gender,
+      phoneNumber: phoneNumber,
     );
 
     result.fold(

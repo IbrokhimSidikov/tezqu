@@ -23,9 +23,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> register({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   }) async {
     if (!await networkInfo.isConnected) {
       return const Left(NetworkFailure('No internet connection'));
@@ -33,9 +35,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
     try {
       final userModel = await remoteDataSource.register(
-        phone: phone,
-        name: name,
-        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        phoneNumber: phoneNumber,
       );
       await localDataSource.cacheUser(userModel);
       return Right(userModel.toEntity());

@@ -6,9 +6,11 @@ abstract class AuthRepository {
   /// Register a new user
   /// POST /auth/register
   Future<Either<Failure, UserEntity>> register({
-    required String phone,
-    required String name,
-    String? email,
+    required String firstName,
+    required String lastName,
+    required String dateOfBirth,
+    required String gender,
+    required String phoneNumber,
   });
 
   /// Verify phone with OTP code
