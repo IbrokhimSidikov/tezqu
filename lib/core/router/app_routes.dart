@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tezqu/features/auth/presentation/pages/login_otp_page.dart';
 import 'package:tezqu/features/home/presentation/pages/home.dart';
 import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
+import 'package:tezqu/features/onboard/presentation/pages/splash_page.dart';
 
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -17,6 +18,7 @@ import '../../features/profile/presentation/pages/profile.dart';
 import '../../features/warehouse/presentation/pages/warehouse.dart';
 
 class AppRoutes {
+  static const String splash = '/';
   static const String onboard = '/onboard';
   static const String home = '/home';
   static const String login = '/login';
@@ -33,8 +35,13 @@ class AppRoutes {
   static const String favourites = '/favourites';
 
   static final GoRouter router = GoRouter(
-    initialLocation: onboard,
+    initialLocation: splash,
     routes: [
+      GoRoute(
+        path: splash,
+        name: 'splash',
+        builder: (context, state) => const SplashPage(),
+      ),
       GoRoute(
         path: onboard,
         name: 'onboard',

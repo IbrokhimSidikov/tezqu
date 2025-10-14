@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/services/storage_service.dart';
 import '../../../../core/shared/button_widget.dart';
 
 class Onboard extends StatefulWidget {
@@ -16,6 +18,14 @@ class Onboard extends StatefulWidget {
 }
 
 class _OnboardState extends State<Onboard> {
+  final _storageService = getIt<StorageService>();
+
+  Future<void> _completeOnboarding() async {
+    await _storageService.setOnboardingComplete(true);
+    if (mounted) {
+      context.go(AppRoutes.login);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +74,7 @@ class _OnboardState extends State<Onboard> {
                   children: [
                     ButtonWidget(
                       text: 'Davom ettirish',
-                      onPressed: () {
-                        context.push(AppRoutes.login);
-                      },
+                      onPressed: _completeOnboarding,
                     ),
                     SizedBox(height: 20.h),
                     Text(

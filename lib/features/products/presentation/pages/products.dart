@@ -14,6 +14,7 @@ import '../../../../core/shared/skeleton_loader.dart';
 import '../../data/models/product_model.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
+import 'details.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -263,7 +264,17 @@ class _ProductsState extends State<Products> {
                         final product = state.products[index];
                       return GestureDetector(
                         onTap: () {
-                          context.push(AppRoutes.details, extra: product);
+                          print('=== PRODUCT CARD TAPPED ===');
+                          print('Product: ${product.name}');
+                          print('Product ID: ${product.id}');
+                          print('Product Type: ${product.runtimeType}');
+                          print('Navigating to details...');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Details(product: product),
+                            ),
+                          );
                         },
                         child: Container(
                           margin: EdgeInsets.only(bottom: 15.h),

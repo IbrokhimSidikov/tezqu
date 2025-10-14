@@ -39,6 +39,7 @@ import '../../features/products/presentation/cubit/product_cubit.dart' as _i661;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
+import '../services/storage_service.dart' as _i306;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -54,8 +55,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.sharedPreferences,
       preResolve: true,
     );
-    gh.factory<_i243.SplashScreenCubit>(() => _i243.SplashScreenCubit());
     gh.lazySingleton<_i895.Connectivity>(() => registerModule.connectivity);
+    gh.lazySingleton<_i306.StorageService>(
+      () => _i306.StorageServiceImpl(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i932.NetworkInfo>(
       () => networkModule.networkInfo(gh<_i895.Connectivity>()),
     );
@@ -67,6 +70,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i963.ProductRepository>(
       () => _i764.ProductRepositoryImpl(gh<_i667.DioClient>()),
+    );
+    gh.factory<_i243.SplashScreenCubit>(
+      () => _i243.SplashScreenCubit(
+        gh<_i306.StorageService>(),
+        gh<_i852.AuthLocalDataSource>(),
+      ),
     );
     gh.lazySingleton<_i107.AuthRemoteDataSource>(
       () => _i107.AuthRemoteDataSourceImpl(gh<_i667.DioClient>()),
