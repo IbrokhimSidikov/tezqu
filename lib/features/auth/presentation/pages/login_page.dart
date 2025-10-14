@@ -138,10 +138,8 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               onChanged: (value) {
-                                // Auto-send code when phone number is complete
-                                if (value.length == 9 && !_isCodeSent) {
-                                  _sendLoginCode(context);
-                                }
+                                // Phone number input changed
+                                // No auto-send, wait for button press
                               },
                             ),
                             if (_isCodeSent) ...[
