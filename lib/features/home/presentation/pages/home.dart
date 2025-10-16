@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/dashboard_card.dart';
+import '../cubit/dashboard_cubit.dart';
+import '../cubit/dashboard_state.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<DashboardCubit>()..loadDashboard(),
+      child: const _HomePageContent(),
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageContent extends StatelessWidget {
+  const _HomePageContent();
+
+  String _formatCurrency(double amount) {
+    final formatter = NumberFormat('#,###', 'en_US');
+    return '\$ ${formatter.format(amount)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,91 +79,131 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(
-              top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
+        body: BlocBuilder<DashboardCubit, DashboardState>(
+          builder: (context, state) {
+            if (state is DashboardLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state is DashboardError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
-                    SizedBox(width: 10.w),
-                    Text('Umumiy to\'lovlarim', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+                    Text(
+                      'Xatolik yuz berdi',
+                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(state.message),
+                    SizedBox(height: 20.h),
+                    ElevatedButton(
+                      onPressed: () => context.read<DashboardCubit>().loadDashboard(),
+                      child: const Text('Qayta urinish'),
+                    ),
                   ],
                 ),
-                SizedBox(height: 0),
-                Row(
-                  children: [
-                    Text('\$ 12 345',
-                        style:
-                            TextStyle(fontSize: 53.sp, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                SizedBox(height: 15.h),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              );
+            }
+
+            final dashboard = state is DashboardLoaded ? state.dashboard : null;
+            final totalContractAmount = dashboard?.data.totalContractAmount ?? 0;
+            final totalPaid = dashboard?.data.totalPaid ?? 0;
+            final totalRemaining = dashboard?.data.totalRemaining ?? 0;
+            final nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
+            final activeContracts = dashboard?.data.activeContracts ?? 0;
+
+            // Calculate progress percentage
+            final progressPercentage = totalContractAmount > 0 
+                ? totalPaid / totalContractAmount 
+                : 0.0;
+
+            return Padding(
+              padding: const EdgeInsets.only(
+                  top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.cx78D9BF,
-                          child: Icon(Icons.access_time, color: AppColors.cxWhite),
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Text(
-                            "Keyingi to'lov",
-                            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
-                          ),
-                        ),
+                        Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
+                        SizedBox(width: 10.w),
+                        Text('Umumiy to\'lovlarim', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+                      ],
+                    ),
+                    SizedBox(height: 0),
+                    Row(
+                      children: [
                         Text(
-                          "\$450",
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.cx78D9BF,
-                          ),
+                          _formatCurrency(totalContractAmount),
+                          style: TextStyle(fontSize: 53.sp, fontWeight: FontWeight.bold)
                         ),
-                        SizedBox(width: 32.w),
-                        CircleAvatar(
-                          backgroundColor: Colors.black87,
-                          child: IconButton(
-                              iconSize: 24.sp,
-                              onPressed: () {
-                                context.push(AppRoutes.favourites);
-                              },
-                              icon: Icon(Icons.favorite),
-                              color: AppColors.cxWhite,
+                      ],
+                    ),
+                    SizedBox(height: 15.h),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.cx78D9BF,
+                              child: Icon(Icons.access_time, color: AppColors.cxWhite),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Text(
+                                "Keyingi to'lov",
+                                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            Text(
+                              _formatCurrency(nextPaymentAmount),
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.cx78D9BF,
+                              ),
+                            ),
+                            SizedBox(width: 32.w),
+                            CircleAvatar(
+                              backgroundColor: Colors.black87,
+                              child: IconButton(
+                                  iconSize: 24.sp,
+                                  onPressed: () {
+                                    context.push(AppRoutes.favourites);
+                                  },
+                                  icon: Icon(Icons.favorite),
+                                  color: AppColors.cxWhite,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Container(
+                                height: 8,
+                                width: constraints.maxWidth * progressPercentage,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xFFC9EBE4), // 30%
+                                      Color(0xFF4BC1A9), // 100%
+                                    ],
+                                    stops: [0.3, 1.0], // gradient starts at 30%
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return Container(
-                            height: 8,
-                            width: constraints.maxWidth * 0.6, // 60% progress
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  Color(0xFFC9EBE4), // 30%
-                                  Color(0xFF4BC1A9), // 100%
-                                ],
-                                stops: [0.3, 1.0], // gradient starts at 30%
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(height: 39.h),
                 GridView.count(
                   shrinkWrap: true,
@@ -270,6 +327,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        );
+          },
         ));
   }
 }

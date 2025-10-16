@@ -29,6 +29,15 @@ import '../../features/auth/domain/usecases/send_login_code_usecase.dart'
     as _i1008;
 import '../../features/auth/domain/usecases/verify_usecase.dart' as _i778;
 import '../../features/auth/presentation/cubits/auth_cubit.dart' as _i521;
+import '../../features/home/data/datasources/dashboard_remote_data_source.dart'
+    as _i640;
+import '../../features/home/data/repositories/dashboard_repository_impl.dart'
+    as _i1057;
+import '../../features/home/domain/repositories/dashboard_repository.dart'
+    as _i386;
+import '../../features/home/domain/usecases/get_dashboard_usecase.dart'
+    as _i814;
+import '../../features/home/presentation/cubit/dashboard_cubit.dart' as _i989;
 import '../../features/onboard/presentation/cubit/splash_screen_cubit.dart'
     as _i243;
 import '../../features/products/data/repositories/product_repository_impl.dart'
@@ -80,6 +89,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i107.AuthRemoteDataSource>(
       () => _i107.AuthRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i640.DashboardRemoteDataSource>(
+      () => _i640.DashboardRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
+    gh.lazySingleton<_i386.DashboardRepository>(
+      () =>
+          _i1057.DashboardRepositoryImpl(gh<_i640.DashboardRemoteDataSource>()),
+    );
     gh.factory<_i661.ProductCubit>(
       () => _i661.ProductCubit(gh<_i963.ProductRepository>()),
     );
@@ -89,6 +105,9 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i852.AuthLocalDataSource>(),
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
+    );
+    gh.factory<_i814.GetDashboardUseCase>(
+      () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
     );
     gh.factory<_i941.RegisterUseCase>(
       () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
@@ -107,6 +126,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i989.DashboardCubit>(
+      () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),
     );
     gh.factory<_i521.AuthCubit>(
       () => _i521.AuthCubit(
