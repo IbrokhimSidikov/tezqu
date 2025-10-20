@@ -36,6 +36,9 @@ _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
       contractId: _toInt(json['contract_id']),
       productImage: json['product_image'] as String?,
       productCategory: json['product_category'] as String?,
+      contract: json['contract'] == null
+          ? null
+          : ContractModel.fromJson(json['contract'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
@@ -48,4 +51,28 @@ Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
       'contract_id': instance.contractId,
       'product_image': instance.productImage,
       'product_category': instance.productCategory,
+      'contract': instance.contract,
+    };
+
+_ContractModel _$ContractModelFromJson(Map<String, dynamic> json) =>
+    _ContractModel(
+      id: _toInt(json['id']),
+      product: json['product'] == null
+          ? null
+          : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ContractModelToJson(_ContractModel instance) =>
+    <String, dynamic>{'id': instance.id, 'product': instance.product};
+
+_ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
+    _ProductModel(
+      name: json['name'] as String? ?? '',
+      customFields: json['custom_fields'] as Map<String, dynamic>? ?? const {},
+    );
+
+Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'custom_fields': instance.customFields,
     };

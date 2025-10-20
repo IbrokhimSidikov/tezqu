@@ -22,6 +22,7 @@ class PaymentEntity extends Equatable {
   final int contractId;
   final String? productImage;
   final String? productCategory;
+  final ContractEntity? contract;
 
   const PaymentEntity({
     required this.id,
@@ -32,6 +33,7 @@ class PaymentEntity extends Equatable {
     required this.contractId,
     this.productImage,
     this.productCategory,
+    this.contract,
   });
 
   @override
@@ -44,5 +46,32 @@ class PaymentEntity extends Equatable {
         contractId,
         productImage,
         productCategory,
+        contract,
       ];
+}
+
+class ContractEntity extends Equatable {
+  final int id;
+  final ProductEntity? product;
+
+  const ContractEntity({
+    required this.id,
+    this.product,
+  });
+
+  @override
+  List<Object?> get props => [id, product];
+}
+
+class ProductEntity extends Equatable {
+  final String name;
+  final Map<String, dynamic> customFields;
+
+  const ProductEntity({
+    required this.name,
+    required this.customFields,
+  });
+
+  @override
+  List<Object?> get props => [name, customFields];
 }

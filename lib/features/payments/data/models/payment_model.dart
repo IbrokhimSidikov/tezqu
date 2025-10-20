@@ -49,6 +49,7 @@ class PaymentModel with _$PaymentModel {
     @JsonKey(name: 'contract_id', fromJson: _toInt) required int contractId,
     @JsonKey(name: 'product_image') String? productImage,
     @JsonKey(name: 'product_category') String? productCategory,
+    ContractModel? contract,
   }) = _PaymentModel;
 
   const PaymentModel._();
@@ -66,6 +67,7 @@ class PaymentModel with _$PaymentModel {
       contractId: contractId,
       productImage: productImage,
       productCategory: productCategory,
+      contract: contract?.toEntity(),
     );
   }
 
@@ -106,6 +108,10 @@ class PaymentModel with _$PaymentModel {
     // TODO: implement toJson
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement contract
+  ContractModel? get contract => throw UnimplementedError();
 }
 
 // Helper functions to convert String to num types
@@ -128,4 +134,72 @@ double _toDouble(dynamic value) {
   }
   if (value == null) return 0.0;
   return 0.0;
+}
+
+@freezed
+class ContractModel with _$ContractModel {
+  const factory ContractModel({
+    @JsonKey(fromJson: _toInt) required int id,
+    ProductModel? product,
+  }) = _ContractModel;
+
+  const ContractModel._();
+
+  factory ContractModel.fromJson(Map<String, dynamic> json) =>
+      _$ContractModelFromJson(json);
+
+  ContractEntity toEntity() {
+    return ContractEntity(
+      id: id,
+      product: product?.toEntity(),
+    );
+  }
+
+  @override
+  // TODO: implement id
+  int get id => throw UnimplementedError();
+
+  @override
+  // TODO: implement product
+  ProductModel? get product => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+}
+
+@freezed
+class ProductModel with _$ProductModel {
+  const factory ProductModel({
+    @Default('') String name,
+    @JsonKey(name: 'custom_fields') @Default({}) Map<String, dynamic> customFields,
+  }) = _ProductModel;
+
+  const ProductModel._();
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductModelFromJson(json);
+
+  ProductEntity toEntity() {
+    return ProductEntity(
+      name: name,
+      customFields: customFields,
+    );
+  }
+
+  @override
+  // TODO: implement customFields
+  Map<String, dynamic> get customFields => throw UnimplementedError();
+
+  @override
+  // TODO: implement name
+  String get name => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
 }

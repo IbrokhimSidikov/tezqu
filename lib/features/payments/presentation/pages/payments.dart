@@ -238,6 +238,11 @@ class PaymentsView extends StatelessWidget {
       }
     }
 
+    // Get contract product info
+    final contractProduct = payment.contract?.product;
+    final productName = contractProduct?.name ?? payment.productName;
+    final customFields = contractProduct?.customFields ?? {};
+
     return InkWell(
       onTap: () {
         // TODO: Navigate to payment details
@@ -271,7 +276,7 @@ class PaymentsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    payment.productName,
+                    productName,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
@@ -287,6 +292,24 @@ class PaymentsView extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  // Display custom fields if available
+                  if (customFields.isNotEmpty) ...[
+                    SizedBox(height: 4.h),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 4.h,
+                      children: customFields.entries.map((entry) {
+                        return Text(
+                          '${entry.key}: ${entry.value}',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.cxAFB1B1,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ],
               ),
             ),
