@@ -24,3 +24,7 @@ class NetworkFailure extends Failure {
 class UnknownFailure extends Failure {
   const UnknownFailure(super.message);
 }
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure(super.message);
+}

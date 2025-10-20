@@ -40,6 +40,15 @@ import '../../features/home/domain/usecases/get_dashboard_usecase.dart'
 import '../../features/home/presentation/cubit/dashboard_cubit.dart' as _i989;
 import '../../features/onboard/presentation/cubit/splash_screen_cubit.dart'
     as _i243;
+import '../../features/payments/data/datasources/payment_remote_data_source.dart'
+    as _i49;
+import '../../features/payments/data/repositories/payment_repository_impl.dart'
+    as _i842;
+import '../../features/payments/domain/repositories/payment_repository.dart'
+    as _i315;
+import '../../features/payments/domain/usecases/get_payments_usecase.dart'
+    as _i645;
+import '../../features/payments/presentation/cubit/payment_cubit.dart' as _i782;
 import '../../features/products/data/repositories/product_repository_impl.dart'
     as _i764;
 import '../../features/products/domain/repositories/product_repository.dart'
@@ -74,8 +83,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i667.DioClient>(
       () => _i667.DioClient(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i49.PaymentRemoteDataSource>(
+      () => _i49.PaymentRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i852.AuthLocalDataSource>(
       () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i315.PaymentRepository>(
+      () => _i842.PaymentRepositoryImpl(gh<_i49.PaymentRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i645.GetPaymentsUseCase>(
+      () => _i645.GetPaymentsUseCase(gh<_i315.PaymentRepository>()),
     );
     gh.lazySingleton<_i963.ProductRepository>(
       () => _i764.ProductRepositoryImpl(gh<_i667.DioClient>()),
@@ -95,6 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i386.DashboardRepository>(
       () =>
           _i1057.DashboardRepositoryImpl(gh<_i640.DashboardRemoteDataSource>()),
+    );
+    gh.factory<_i782.PaymentCubit>(
+      () => _i782.PaymentCubit(gh<_i645.GetPaymentsUseCase>()),
     );
     gh.factory<_i661.ProductCubit>(
       () => _i661.ProductCubit(gh<_i963.ProductRepository>()),
