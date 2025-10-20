@@ -299,6 +299,7 @@ $DashboardDataModelCopyWith<$Res> get data {
 /// @nodoc
 mixin _$DashboardDataModel {
 
+@JsonKey(name: 'total_payments_this_month') double get totalPaymentsThisMonth;@JsonKey(name: 'total_income_this_month') double get totalIncomeThisMonth;@JsonKey(name: 'total_expenses_this_month') double get totalExpensesThisMonth;@JsonKey(name: 'total_products_qty') int get totalProductsQty;@JsonKey(name: 'net_profit_this_month') double get netProfitThisMonth;@JsonKey(name: 'active_contracts_count') int get activeContractsCount;@JsonKey(name: 'pending_payments_count') int get pendingPaymentsCount;// Legacy fields for backward compatibility
 @JsonKey(name: 'total_contract_amount') double get totalContractAmount;@JsonKey(name: 'total_paid') double get totalPaid;@JsonKey(name: 'total_remaining') double get totalRemaining;@JsonKey(name: 'next_payment_amount') double get nextPaymentAmount;@JsonKey(name: 'next_payment_date') String get nextPaymentDate;@JsonKey(name: 'active_contracts') int get activeContracts;
 /// Create a copy of DashboardDataModel
 /// with the given fields replaced by the non-null parameter values.
@@ -312,16 +313,16 @@ $DashboardDataModelCopyWith<DashboardDataModel> get copyWith => _$DashboardDataM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardDataModel&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardDataModel&&(identical(other.totalPaymentsThisMonth, totalPaymentsThisMonth) || other.totalPaymentsThisMonth == totalPaymentsThisMonth)&&(identical(other.totalIncomeThisMonth, totalIncomeThisMonth) || other.totalIncomeThisMonth == totalIncomeThisMonth)&&(identical(other.totalExpensesThisMonth, totalExpensesThisMonth) || other.totalExpensesThisMonth == totalExpensesThisMonth)&&(identical(other.totalProductsQty, totalProductsQty) || other.totalProductsQty == totalProductsQty)&&(identical(other.netProfitThisMonth, netProfitThisMonth) || other.netProfitThisMonth == netProfitThisMonth)&&(identical(other.activeContractsCount, activeContractsCount) || other.activeContractsCount == activeContractsCount)&&(identical(other.pendingPaymentsCount, pendingPaymentsCount) || other.pendingPaymentsCount == pendingPaymentsCount)&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
+int get hashCode => Object.hash(runtimeType,totalPaymentsThisMonth,totalIncomeThisMonth,totalExpensesThisMonth,totalProductsQty,netProfitThisMonth,activeContractsCount,pendingPaymentsCount,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
 
 @override
 String toString() {
-  return 'DashboardDataModel(totalContractAmount: $totalContractAmount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, nextPaymentAmount: $nextPaymentAmount, nextPaymentDate: $nextPaymentDate, activeContracts: $activeContracts)';
+  return 'DashboardDataModel(totalPaymentsThisMonth: $totalPaymentsThisMonth, totalIncomeThisMonth: $totalIncomeThisMonth, totalExpensesThisMonth: $totalExpensesThisMonth, totalProductsQty: $totalProductsQty, netProfitThisMonth: $netProfitThisMonth, activeContractsCount: $activeContractsCount, pendingPaymentsCount: $pendingPaymentsCount, totalContractAmount: $totalContractAmount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, nextPaymentAmount: $nextPaymentAmount, nextPaymentDate: $nextPaymentDate, activeContracts: $activeContracts)';
 }
 
 
@@ -332,7 +333,7 @@ abstract mixin class $DashboardDataModelCopyWith<$Res>  {
   factory $DashboardDataModelCopyWith(DashboardDataModel value, $Res Function(DashboardDataModel) _then) = _$DashboardDataModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'total_contract_amount') double totalContractAmount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'next_payment_amount') double nextPaymentAmount,@JsonKey(name: 'next_payment_date') String nextPaymentDate,@JsonKey(name: 'active_contracts') int activeContracts
+@JsonKey(name: 'total_payments_this_month') double totalPaymentsThisMonth,@JsonKey(name: 'total_income_this_month') double totalIncomeThisMonth,@JsonKey(name: 'total_expenses_this_month') double totalExpensesThisMonth,@JsonKey(name: 'total_products_qty') int totalProductsQty,@JsonKey(name: 'net_profit_this_month') double netProfitThisMonth,@JsonKey(name: 'active_contracts_count') int activeContractsCount,@JsonKey(name: 'pending_payments_count') int pendingPaymentsCount,@JsonKey(name: 'total_contract_amount') double totalContractAmount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'next_payment_amount') double nextPaymentAmount,@JsonKey(name: 'next_payment_date') String nextPaymentDate,@JsonKey(name: 'active_contracts') int activeContracts
 });
 
 
@@ -349,9 +350,16 @@ class _$DashboardDataModelCopyWithImpl<$Res>
 
 /// Create a copy of DashboardDataModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? totalContractAmount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? nextPaymentAmount = null,Object? nextPaymentDate = null,Object? activeContracts = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? totalPaymentsThisMonth = null,Object? totalIncomeThisMonth = null,Object? totalExpensesThisMonth = null,Object? totalProductsQty = null,Object? netProfitThisMonth = null,Object? activeContractsCount = null,Object? pendingPaymentsCount = null,Object? totalContractAmount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? nextPaymentAmount = null,Object? nextPaymentDate = null,Object? activeContracts = null,}) {
   return _then(_self.copyWith(
-totalContractAmount: null == totalContractAmount ? _self.totalContractAmount : totalContractAmount // ignore: cast_nullable_to_non_nullable
+totalPaymentsThisMonth: null == totalPaymentsThisMonth ? _self.totalPaymentsThisMonth : totalPaymentsThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalIncomeThisMonth: null == totalIncomeThisMonth ? _self.totalIncomeThisMonth : totalIncomeThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalExpensesThisMonth: null == totalExpensesThisMonth ? _self.totalExpensesThisMonth : totalExpensesThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalProductsQty: null == totalProductsQty ? _self.totalProductsQty : totalProductsQty // ignore: cast_nullable_to_non_nullable
+as int,netProfitThisMonth: null == netProfitThisMonth ? _self.netProfitThisMonth : netProfitThisMonth // ignore: cast_nullable_to_non_nullable
+as double,activeContractsCount: null == activeContractsCount ? _self.activeContractsCount : activeContractsCount // ignore: cast_nullable_to_non_nullable
+as int,pendingPaymentsCount: null == pendingPaymentsCount ? _self.pendingPaymentsCount : pendingPaymentsCount // ignore: cast_nullable_to_non_nullable
+as int,totalContractAmount: null == totalContractAmount ? _self.totalContractAmount : totalContractAmount // ignore: cast_nullable_to_non_nullable
 as double,totalPaid: null == totalPaid ? _self.totalPaid : totalPaid // ignore: cast_nullable_to_non_nullable
 as double,totalRemaining: null == totalRemaining ? _self.totalRemaining : totalRemaining // ignore: cast_nullable_to_non_nullable
 as double,nextPaymentAmount: null == nextPaymentAmount ? _self.nextPaymentAmount : nextPaymentAmount // ignore: cast_nullable_to_non_nullable
@@ -442,10 +450,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_payments_this_month')  double totalPaymentsThisMonth, @JsonKey(name: 'total_income_this_month')  double totalIncomeThisMonth, @JsonKey(name: 'total_expenses_this_month')  double totalExpensesThisMonth, @JsonKey(name: 'total_products_qty')  int totalProductsQty, @JsonKey(name: 'net_profit_this_month')  double netProfitThisMonth, @JsonKey(name: 'active_contracts_count')  int activeContractsCount, @JsonKey(name: 'pending_payments_count')  int pendingPaymentsCount, @JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardDataModel() when $default != null:
-return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
+return $default(_that.totalPaymentsThisMonth,_that.totalIncomeThisMonth,_that.totalExpensesThisMonth,_that.totalProductsQty,_that.netProfitThisMonth,_that.activeContractsCount,_that.pendingPaymentsCount,_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
   return orElse();
 
 }
@@ -463,10 +471,10 @@ return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_payments_this_month')  double totalPaymentsThisMonth, @JsonKey(name: 'total_income_this_month')  double totalIncomeThisMonth, @JsonKey(name: 'total_expenses_this_month')  double totalExpensesThisMonth, @JsonKey(name: 'total_products_qty')  int totalProductsQty, @JsonKey(name: 'net_profit_this_month')  double netProfitThisMonth, @JsonKey(name: 'active_contracts_count')  int activeContractsCount, @JsonKey(name: 'pending_payments_count')  int pendingPaymentsCount, @JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardDataModel():
-return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
+return $default(_that.totalPaymentsThisMonth,_that.totalIncomeThisMonth,_that.totalExpensesThisMonth,_that.totalProductsQty,_that.netProfitThisMonth,_that.activeContractsCount,_that.pendingPaymentsCount,_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -483,10 +491,10 @@ return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'total_payments_this_month')  double totalPaymentsThisMonth, @JsonKey(name: 'total_income_this_month')  double totalIncomeThisMonth, @JsonKey(name: 'total_expenses_this_month')  double totalExpensesThisMonth, @JsonKey(name: 'total_products_qty')  int totalProductsQty, @JsonKey(name: 'net_profit_this_month')  double netProfitThisMonth, @JsonKey(name: 'active_contracts_count')  int activeContractsCount, @JsonKey(name: 'pending_payments_count')  int pendingPaymentsCount, @JsonKey(name: 'total_contract_amount')  double totalContractAmount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'next_payment_amount')  double nextPaymentAmount, @JsonKey(name: 'next_payment_date')  String nextPaymentDate, @JsonKey(name: 'active_contracts')  int activeContracts)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardDataModel() when $default != null:
-return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
+return $default(_that.totalPaymentsThisMonth,_that.totalIncomeThisMonth,_that.totalExpensesThisMonth,_that.totalProductsQty,_that.netProfitThisMonth,_that.activeContractsCount,_that.pendingPaymentsCount,_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_that.nextPaymentAmount,_that.nextPaymentDate,_that.activeContracts);case _:
   return null;
 
 }
@@ -498,9 +506,17 @@ return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_
 @JsonSerializable()
 
 class _DashboardDataModel extends DashboardDataModel {
-  const _DashboardDataModel({@JsonKey(name: 'total_contract_amount') required this.totalContractAmount, @JsonKey(name: 'total_paid') required this.totalPaid, @JsonKey(name: 'total_remaining') required this.totalRemaining, @JsonKey(name: 'next_payment_amount') required this.nextPaymentAmount, @JsonKey(name: 'next_payment_date') required this.nextPaymentDate, @JsonKey(name: 'active_contracts') required this.activeContracts}): super._();
+  const _DashboardDataModel({@JsonKey(name: 'total_payments_this_month') this.totalPaymentsThisMonth = 0, @JsonKey(name: 'total_income_this_month') this.totalIncomeThisMonth = 0, @JsonKey(name: 'total_expenses_this_month') this.totalExpensesThisMonth = 0, @JsonKey(name: 'total_products_qty') this.totalProductsQty = 0, @JsonKey(name: 'net_profit_this_month') this.netProfitThisMonth = 0, @JsonKey(name: 'active_contracts_count') this.activeContractsCount = 0, @JsonKey(name: 'pending_payments_count') this.pendingPaymentsCount = 0, @JsonKey(name: 'total_contract_amount') this.totalContractAmount = 0, @JsonKey(name: 'total_paid') this.totalPaid = 0, @JsonKey(name: 'total_remaining') this.totalRemaining = 0, @JsonKey(name: 'next_payment_amount') this.nextPaymentAmount = 0, @JsonKey(name: 'next_payment_date') this.nextPaymentDate = '', @JsonKey(name: 'active_contracts') this.activeContracts = 0}): super._();
   factory _DashboardDataModel.fromJson(Map<String, dynamic> json) => _$DashboardDataModelFromJson(json);
 
+@override@JsonKey(name: 'total_payments_this_month') final  double totalPaymentsThisMonth;
+@override@JsonKey(name: 'total_income_this_month') final  double totalIncomeThisMonth;
+@override@JsonKey(name: 'total_expenses_this_month') final  double totalExpensesThisMonth;
+@override@JsonKey(name: 'total_products_qty') final  int totalProductsQty;
+@override@JsonKey(name: 'net_profit_this_month') final  double netProfitThisMonth;
+@override@JsonKey(name: 'active_contracts_count') final  int activeContractsCount;
+@override@JsonKey(name: 'pending_payments_count') final  int pendingPaymentsCount;
+// Legacy fields for backward compatibility
 @override@JsonKey(name: 'total_contract_amount') final  double totalContractAmount;
 @override@JsonKey(name: 'total_paid') final  double totalPaid;
 @override@JsonKey(name: 'total_remaining') final  double totalRemaining;
@@ -521,16 +537,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardDataModel&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardDataModel&&(identical(other.totalPaymentsThisMonth, totalPaymentsThisMonth) || other.totalPaymentsThisMonth == totalPaymentsThisMonth)&&(identical(other.totalIncomeThisMonth, totalIncomeThisMonth) || other.totalIncomeThisMonth == totalIncomeThisMonth)&&(identical(other.totalExpensesThisMonth, totalExpensesThisMonth) || other.totalExpensesThisMonth == totalExpensesThisMonth)&&(identical(other.totalProductsQty, totalProductsQty) || other.totalProductsQty == totalProductsQty)&&(identical(other.netProfitThisMonth, netProfitThisMonth) || other.netProfitThisMonth == netProfitThisMonth)&&(identical(other.activeContractsCount, activeContractsCount) || other.activeContractsCount == activeContractsCount)&&(identical(other.pendingPaymentsCount, pendingPaymentsCount) || other.pendingPaymentsCount == pendingPaymentsCount)&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
+int get hashCode => Object.hash(runtimeType,totalPaymentsThisMonth,totalIncomeThisMonth,totalExpensesThisMonth,totalProductsQty,netProfitThisMonth,activeContractsCount,pendingPaymentsCount,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
 
 @override
 String toString() {
-  return 'DashboardDataModel(totalContractAmount: $totalContractAmount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, nextPaymentAmount: $nextPaymentAmount, nextPaymentDate: $nextPaymentDate, activeContracts: $activeContracts)';
+  return 'DashboardDataModel(totalPaymentsThisMonth: $totalPaymentsThisMonth, totalIncomeThisMonth: $totalIncomeThisMonth, totalExpensesThisMonth: $totalExpensesThisMonth, totalProductsQty: $totalProductsQty, netProfitThisMonth: $netProfitThisMonth, activeContractsCount: $activeContractsCount, pendingPaymentsCount: $pendingPaymentsCount, totalContractAmount: $totalContractAmount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, nextPaymentAmount: $nextPaymentAmount, nextPaymentDate: $nextPaymentDate, activeContracts: $activeContracts)';
 }
 
 
@@ -541,7 +557,7 @@ abstract mixin class _$DashboardDataModelCopyWith<$Res> implements $DashboardDat
   factory _$DashboardDataModelCopyWith(_DashboardDataModel value, $Res Function(_DashboardDataModel) _then) = __$DashboardDataModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'total_contract_amount') double totalContractAmount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'next_payment_amount') double nextPaymentAmount,@JsonKey(name: 'next_payment_date') String nextPaymentDate,@JsonKey(name: 'active_contracts') int activeContracts
+@JsonKey(name: 'total_payments_this_month') double totalPaymentsThisMonth,@JsonKey(name: 'total_income_this_month') double totalIncomeThisMonth,@JsonKey(name: 'total_expenses_this_month') double totalExpensesThisMonth,@JsonKey(name: 'total_products_qty') int totalProductsQty,@JsonKey(name: 'net_profit_this_month') double netProfitThisMonth,@JsonKey(name: 'active_contracts_count') int activeContractsCount,@JsonKey(name: 'pending_payments_count') int pendingPaymentsCount,@JsonKey(name: 'total_contract_amount') double totalContractAmount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'next_payment_amount') double nextPaymentAmount,@JsonKey(name: 'next_payment_date') String nextPaymentDate,@JsonKey(name: 'active_contracts') int activeContracts
 });
 
 
@@ -558,9 +574,16 @@ class __$DashboardDataModelCopyWithImpl<$Res>
 
 /// Create a copy of DashboardDataModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? totalContractAmount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? nextPaymentAmount = null,Object? nextPaymentDate = null,Object? activeContracts = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? totalPaymentsThisMonth = null,Object? totalIncomeThisMonth = null,Object? totalExpensesThisMonth = null,Object? totalProductsQty = null,Object? netProfitThisMonth = null,Object? activeContractsCount = null,Object? pendingPaymentsCount = null,Object? totalContractAmount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? nextPaymentAmount = null,Object? nextPaymentDate = null,Object? activeContracts = null,}) {
   return _then(_DashboardDataModel(
-totalContractAmount: null == totalContractAmount ? _self.totalContractAmount : totalContractAmount // ignore: cast_nullable_to_non_nullable
+totalPaymentsThisMonth: null == totalPaymentsThisMonth ? _self.totalPaymentsThisMonth : totalPaymentsThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalIncomeThisMonth: null == totalIncomeThisMonth ? _self.totalIncomeThisMonth : totalIncomeThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalExpensesThisMonth: null == totalExpensesThisMonth ? _self.totalExpensesThisMonth : totalExpensesThisMonth // ignore: cast_nullable_to_non_nullable
+as double,totalProductsQty: null == totalProductsQty ? _self.totalProductsQty : totalProductsQty // ignore: cast_nullable_to_non_nullable
+as int,netProfitThisMonth: null == netProfitThisMonth ? _self.netProfitThisMonth : netProfitThisMonth // ignore: cast_nullable_to_non_nullable
+as double,activeContractsCount: null == activeContractsCount ? _self.activeContractsCount : activeContractsCount // ignore: cast_nullable_to_non_nullable
+as int,pendingPaymentsCount: null == pendingPaymentsCount ? _self.pendingPaymentsCount : pendingPaymentsCount // ignore: cast_nullable_to_non_nullable
+as int,totalContractAmount: null == totalContractAmount ? _self.totalContractAmount : totalContractAmount // ignore: cast_nullable_to_non_nullable
 as double,totalPaid: null == totalPaid ? _self.totalPaid : totalPaid // ignore: cast_nullable_to_non_nullable
 as double,totalRemaining: null == totalRemaining ? _self.totalRemaining : totalRemaining // ignore: cast_nullable_to_non_nullable
 as double,nextPaymentAmount: null == nextPaymentAmount ? _self.nextPaymentAmount : nextPaymentAmount // ignore: cast_nullable_to_non_nullable

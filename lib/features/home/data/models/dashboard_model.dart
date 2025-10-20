@@ -94,4 +94,32 @@ class DashboardDataModel with _$DashboardDataModel {
   @override
   // TODO: implement totalRemaining
   double get totalRemaining => throw UnimplementedError();
+
+  @override
+  // TODO: implement activeContractsCount
+  int get activeContractsCount => throw UnimplementedError();
+
+  @override
+  // TODO: implement netProfitThisMonth
+  double get netProfitThisMonth => throw UnimplementedError();
+
+  @override
+  // TODO: implement pendingPaymentsCount
+  int get pendingPaymentsCount => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalExpensesThisMonth
+  double get totalExpensesThisMonth => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalIncomeThisMonth
+  double get totalIncomeThisMonth => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalPaymentsThisMonth
+  double get totalPaymentsThisMonth => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalProductsQty
+  int get totalProductsQty => throw UnimplementedError();
 }

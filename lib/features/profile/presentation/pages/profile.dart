@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../core/router/app_routes.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -12,6 +15,31 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Future<void> _handleLogout() async {
+    try {
+      // Get SharedPreferences instance
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Clear all stored data (tokens, user data, etc.)
+      await prefs.clear();
+      
+      // Navigate to onboard page and remove all previous routes
+      if (mounted) {
+        context.go(AppRoutes.onboard);
+      }
+    } catch (e) {
+      // Show error message if logout fails
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Xatolik yuz berdi: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +132,7 @@ class _ProfileState extends State<Profile> {
               color: AppColors.cxF42800,
               iconColor: AppColors.cxWhite,
               title: "Ilovadan chiqish",
-              onTap: () {},
+              onTap: _handleLogout,
             ),
 
           ],
