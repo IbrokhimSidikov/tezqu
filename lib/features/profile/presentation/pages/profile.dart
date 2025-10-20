@@ -97,6 +97,16 @@ class _ProfileState extends State<Profile> {
               title: "Ilovani ulashish",
               onTap: () {},
             ),
+            SizedBox(height: 16.h),
+
+            _buildMenuItem(
+              icon: Icons.exit_to_app,
+              color: AppColors.cxF42800,
+              iconColor: AppColors.cxWhite,
+              title: "Ilovadan chiqish",
+              onTap: () {},
+            ),
+
           ],
         ),
       )

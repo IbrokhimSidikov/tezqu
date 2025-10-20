@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
@@ -82,7 +83,7 @@ class _HomePageContent extends StatelessWidget {
         body: BlocBuilder<DashboardCubit, DashboardState>(
           builder: (context, state) {
             if (state is DashboardLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const _HomeShimmerLoading();
             }
 
             if (state is DashboardError) {
@@ -330,5 +331,223 @@ class _HomePageContent extends StatelessWidget {
         );
           },
         ));
+  }
+}
+
+class _HomeShimmerLoading extends StatelessWidget {
+  const _HomeShimmerLoading();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Static title (no shimmer needed)
+            Row(
+              children: [
+                Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7),
+                SizedBox(width: 10.w),
+                Text(
+                  'Umumiy to\'lovlarim',
+                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            SizedBox(height: 0),
+            // Total amount shimmer (dynamic data)
+            Row(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 250.w,
+                    height: 53.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.h),
+            // Next payment section
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    // Static icon (no shimmer)
+                    CircleAvatar(
+                      backgroundColor: AppColors.cx78D9BF,
+                      child: Icon(Icons.access_time, color: AppColors.cxWhite),
+                    ),
+                    SizedBox(width: 12.w),
+                    // Static text (no shimmer)
+                    Expanded(
+                      child: Text(
+                        "Keyingi to'lov",
+                        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    // Next payment amount shimmer (dynamic data)
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: 100.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 32.w),
+                    // Static favorite icon (no shimmer)
+                    CircleAvatar(
+                      backgroundColor: Colors.black87,
+                      child: Icon(Icons.favorite, color: AppColors.cxWhite),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                // Progress bar shimmer (dynamic data)
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 8,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 39.h),
+            // Static dashboard cards (no shimmer needed)
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 29.h,
+              crossAxisSpacing: 16.w,
+              childAspectRatio: 1.2,
+              children: [
+                DashboardCard(
+                  onTap: () {},
+                  title: "To'lovlarim",
+                  icons: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: CircleAvatar(
+                        radius: 22.r,
+                        backgroundColor: AppColors.cxFF8B92,
+                        child: const Icon(Icons.attach_money, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                DashboardCard(
+                  title: "Maxsulotlar",
+                  onTap: () {},
+                  icons: [
+                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
+                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
+                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
+                  ],
+                ),
+                DashboardCard(
+                  onTap: () {},
+                  title: "Kirimlar",
+                  subtitle: "\$123,500",
+                  icons: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: CircleAvatar(
+                        radius: 22.r,
+                        backgroundColor: AppColors.cx78D9BF,
+                        child: const Icon(Icons.swap_horiz, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                DashboardCard(
+                  onTap: () {},
+                  title: "Chiqimlar",
+                  subtitle: "\$1,500",
+                  icons: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: CircleAvatar(
+                        radius: 22.r,
+                        backgroundColor: AppColors.cxFEC700,
+                        child: const Icon(Icons.arrow_upward, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+                DashboardCard(
+                  onTap: () {},
+                  title: 'Omborxona',
+                  subtitle: 'Maxsulot: 120',
+                  icons: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: CircleAvatar(
+                        radius: 22.r,
+                        backgroundColor: AppColors.cx292B2F,
+                        child: const Icon(Icons.inventory_2_outlined, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                DashboardCard(
+                  title: 'Dashboard',
+                  subtitle: 'Faollik: 01.24',
+                  icons: [
+                    Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: CircleAvatar(
+                        radius: 22.r,
+                        backgroundColor: AppColors.cx02D5F5,
+                        child: const Icon(Icons.bar_chart_outlined, color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

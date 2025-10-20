@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/user_entity.dart';
 
 part 'user_model.freezed.dart';
-// part 'user_model.g.dart';
 
 @freezed
 class UserModel with _$UserModel {
@@ -26,6 +25,16 @@ class UserModel with _$UserModel {
       email: json['email'] as String?,
       token: token,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'phone': phone,
+      'name': name,
+      'email': email,
+      'access_token': token,
+    };
   }
 
   // Convert to entity
@@ -65,12 +74,6 @@ class UserModel with _$UserModel {
   @override
   // TODO: implement phone
   String? get phone => throw UnimplementedError();
-
-  @override
-  Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
-  }
 
   @override
   // TODO: implement token
