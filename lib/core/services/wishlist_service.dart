@@ -30,4 +30,22 @@ class WishlistService {
       return false;
     }
   }
+
+  Future<List<Map<String, dynamic>>> getWishlist() async {
+    try {
+      final response = await _dioClient.get('/wishlist');
+      if (response.data is List) {
+        // Extract the product data from each wishlist item
+        return (response.data as List).map((item) {
+          if (item is Map<String, dynamic> && item['product'] != null) {
+            return item['product'] as Map<String, dynamic>;
+          }
+          return item as Map<String, dynamic>;
+        }).toList();
+      }
+      return [];
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -36,14 +36,21 @@ class ProductModel {
              customFields['year']?.toString() ?? '';
     }
     
-    // Parse image_urls array
+    // Parse image_urls or image_ids array
     List<String> imageUrls = [];
-    if (json['image_urls'] != null) {
-      if (json['image_urls'] is List) {
-        imageUrls = (json['image_urls'] as List)
-            .map((url) => url.toString())
-            .toList();
-      }
+    
+    // First check for image_urls (direct URLs)
+    if (json['image_urls'] != null && json['image_urls'] is List) {
+      imageUrls = (json['image_urls'] as List)
+          .map((url) => url.toString())
+          .toList();
+    } 
+    // If not found, check for image_ids and convert to URLs
+    else if (json['image_ids'] != null && json['image_ids'] is List) {
+      const baseUrl = 'https://api.tezqu.uz';
+      imageUrls = (json['image_ids'] as List)
+          .map((id) => '$baseUrl/images/$id')
+          .toList();
     }
     
     return ProductModel(

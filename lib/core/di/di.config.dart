@@ -38,6 +38,7 @@ import '../../features/home/domain/repositories/dashboard_repository.dart'
 import '../../features/home/domain/usecases/get_dashboard_usecase.dart'
     as _i814;
 import '../../features/home/presentation/cubit/dashboard_cubit.dart' as _i989;
+import '../../features/home/presentation/cubit/wishlist_cubit.dart' as _i968;
 import '../../features/income/data/datasources/income_remote_data_source.dart'
     as _i610;
 import '../../features/income/data/repositories/income_repository_impl.dart'
@@ -142,6 +143,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i963.ProductRepository>(),
         gh<_i203.WishlistService>(),
       ),
+    );
+    gh.factory<_i968.WishlistCubit>(
+      () => _i968.WishlistCubit(gh<_i203.WishlistService>()),
     );
     gh.lazySingleton<_i260.IncomeRepository>(
       () => _i324.IncomeRepositoryImpl(gh<_i610.IncomeRemoteDataSource>()),
