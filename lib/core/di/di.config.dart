@@ -68,6 +68,12 @@ import '../../features/products/data/repositories/product_repository_impl.dart'
 import '../../features/products/domain/repositories/product_repository.dart'
     as _i963;
 import '../../features/products/presentation/cubit/product_cubit.dart' as _i661;
+import '../../features/warehouse/data/repositories/warehouse_repository_impl.dart'
+    as _i413;
+import '../../features/warehouse/domain/repositories/warehouse_repository.dart'
+    as _i624;
+import '../../features/warehouse/presentation/cubit/warehouse_cubit.dart'
+    as _i410;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
@@ -114,6 +120,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i852.AuthLocalDataSource>(
       () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i624.WarehouseRepository>(
+      () => _i413.WarehouseRepositoryImpl(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i315.PaymentRepository>(
       () => _i842.PaymentRepositoryImpl(gh<_i49.PaymentRemoteDataSource>()),
     );
@@ -154,6 +163,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i260.IncomeRepository>(
       () => _i324.IncomeRepositoryImpl(gh<_i610.IncomeRemoteDataSource>()),
+    );
+    gh.factory<_i410.WarehouseCubit>(
+      () => _i410.WarehouseCubit(
+        gh<_i624.WarehouseRepository>(),
+        gh<_i1013.CategoryCacheService>(),
+      ),
     );
     gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
       () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
