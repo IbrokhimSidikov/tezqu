@@ -50,6 +50,60 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  Future<void> _showLogoutConfirmation() async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          title: Text(
+            'Ilovadan chiqish',
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            'Haqiqatan ham ilovadan chiqmoqchimisiz?',
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.cxAFB1B1,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'Bekor qilish',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.cxAFB1B1,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                'Chiqish',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.cxF42800,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldLogout == true) {
+      await _handleLogout();
+    }
+  }
+
   Future<void> _handleLogout() async {
     try {
       // Get SharedPreferences instance
@@ -167,7 +221,7 @@ class _ProfileState extends State<Profile> {
               color: AppColors.cxF42800,
               iconColor: AppColors.cxWhite,
               title: "Ilovadan chiqish",
-              onTap: _handleLogout,
+              onTap: _showLogoutConfirmation,
             ),
 
           ],
