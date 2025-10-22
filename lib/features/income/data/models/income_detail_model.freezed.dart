@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$IncomeDetailModel {
 
-@JsonKey(name: 'customer_name') String get customerName; List<PaymentDetailModel> get payments;
+@JsonKey(name: 'source_name') String get sourceName; List<PaymentDetailModel> get payments;
 /// Create a copy of IncomeDetailModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $IncomeDetailModelCopyWith<IncomeDetailModel> get copyWith => _$IncomeDetailMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is IncomeDetailModel&&(identical(other.customerName, customerName) || other.customerName == customerName)&&const DeepCollectionEquality().equals(other.payments, payments));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IncomeDetailModel&&(identical(other.sourceName, sourceName) || other.sourceName == sourceName)&&const DeepCollectionEquality().equals(other.payments, payments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerName,const DeepCollectionEquality().hash(payments));
+int get hashCode => Object.hash(runtimeType,sourceName,const DeepCollectionEquality().hash(payments));
 
 @override
 String toString() {
-  return 'IncomeDetailModel(customerName: $customerName, payments: $payments)';
+  return 'IncomeDetailModel(sourceName: $sourceName, payments: $payments)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $IncomeDetailModelCopyWith<$Res>  {
   factory $IncomeDetailModelCopyWith(IncomeDetailModel value, $Res Function(IncomeDetailModel) _then) = _$IncomeDetailModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'customer_name') String customerName, List<PaymentDetailModel> payments
+@JsonKey(name: 'source_name') String sourceName, List<PaymentDetailModel> payments
 });
 
 
@@ -65,9 +65,9 @@ class _$IncomeDetailModelCopyWithImpl<$Res>
 
 /// Create a copy of IncomeDetailModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? customerName = null,Object? payments = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sourceName = null,Object? payments = null,}) {
   return _then(_self.copyWith(
-customerName: null == customerName ? _self.customerName : customerName // ignore: cast_nullable_to_non_nullable
+sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable
 as String,payments: null == payments ? _self.payments : payments // ignore: cast_nullable_to_non_nullable
 as List<PaymentDetailModel>,
   ));
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'customer_name')  String customerName,  List<PaymentDetailModel> payments)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'source_name')  String sourceName,  List<PaymentDetailModel> payments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _IncomeDetailModel() when $default != null:
-return $default(_that.customerName,_that.payments);case _:
+return $default(_that.sourceName,_that.payments);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.customerName,_that.payments);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'customer_name')  String customerName,  List<PaymentDetailModel> payments)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'source_name')  String sourceName,  List<PaymentDetailModel> payments)  $default,) {final _that = this;
 switch (_that) {
 case _IncomeDetailModel():
-return $default(_that.customerName,_that.payments);case _:
+return $default(_that.sourceName,_that.payments);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +195,10 @@ return $default(_that.customerName,_that.payments);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'customer_name')  String customerName,  List<PaymentDetailModel> payments)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'source_name')  String sourceName,  List<PaymentDetailModel> payments)?  $default,) {final _that = this;
 switch (_that) {
 case _IncomeDetailModel() when $default != null:
-return $default(_that.customerName,_that.payments);case _:
+return $default(_that.sourceName,_that.payments);case _:
   return null;
 
 }
@@ -210,10 +210,10 @@ return $default(_that.customerName,_that.payments);case _:
 @JsonSerializable()
 
 class _IncomeDetailModel extends IncomeDetailModel {
-  const _IncomeDetailModel({@JsonKey(name: 'customer_name') this.customerName = '', final  List<PaymentDetailModel> payments = const []}): _payments = payments,super._();
+  const _IncomeDetailModel({@JsonKey(name: 'source_name') this.sourceName = '', final  List<PaymentDetailModel> payments = const []}): _payments = payments,super._();
   factory _IncomeDetailModel.fromJson(Map<String, dynamic> json) => _$IncomeDetailModelFromJson(json);
 
-@override@JsonKey(name: 'customer_name') final  String customerName;
+@override@JsonKey(name: 'source_name') final  String sourceName;
  final  List<PaymentDetailModel> _payments;
 @override@JsonKey() List<PaymentDetailModel> get payments {
   if (_payments is EqualUnmodifiableListView) return _payments;
@@ -235,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IncomeDetailModel&&(identical(other.customerName, customerName) || other.customerName == customerName)&&const DeepCollectionEquality().equals(other._payments, _payments));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IncomeDetailModel&&(identical(other.sourceName, sourceName) || other.sourceName == sourceName)&&const DeepCollectionEquality().equals(other._payments, _payments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,customerName,const DeepCollectionEquality().hash(_payments));
+int get hashCode => Object.hash(runtimeType,sourceName,const DeepCollectionEquality().hash(_payments));
 
 @override
 String toString() {
-  return 'IncomeDetailModel(customerName: $customerName, payments: $payments)';
+  return 'IncomeDetailModel(sourceName: $sourceName, payments: $payments)';
 }
 
 
@@ -255,7 +255,7 @@ abstract mixin class _$IncomeDetailModelCopyWith<$Res> implements $IncomeDetailM
   factory _$IncomeDetailModelCopyWith(_IncomeDetailModel value, $Res Function(_IncomeDetailModel) _then) = __$IncomeDetailModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'customer_name') String customerName, List<PaymentDetailModel> payments
+@JsonKey(name: 'source_name') String sourceName, List<PaymentDetailModel> payments
 });
 
 
@@ -272,9 +272,9 @@ class __$IncomeDetailModelCopyWithImpl<$Res>
 
 /// Create a copy of IncomeDetailModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? customerName = null,Object? payments = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? sourceName = null,Object? payments = null,}) {
   return _then(_IncomeDetailModel(
-customerName: null == customerName ? _self.customerName : customerName // ignore: cast_nullable_to_non_nullable
+sourceName: null == sourceName ? _self.sourceName : sourceName // ignore: cast_nullable_to_non_nullable
 as String,payments: null == payments ? _self._payments : payments // ignore: cast_nullable_to_non_nullable
 as List<PaymentDetailModel>,
   ));

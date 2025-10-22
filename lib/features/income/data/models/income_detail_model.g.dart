@@ -8,7 +8,7 @@ part of 'income_detail_model.dart';
 
 _IncomeDetailModel _$IncomeDetailModelFromJson(Map<String, dynamic> json) =>
     _IncomeDetailModel(
-      customerName: json['customer_name'] as String? ?? '',
+      sourceName: json['source_name'] as String? ?? '',
       payments:
           (json['payments'] as List<dynamic>?)
               ?.map(
@@ -20,7 +20,7 @@ _IncomeDetailModel _$IncomeDetailModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$IncomeDetailModelToJson(_IncomeDetailModel instance) =>
     <String, dynamic>{
-      'customer_name': instance.customerName,
+      'source_name': instance.sourceName,
       'payments': instance.payments,
     };
 

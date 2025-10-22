@@ -7,7 +7,7 @@ part 'income_detail_model.g.dart';
 @freezed
 class IncomeDetailModel with _$IncomeDetailModel {
   const factory IncomeDetailModel({
-    @JsonKey(name: 'customer_name') @Default('') String customerName,
+    @JsonKey(name: 'source_name') @Default('') String sourceName,
     @Default([]) List<PaymentDetailModel> payments,
   }) = _IncomeDetailModel;
 
@@ -27,7 +27,7 @@ class IncomeDetailModel with _$IncomeDetailModel {
     }
     
     return IncomeDetailEntity(
-      userName: customerName,
+      userName: sourceName,
       contracts: payments.map((payment) => payment.toEntity()).toList(),
       totalAmount: totalAmount,
       totalPaid: totalPaid,
@@ -35,8 +35,8 @@ class IncomeDetailModel with _$IncomeDetailModel {
   }
 
   @override
-  // TODO: implement customerName
-  String get customerName => throw UnimplementedError();
+  // TODO: implement sourceName
+  String get sourceName => throw UnimplementedError();
 
   @override
   // TODO: implement payments
