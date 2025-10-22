@@ -821,22 +821,12 @@ class _ModalContainerState extends State<ModalContainer> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Customer Name
-                                  Text(
-                                    incomeDetail.userName,
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.cxBlack,
-                                    ),
-                                  ),
-                                  SizedBox(height: 2.h),
                                   // Product Name in Cyan
                                   Text(
                                     contract.productName,
                                     style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
                                       color: Color(0xFF00BCD4), // Cyan color
                                     ),
                                   ),
@@ -864,7 +854,7 @@ class _ModalContainerState extends State<ModalContainer> {
                                     ],
                                   ),
                                   if (contract.dueDate != null) ...[
-                                    SizedBox(height: 2.h),
+                                    SizedBox(height: 4.h),
                                     Text(
                                       'Berilish sanasi: ${contract.dueDate}',
                                       style: TextStyle(
@@ -978,13 +968,12 @@ class _ModalContainerState extends State<ModalContainer> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: Implement accept action
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.cxBlack,
                             padding: EdgeInsets.symmetric(vertical: 16.h),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(30.r),
                             ),
                           ),
                           child: Text(
