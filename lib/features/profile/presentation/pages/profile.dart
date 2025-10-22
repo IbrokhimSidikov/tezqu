@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../auth/data/models/user_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -15,6 +17,39 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  UserModel? _currentUser;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userJson = prefs.getString('CACHED_USER');
+      
+      if (userJson != null) {
+        final userData = json.decode(userJson) as Map<String, dynamic>;
+        setState(() {
+          _currentUser = UserModel.fromJson(userData);
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   Future<void> _handleLogout() async {
     try {
       // Get SharedPreferences instance
@@ -142,19 +177,92 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _buildProfileHeader() {
+    if (_isLoading) {
+      return Row(
+        children: [
+          CircleAvatar(
+            radius: 35.r,
+            backgroundColor: AppColors.cxF5F7F9,
+            child: CircularProgressIndicator(),
+          ),
+          SizedBox(width: 16.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 150.w,
+                height: 20.h,
+                color: AppColors.cxF5F7F9,
+              ),
+              SizedBox(height: 8.h),
+              Container(
+                width: 100.w,
+                height: 16.h,
+                color: AppColors.cxF5F7F9,
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    final firstName = _currentUser?.firstName ?? '';
+    final lastName = _currentUser?.lastName ?? '';
+    final fullName = '$firstName $lastName'.trim();
+    final displayName = fullName.isNotEmpty ? fullName : 'Foydalanuvchi';
+    
+    // Map role to Uzbek text
+    String getRoleText(String? role) {
+      switch (role?.toLowerCase()) {
+        case 'customer':
+          return 'Foydalanuvchi';
+        case 'admin':
+          return 'Administrator';
+        case 'manager':
+          return 'Menejer';
+        default:
+          return 'Foydalanuvchi';
+      }
+    }
+    
+    final roleText = getRoleText(_currentUser?.role);
+
     return Row(
       children: [
-        CircleAvatar(
-          radius: 35.r,
-          backgroundImage: AssetImage(AppImages.ava1),
-          backgroundColor: AppColors.cxF5F7F9,
+        Container(
+          width: 70.r,
+          height: 70.r,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFD4AF37), // Gold
+                Color(0xFFFFD700), // Bright gold
+                Color(0xFFFFA500), // Orange gold
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFD4AF37).withOpacity(0.3),
+                blurRadius: 12,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Icon(
+            Icons.person,
+            size: 40.sp,
+            color: Colors.white,
+          ),
         ),
         SizedBox(width: 16.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Ibrokhim Siddikov',
+              displayName,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -162,7 +270,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Text(
-              'Foydalanuvchi',
+              roleText,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
