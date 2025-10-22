@@ -38,6 +38,15 @@ import '../../features/home/domain/repositories/dashboard_repository.dart'
 import '../../features/home/domain/usecases/get_dashboard_usecase.dart'
     as _i814;
 import '../../features/home/presentation/cubit/dashboard_cubit.dart' as _i989;
+import '../../features/income/data/datasources/income_remote_data_source.dart'
+    as _i610;
+import '../../features/income/data/repositories/income_repository_impl.dart'
+    as _i324;
+import '../../features/income/domain/repositories/income_repository.dart'
+    as _i260;
+import '../../features/income/domain/usecases/get_income_sources_usecase.dart'
+    as _i263;
+import '../../features/income/presentation/cubit/income_cubit.dart' as _i1006;
 import '../../features/onboard/presentation/cubit/splash_screen_cubit.dart'
     as _i243;
 import '../../features/payments/data/datasources/payment_remote_data_source.dart'
@@ -86,6 +95,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i49.PaymentRemoteDataSource>(
       () => _i49.PaymentRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i610.IncomeRemoteDataSource>(
+      () => _i610.IncomeRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i852.AuthLocalDataSource>(
       () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
@@ -120,6 +132,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i661.ProductCubit>(
       () => _i661.ProductCubit(gh<_i963.ProductRepository>()),
     );
+    gh.lazySingleton<_i260.IncomeRepository>(
+      () => _i324.IncomeRepositoryImpl(gh<_i610.IncomeRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
+      () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
+    );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
         remoteDataSource: gh<_i107.AuthRemoteDataSource>(),
@@ -147,6 +165,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i1006.IncomeCubit>(
+      () => _i1006.IncomeCubit(gh<_i263.GetIncomeSourcesUseCase>()),
     );
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),

@@ -9,7 +9,9 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 
 class DetailsPayment extends StatefulWidget {
-  const DetailsPayment({super.key});
+  final int contractId;
+  
+  const DetailsPayment({super.key, required this.contractId});
 
   @override
   State<DetailsPayment> createState() => _DetailsPaymentState();
@@ -33,11 +35,13 @@ class _DetailsPaymentState extends State<DetailsPayment> {
               iconSize: 29.sp,
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
         ),
-        title: Text('Title', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+        title: Text('To\'lov tafsilotlari', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
       ),
       body: Padding(
           padding: EdgeInsets.only(
@@ -48,6 +52,16 @@ class _DetailsPaymentState extends State<DetailsPayment> {
             children: [
               AppBanner(image: AppImages.reklama),
               SizedBox(height: 22.h),
+              // Display contract ID for debugging
+              Text(
+                'Shartnoma ID: ${widget.contractId}',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.cxAFB1B1,
+                ),
+              ),
+              SizedBox(height: 12.h),
               Row(
                 children: [
                   Text(

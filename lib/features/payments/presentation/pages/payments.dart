@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../domain/entities/payment_entity.dart';
 import '../cubit/payment_cubit.dart';
 import '../cubit/payment_state.dart';
@@ -172,6 +174,7 @@ class PaymentsView extends StatelessWidget {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: _buildPaymentItem(
+                          context,
                           payment,
                           isPaid: false,
                         ),
@@ -209,6 +212,7 @@ class PaymentsView extends StatelessWidget {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: _buildPaymentItem(
+                          context,
                           payment,
                           isPaid: true,
                         ),
@@ -223,7 +227,7 @@ class PaymentsView extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentItem(PaymentEntity payment, {required bool isPaid}) {
+  Widget _buildPaymentItem(BuildContext context, PaymentEntity payment, {required bool isPaid}) {
     // Determine icon based on product category
     IconData icon = Icons.shopping_bag;
     if (payment.productCategory != null) {
@@ -246,7 +250,10 @@ class PaymentsView extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // TODO: Navigate to payment details
+        context.pushNamed(
+          'detailsPayment',
+          queryParameters: {'contractId': payment.contractId.toString()},
+        );
       },
       borderRadius: BorderRadius.circular(8.r),
       child: Container(

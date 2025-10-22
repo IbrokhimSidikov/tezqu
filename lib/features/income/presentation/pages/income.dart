@@ -1,211 +1,137 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/di.dart';
+import '../../domain/entities/income_entity.dart';
+import '../cubit/income_cubit.dart';
+import '../cubit/income_state.dart';
 
-class Income extends StatefulWidget {
+class Income extends StatelessWidget {
   const Income({super.key});
 
   @override
-  State<Income> createState() => _IncomeState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<IncomeCubit>()..getIncomeSources(
+        year: DateTime.now().year,
+        month: DateTime.now().month,
+      ),
+      child: const IncomeView(),
+    );
+  }
 }
 
-class _IncomeState extends State<Income> {
+class IncomeView extends StatefulWidget {
+  const IncomeView({super.key});
+
+  @override
+  State<IncomeView> createState() => _IncomeViewState();
+}
+
+class _IncomeViewState extends State<IncomeView> {
   int selectedTabIndex = 0;
 
-  final List<Map<String, dynamic>> kollektorData = [
-    {
-      'name': 'Oybek Karimov',
-      'price': '\$31,350',
-      'status': 'To\'liq',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Jamoliddin Qobilov',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Nuriddin Haydarov',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-  ];
-  final List<Map<String, dynamic>> mijozData = [
-    {
-      'name': 'Muhriddin Xoliqov',
-      'price': '\$31,350',
-      'status': 'To\'liq',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Sherali Jo\'rayev',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Jumaboy To\'raboyev',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-  ];
-  final List<Map<String, dynamic>> investorData = [
-    {
-      'name': 'Shamsiddin Abdusattorov',
-      'price': '\$31,350',
-      'status': 'To\'liq',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Sherali Jo\'rayev',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-    {
-      'name': 'Jumaboy To\'raboyev',
-      'price': '\$31,350',
-      'status': 'Jarayonda',
-      'image': 'assets/images/car.svg'
-    },
-  ];
-
-  List<Map<String, dynamic>> getIncomeData() {
+  List<IncomeSourceEntity> getIncomeData(IncomeSourcesEntity incomeSources) {
     switch (selectedTabIndex) {
       case 0:
-        return kollektorData;
+        return incomeSources.collectors;
       case 1:
-        return mijozData;
+        return incomeSources.clients;
       case 2:
-        return investorData;
+        return incomeSources.investors;
       default:
         return [];
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.cxWhite,
-      appBar: AppBar(
-        backgroundColor: AppColors.cxWhite,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 10.w),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xFFF5F7F9),
-            ),
-            child: IconButton(
-              iconSize: 29.sp,
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-        ),
-        title: Text('Kirimlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.cxF5F7F9,
-              ),
-              child: IconButton(
-                iconSize: 29.sp,
-                icon: Icon(Icons.search),
-                color: Colors.black,
-                onPressed: () {},
-              ),
-            ),
-          ),
-        ],
+  Widget _buildIncomeContent(BuildContext context, IncomeSourcesEntity incomeSources) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 16.0, bottom: 16.0, left: 16.0, right: 20.0
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-            top: 16.0, bottom: 16.0, left: 16.0, right: 20.0
-        ),
-        child: Column(
-          children: [
-            Row(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Kirim manbalari', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+              Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA,
+              ),
+            ],
+          ),
+          SizedBox(height: 18.h,),
+          Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Kirim manbalari', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
-                Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA,
+                CupertinoButton(
+                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
+                  borderRadius: BorderRadius.circular(30.r),
+                  color:AppColors.cxF5F7F9,
+                  child: Text('Kollektor',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 0 ? AppColors.cxBlack : AppColors.cxDADADA),
+                  ),
+                  onPressed: (){
+                    setState(() {
+                      selectedTabIndex = 0;
+                    });
+                  },
                 ),
-              ],
-            ),
-            SizedBox(height: 18.h,),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                    borderRadius: BorderRadius.circular(30.r),
-                    color:AppColors.cxF5F7F9,
-                    child: Text('Kollektor',
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                          color: selectedTabIndex == 0 ? AppColors.cxBlack : AppColors.cxDADADA),
-                    ),
-                    onPressed: (){
-                      setState(() {
-                        selectedTabIndex = 0;
-                      });
-                    },
+                CupertinoButton(
+                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
+                  borderRadius: BorderRadius.circular(30.r),
+                  color:AppColors.cxF5F7F9,
+                  child: Text('Mijoz',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 1 ? AppColors.cxBlack : AppColors.cxDADADA),
                   ),
-                  CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                    borderRadius: BorderRadius.circular(30.r),
-                    color:AppColors.cxF5F7F9,
-                    child: Text('Mijoz',
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                          color: selectedTabIndex == 1 ? AppColors.cxBlack : AppColors.cxDADADA),
-                    ),
-                    onPressed: (){
-                      setState(() {
-                        selectedTabIndex = 1;
-                      });
-                    },
+                  onPressed: (){
+                    setState(() {
+                      selectedTabIndex = 1;
+                    });
+                  },
+                ),
+                CupertinoButton(
+                  padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
+                  borderRadius: BorderRadius.circular(30.r),
+                  color: AppColors.cxF5F7F9,
+                  child: Text('Investor',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: selectedTabIndex == 2 ? AppColors.cxBlack : AppColors.cxDADADA),
                   ),
-                  CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
-                    borderRadius: BorderRadius.circular(30.r),
-                    color: AppColors.cxF5F7F9,
-                    child: Text('Investor',
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                          color: selectedTabIndex == 2 ? AppColors.cxBlack : AppColors.cxDADADA),
-                    ),
-                    onPressed: (){
-                      setState(() {
-                        selectedTabIndex = 2;
-                      });
-                    },
-                  ),
-                ]
-            ),
-            SizedBox(height: 20.h),
-            Expanded(
+                  onPressed: (){
+                    setState(() {
+                      selectedTabIndex = 2;
+                    });
+                  },
+                ),
+              ]
+          ),
+          SizedBox(height: 20.h),
+          Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<IncomeCubit>().getIncomeSources(
+                    year: DateTime.now().year,
+                    month: DateTime.now().month,
+                  );
+                },
                 child: ListView.builder(
-                  itemCount: getIncomeData().length,
+                  itemCount: getIncomeData(incomeSources).length,
                   itemBuilder: (context, index) {
-                    final product = getIncomeData()[index];
+                    final source = getIncomeData(incomeSources)[index];
                     return GestureDetector(
                       onTap: (){
                         showModalBottomSheet(
@@ -253,7 +179,7 @@ class _IncomeState extends State<Income> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    product['name'],
+                                    source.name,
                                     style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w500,
@@ -267,7 +193,7 @@ class _IncomeState extends State<Income> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  product['price'],
+                                  '\$${source.amount.toStringAsFixed(0)}',
                                   style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w600,
@@ -278,15 +204,15 @@ class _IncomeState extends State<Income> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
                                   decoration: BoxDecoration(
-                                    color: product['status'] == 'To\'liq'
+                                    color: source.status == 'To\'liq'
                                         ? Colors.green
-                                        : product['status'] == 'Olindi'
+                                        : source.status == 'Olindi'
                                         ? Colors.black
                                         : Colors.red,
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
                                   child: Text(
-                                    product['status'],
+                                    source.status,
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColors.cxWhite,
@@ -302,9 +228,224 @@ class _IncomeState extends State<Income> {
                     );
                   },
                 ),
+              ),
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Padding(
+      padding: const EdgeInsets.only(
+          top: 16.0, bottom: 16.0, left: 16.0, right: 20.0
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title shimmer
+          Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              width: 200.w,
+              height: 24.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+          ),
+          SizedBox(height: 18.h),
+          // Tabs shimmer
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(3, (index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  width: 100.w,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                ),
+              );
+            }),
+          ),
+          SizedBox(height: 20.h),
+          // List items shimmer
+          Expanded(
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: _buildShimmerItem(),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShimmerItem() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        padding: EdgeInsets.only(right: 16.w, top: 16.h, bottom: 16.h, left: 10.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 60.w,
+              height: 60.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.r),
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 60.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Container(
+                  width: 50.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+              ],
             ),
           ],
-        )
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.cxWhite,
+      appBar: AppBar(
+        backgroundColor: AppColors.cxWhite,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFF5F7F9),
+            ),
+            child: IconButton(
+              iconSize: 29.sp,
+              icon: Icon(Icons.arrow_back),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
+        title: Text('Kirimlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.cxF5F7F9,
+              ),
+              child: IconButton(
+                iconSize: 29.sp,
+                icon: Icon(Icons.search),
+                color: Colors.black,
+                onPressed: () {},
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: BlocBuilder<IncomeCubit, IncomeState>(
+        builder: (context, state) {
+          return state.when(
+            initial: () => _buildShimmerLoading(),
+            loading: () => _buildShimmerLoading(),
+            loaded: (incomeSources) => _buildIncomeContent(context, incomeSources),
+            error: (message) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Xatolik yuz berdi',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: Text(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<IncomeCubit>().getIncomeSources(
+                        year: DateTime.now().year,
+                        month: DateTime.now().month,
+                      );
+                    },
+                    child: const Text('Qayta urinish'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -344,8 +485,8 @@ class ModalContainer extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
+                itemCount: 0,
                 itemBuilder: (context, index) {
-                  final product = [];
                   return Container(
                     margin: EdgeInsets.only(bottom: 16.h),
                     padding: EdgeInsets.only(right: 16.w, top: 16.h, bottom: 16.h),

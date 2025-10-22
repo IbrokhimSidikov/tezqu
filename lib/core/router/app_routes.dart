@@ -103,7 +103,10 @@ class AppRoutes {
       GoRoute(
         path: detailsPayment,
         name: 'detailsPayment',
-        builder: (context, state) => const DetailsPayment(),
+        builder: (context, state) {
+          final contractId = state.uri.queryParameters['contractId'] ?? '0';
+          return DetailsPayment(contractId: int.parse(contractId));
+        },
       ),
       GoRoute(
         path: warehouse,
