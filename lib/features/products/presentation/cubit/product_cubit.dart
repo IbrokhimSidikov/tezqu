@@ -4,20 +4,39 @@ import 'package:tezqu/features/products/data/models/category_model.dart';
 import 'package:tezqu/features/products/domain/repositories/product_repository.dart';
 import 'package:tezqu/features/products/presentation/cubit/product_state.dart';
 import '../../../../core/services/wishlist_service.dart';
+import '../../../../core/services/category_cache_service.dart';
 
 @injectable
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _repository;
   final WishlistService _wishlistService;
+  final CategoryCacheService _categoryCacheService;
   List<CategoryModel> _categories = [];
   String? _currentCategoryId;
 
-  ProductCubit(this._repository, this._wishlistService) : super(const ProductInitial());
+  ProductCubit(
+    this._repository, 
+    this._wishlistService,
+    this._categoryCacheService,
+  ) : super(const ProductInitial());
 
   Future<void> initialize() async {
     emit(const ProductLoading());
     
-    // First, fetch categories
+    // Try to get cached categories first
+    final cachedCategories = _categoryCacheService.getCachedCategories();
+    
+    if (cachedCategories != null && cachedCategories.isNotEmpty) {
+      // Use cached categories
+      _categories = cachedCategories;
+      
+      // Load products for the first category
+      _currentCategoryId = cachedCategories[0].id;
+      await loadProductsByCategory(cachedCategories[0].id);
+      return;
+    }
+    
+    // No cache available, fetch from API
     final categoriesResult = await _repository.getCategories();
     
     await categoriesResult.fold(
@@ -26,6 +45,9 @@ class ProductCubit extends Cubit<ProductState> {
       },
       (categories) async {
         _categories = categories;
+        
+        // Cache the fetched categories
+        _categoryCacheService.cacheCategories(categories);
         
         // If we have categories, load products for the first category
         if (categories.isNotEmpty) {
@@ -82,5 +104,11 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       // Silently fail or handle error as needed
     }
+  }
+
+  /// Force refresh categories from API (clears cache)
+  Future<void> refreshCategories() async {
+    _categoryCacheService.clearCache();
+    await initialize();
   }
 }

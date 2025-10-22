@@ -71,6 +71,7 @@ import '../../features/products/presentation/cubit/product_cubit.dart' as _i661;
 import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
+import '../services/category_cache_service.dart' as _i1013;
 import '../services/storage_service.dart' as _i306;
 import '../services/wishlist_service.dart' as _i203;
 import 'register_module.dart' as _i291;
@@ -89,6 +90,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i895.Connectivity>(() => registerModule.connectivity);
+    gh.lazySingleton<_i1013.CategoryCacheService>(
+      () => _i1013.CategoryCacheService(),
+    );
     gh.lazySingleton<_i306.StorageService>(
       () => _i306.StorageServiceImpl(gh<_i460.SharedPreferences>()),
     );
@@ -138,14 +142,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i782.PaymentCubit>(
       () => _i782.PaymentCubit(gh<_i645.GetPaymentsUseCase>()),
     );
+    gh.factory<_i968.WishlistCubit>(
+      () => _i968.WishlistCubit(gh<_i203.WishlistService>()),
+    );
     gh.factory<_i661.ProductCubit>(
       () => _i661.ProductCubit(
         gh<_i963.ProductRepository>(),
         gh<_i203.WishlistService>(),
+        gh<_i1013.CategoryCacheService>(),
       ),
-    );
-    gh.factory<_i968.WishlistCubit>(
-      () => _i968.WishlistCubit(gh<_i203.WishlistService>()),
     );
     gh.lazySingleton<_i260.IncomeRepository>(
       () => _i324.IncomeRepositoryImpl(gh<_i610.IncomeRemoteDataSource>()),
