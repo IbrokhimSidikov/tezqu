@@ -44,6 +44,8 @@ import '../../features/income/data/repositories/income_repository_impl.dart'
     as _i324;
 import '../../features/income/domain/repositories/income_repository.dart'
     as _i260;
+import '../../features/income/domain/usecases/add_to_wishlist_usecase.dart'
+    as _i1007;
 import '../../features/income/domain/usecases/get_income_detail_usecase.dart'
     as _i1004;
 import '../../features/income/domain/usecases/get_income_sources_usecase.dart'
@@ -69,6 +71,7 @@ import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
 import '../services/storage_service.dart' as _i306;
+import '../services/wishlist_service.dart' as _i203;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -96,6 +99,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i49.PaymentRemoteDataSource>(
       () => _i49.PaymentRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
+    gh.lazySingleton<_i203.WishlistService>(
+      () => _i203.WishlistService(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i610.IncomeRemoteDataSource>(
       () => _i610.IncomeRemoteDataSourceImpl(gh<_i667.DioClient>()),
@@ -132,7 +138,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i782.PaymentCubit(gh<_i645.GetPaymentsUseCase>()),
     );
     gh.factory<_i661.ProductCubit>(
-      () => _i661.ProductCubit(gh<_i963.ProductRepository>()),
+      () => _i661.ProductCubit(
+        gh<_i963.ProductRepository>(),
+        gh<_i203.WishlistService>(),
+      ),
     );
     gh.lazySingleton<_i260.IncomeRepository>(
       () => _i324.IncomeRepositoryImpl(gh<_i610.IncomeRemoteDataSource>()),
@@ -143,6 +152,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1004.GetIncomeDetailUseCase>(
       () => _i1004.GetIncomeDetailUseCase(gh<_i260.IncomeRepository>()),
     );
+    gh.lazySingleton<_i1007.AddToWishlistUseCase>(
+      () => _i1007.AddToWishlistUseCase(gh<_i260.IncomeRepository>()),
+    );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
         remoteDataSource: gh<_i107.AuthRemoteDataSource>(),
@@ -150,14 +162,15 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
     );
-    gh.factory<_i814.GetDashboardUseCase>(
-      () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
-    );
     gh.factory<_i1006.IncomeCubit>(
       () => _i1006.IncomeCubit(
         gh<_i263.GetIncomeSourcesUseCase>(),
         gh<_i1004.GetIncomeDetailUseCase>(),
+        gh<_i1007.AddToWishlistUseCase>(),
       ),
+    );
+    gh.factory<_i814.GetDashboardUseCase>(
+      () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
     );
     gh.factory<_i941.RegisterUseCase>(
       () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),

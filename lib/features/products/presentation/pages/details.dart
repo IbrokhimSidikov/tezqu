@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +10,8 @@ import 'package:tezqu/core/shared/button_widget_iconless.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/button_widget.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/services/wishlist_service.dart';
 import '../../data/models/product_model.dart';
 
 class Details extends StatefulWidget {
@@ -25,10 +25,13 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   ProductModel? get product => widget.product as ProductModel?;
+  bool _isFavorite = false;
+  bool _isLoading = true;
   
   @override
   void initState() {
     super.initState();
+    _checkWishlistStatus();
     // Log product data when page loads
     print('=== DETAILS PAGE LOADED ===');
     print('Product received: ${widget.product}');
@@ -45,6 +48,26 @@ class _DetailsState extends State<Details> {
       print('ERROR: Product is NULL!');
     }
     print('========================');
+  }
+
+  Future<void> _checkWishlistStatus() async {
+    if (product != null) {
+      try {
+        final isInWishlist = await getIt<WishlistService>().isInWishlist(product!.id);
+        if (mounted) {
+          setState(() {
+            _isFavorite = isInWishlist;
+            _isLoading = false;
+          });
+        }
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
   }
   
   @override
@@ -91,8 +114,43 @@ class _DetailsState extends State<Details> {
                       ],
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.favorite_border, color: Colors.black),
-                      onPressed: () {},
+                      icon: Icon(
+                        _isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.red,
+                      ),
+                      onPressed: () async {
+                        if (product != null) {
+                          try {
+                            if (_isFavorite) {
+                              // Remove from wishlist
+                              await getIt<WishlistService>().removeFromWishlist(product!.id);
+                              if (mounted) {
+                                setState(() {
+                                  _isFavorite = false;
+                                });
+                              }
+                            } else {
+                              // Add to wishlist
+                              await getIt<WishlistService>().addToWishlist(product!.id);
+                              if (mounted) {
+                                setState(() {
+                                  _isFavorite = true;
+                                });
+                              }
+                            }
+                          } catch (e) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Xatolik yuz berdi'),
+                                  duration: Duration(seconds: 2),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      },
                     ),
                   ),
                 ],

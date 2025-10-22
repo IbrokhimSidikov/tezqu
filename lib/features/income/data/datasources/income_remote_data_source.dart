@@ -15,6 +15,10 @@ abstract class IncomeRemoteDataSource {
     required int year,
     required int month,
   });
+
+  Future<void> addToWishlist({
+    required String productId,
+  });
 }
 
 @LazySingleton(as: IncomeRemoteDataSource)
@@ -53,5 +57,17 @@ class IncomeRemoteDataSourceImpl implements IncomeRemoteDataSource {
       },
     );
     return IncomeDetailModel.fromJson(response.data);
+  }
+
+  @override
+  Future<void> addToWishlist({
+    required String productId,
+  }) async {
+    await _dioClient.post(
+      '/wishlist',
+      data: {
+        'product_id': productId,
+      },
+    );
   }
 }

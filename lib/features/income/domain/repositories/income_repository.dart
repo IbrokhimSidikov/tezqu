@@ -15,4 +15,8 @@ abstract class IncomeRepository {
     required int year,
     required int month,
   });
+
+  Future<Either<Failure, void>> addToWishlist({
+    required String productId,
+  });
 }

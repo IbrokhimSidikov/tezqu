@@ -541,6 +541,161 @@ class _ModalContainerState extends State<ModalContainer> {
     return status;
   }
 
+  void _showPaymentDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
+              color: AppColors.cxWhite,
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with title and close button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'To\'lov jarayoni',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.cxBlack,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close, size: 24.sp),
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.h),
+                
+                // Naqd field
+                _buildInputField('Naqd', '\$'),
+                SizedBox(height: 16.h),
+                
+                // Karta field
+                _buildInputField('Karta', ''),
+                SizedBox(height: 16.h),
+                
+                // O'tkazma field
+                _buildInputField('O\'tkazma', ''),
+                SizedBox(height: 24.h),
+                
+                // Tolovni kechiktirish dropdown
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.cxF5F7F9,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Tolovni kechiktirish',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: AppColors.cxBlack,
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24.sp,
+                        color: AppColors.cxBlack,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                
+                // Tasdiqlash button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // TODO: Implement payment confirmation
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF43C19F),
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Tasdiqlash',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.cxWhite,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInputField(String label, String prefix) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: AppColors.cxF5F7F9,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.cxBlack,
+            ),
+          ),
+          SizedBox(width: 16.w),
+          if (prefix.isNotEmpty)
+            Text(
+              prefix,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: AppColors.cxBlack,
+              ),
+            ),
+          Expanded(
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: '',
+                contentPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+              ),
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: AppColors.cxBlack,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildModalShimmer() {
     return Column(
       children: [
@@ -802,7 +957,6 @@ class _ModalContainerState extends State<ModalContainer> {
                         ),
                         child: Row(
                           children: [
-                            // Product Image Circle
                             Container(
                               width: 55.w,
                               height: 55.h,
@@ -821,7 +975,6 @@ class _ModalContainerState extends State<ModalContainer> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Product Name in Cyan
                                   Text(
                                     contract.productName,
                                     style: TextStyle(
@@ -831,7 +984,6 @@ class _ModalContainerState extends State<ModalContainer> {
                                     ),
                                   ),
                                   SizedBox(height: 4.h),
-                                  // Card and Naqd info
                                   Row(
                                     children: [
                                       Text(
@@ -968,6 +1120,7 @@ class _ModalContainerState extends State<ModalContainer> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
+                            _showPaymentDialog(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.cxBlack,

@@ -3,14 +3,16 @@ import 'package:injectable/injectable.dart';
 import 'package:tezqu/features/products/data/models/category_model.dart';
 import 'package:tezqu/features/products/domain/repositories/product_repository.dart';
 import 'package:tezqu/features/products/presentation/cubit/product_state.dart';
+import '../../../../core/services/wishlist_service.dart';
 
 @injectable
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _repository;
+  final WishlistService _wishlistService;
   List<CategoryModel> _categories = [];
   String? _currentCategoryId;
 
-  ProductCubit(this._repository) : super(const ProductInitial());
+  ProductCubit(this._repository, this._wishlistService) : super(const ProductInitial());
 
   Future<void> initialize() async {
     emit(const ProductLoading());
@@ -72,5 +74,13 @@ class ProductCubit extends Cubit<ProductState> {
       (failure) => emit(ProductError(failure.message, categories: _categories)),
       (products) => emit(ProductLoaded(categories: _categories, products: products)),
     );
+  }
+
+  Future<void> addToWishlist(String productId) async {
+    try {
+      await _wishlistService.addToWishlist(productId);
+    } catch (e) {
+      // Silently fail or handle error as needed
+    }
   }
 }
