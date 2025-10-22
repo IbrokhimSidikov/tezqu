@@ -55,14 +55,17 @@ extension IncomeStatePatterns on IncomeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,TResult Function( _DetailLoading value)?  detailLoading,TResult Function( _DetailLoaded value)?  detailLoaded,TResult Function( _DetailError value)?  detailError,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _DetailLoading() when detailLoading != null:
+return detailLoading(_that);case _DetailLoaded() when detailLoaded != null:
+return detailLoaded(_that);case _DetailError() when detailError != null:
+return detailError(_that);case _:
   return orElse();
 
 }
@@ -80,14 +83,17 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,required TResult Function( _DetailLoading value)  detailLoading,required TResult Function( _DetailLoaded value)  detailLoaded,required TResult Function( _DetailError value)  detailError,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case _Loaded():
 return loaded(_that);case _Error():
-return error(_that);case _:
+return error(_that);case _DetailLoading():
+return detailLoading(_that);case _DetailLoaded():
+return detailLoaded(_that);case _DetailError():
+return detailError(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +110,17 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,TResult? Function( _DetailLoading value)?  detailLoading,TResult? Function( _DetailLoaded value)?  detailLoaded,TResult? Function( _DetailError value)?  detailError,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _DetailLoading() when detailLoading != null:
+return detailLoading(_that);case _DetailLoaded() when detailLoaded != null:
+return detailLoaded(_that);case _DetailError() when detailError != null:
+return detailError(_that);case _:
   return null;
 
 }
@@ -128,13 +137,16 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( IncomeSourcesEntity incomeSources)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( IncomeSourcesEntity incomeSources)?  loaded,TResult Function( String message)?  error,TResult Function()?  detailLoading,TResult Function( IncomeDetailEntity incomeDetail)?  detailLoaded,TResult Function( String message)?  detailError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.incomeSources);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case _DetailLoading() when detailLoading != null:
+return detailLoading();case _DetailLoaded() when detailLoaded != null:
+return detailLoaded(_that.incomeDetail);case _DetailError() when detailError != null:
+return detailError(_that.message);case _:
   return orElse();
 
 }
@@ -152,13 +164,16 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( IncomeSourcesEntity incomeSources)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( IncomeSourcesEntity incomeSources)  loaded,required TResult Function( String message)  error,required TResult Function()  detailLoading,required TResult Function( IncomeDetailEntity incomeDetail)  detailLoaded,required TResult Function( String message)  detailError,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Loaded():
 return loaded(_that.incomeSources);case _Error():
-return error(_that.message);case _:
+return error(_that.message);case _DetailLoading():
+return detailLoading();case _DetailLoaded():
+return detailLoaded(_that.incomeDetail);case _DetailError():
+return detailError(_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +190,16 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( IncomeSourcesEntity incomeSources)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( IncomeSourcesEntity incomeSources)?  loaded,TResult? Function( String message)?  error,TResult? Function()?  detailLoading,TResult? Function( IncomeDetailEntity incomeDetail)?  detailLoaded,TResult? Function( String message)?  detailError,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.incomeSources);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case _DetailLoading() when detailLoading != null:
+return detailLoading();case _DetailLoaded() when detailLoaded != null:
+return detailLoaded(_that.incomeDetail);case _DetailError() when detailError != null:
+return detailError(_that.message);case _:
   return null;
 
 }
@@ -377,6 +395,170 @@ class __$ErrorCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
   return _then(_Error(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _DetailLoading implements IncomeState {
+  const _DetailLoading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailLoading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'IncomeState.detailLoading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _DetailLoaded implements IncomeState {
+  const _DetailLoaded(this.incomeDetail);
+  
+
+ final  IncomeDetailEntity incomeDetail;
+
+/// Create a copy of IncomeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DetailLoadedCopyWith<_DetailLoaded> get copyWith => __$DetailLoadedCopyWithImpl<_DetailLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailLoaded&&(identical(other.incomeDetail, incomeDetail) || other.incomeDetail == incomeDetail));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,incomeDetail);
+
+@override
+String toString() {
+  return 'IncomeState.detailLoaded(incomeDetail: $incomeDetail)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DetailLoadedCopyWith<$Res> implements $IncomeStateCopyWith<$Res> {
+  factory _$DetailLoadedCopyWith(_DetailLoaded value, $Res Function(_DetailLoaded) _then) = __$DetailLoadedCopyWithImpl;
+@useResult
+$Res call({
+ IncomeDetailEntity incomeDetail
+});
+
+
+
+
+}
+/// @nodoc
+class __$DetailLoadedCopyWithImpl<$Res>
+    implements _$DetailLoadedCopyWith<$Res> {
+  __$DetailLoadedCopyWithImpl(this._self, this._then);
+
+  final _DetailLoaded _self;
+  final $Res Function(_DetailLoaded) _then;
+
+/// Create a copy of IncomeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? incomeDetail = null,}) {
+  return _then(_DetailLoaded(
+null == incomeDetail ? _self.incomeDetail : incomeDetail // ignore: cast_nullable_to_non_nullable
+as IncomeDetailEntity,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _DetailError implements IncomeState {
+  const _DetailError(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of IncomeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DetailErrorCopyWith<_DetailError> get copyWith => __$DetailErrorCopyWithImpl<_DetailError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DetailError&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'IncomeState.detailError(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DetailErrorCopyWith<$Res> implements $IncomeStateCopyWith<$Res> {
+  factory _$DetailErrorCopyWith(_DetailError value, $Res Function(_DetailError) _then) = __$DetailErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class __$DetailErrorCopyWithImpl<$Res>
+    implements _$DetailErrorCopyWith<$Res> {
+  __$DetailErrorCopyWithImpl(this._self, this._then);
+
+  final _DetailError _self;
+  final $Res Function(_DetailError) _then;
+
+/// Create a copy of IncomeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_DetailError(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));

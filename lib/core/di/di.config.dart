@@ -44,6 +44,8 @@ import '../../features/income/data/repositories/income_repository_impl.dart'
     as _i324;
 import '../../features/income/domain/repositories/income_repository.dart'
     as _i260;
+import '../../features/income/domain/usecases/get_income_detail_usecase.dart'
+    as _i1004;
 import '../../features/income/domain/usecases/get_income_sources_usecase.dart'
     as _i263;
 import '../../features/income/presentation/cubit/income_cubit.dart' as _i1006;
@@ -138,6 +140,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
       () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
     );
+    gh.lazySingleton<_i1004.GetIncomeDetailUseCase>(
+      () => _i1004.GetIncomeDetailUseCase(gh<_i260.IncomeRepository>()),
+    );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
         remoteDataSource: gh<_i107.AuthRemoteDataSource>(),
@@ -147,6 +152,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i814.GetDashboardUseCase>(
       () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
+    );
+    gh.factory<_i1006.IncomeCubit>(
+      () => _i1006.IncomeCubit(
+        gh<_i263.GetIncomeSourcesUseCase>(),
+        gh<_i1004.GetIncomeDetailUseCase>(),
+      ),
     );
     gh.factory<_i941.RegisterUseCase>(
       () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
@@ -165,9 +176,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.factory<_i1006.IncomeCubit>(
-      () => _i1006.IncomeCubit(gh<_i263.GetIncomeSourcesUseCase>()),
     );
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),

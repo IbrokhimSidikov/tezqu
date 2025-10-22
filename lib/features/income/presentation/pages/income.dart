@@ -134,10 +134,26 @@ class _IncomeViewState extends State<IncomeView> {
                     final source = getIncomeData(incomeSources)[index];
                     return GestureDetector(
                       onTap: (){
+                        // Determine source type based on selected tab
+                        String sourceType = selectedTabIndex == 0 
+                            ? 'collector' 
+                            : selectedTabIndex == 1 
+                                ? 'customer' 
+                                : 'investor';
+                        
                         showModalBottomSheet(
                             context: context,
-                            builder: (BuildContext context){
-                              return ModalContainer();
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (BuildContext modalContext){
+                              return BlocProvider(
+                                create: (context) => getIt<IncomeCubit>(),
+                                child: ModalContainer(
+                                  userId: source.id,
+                                  userName: source.name,
+                                  sourceType: sourceType,
+                                ),
+                              );
                             }
                         );
                       },
@@ -444,6 +460,9 @@ class _IncomeViewState extends State<IncomeView> {
                 ],
               ),
             ),
+            detailLoading: () => _buildShimmerLoading(),
+            detailLoaded: (detail) => _buildShimmerLoading(),
+            detailError: (message) => _buildShimmerLoading(),
           );
         },
       ),
@@ -451,134 +470,382 @@ class _IncomeViewState extends State<IncomeView> {
   }
 }
 
-class ModalContainer extends StatelessWidget {
+class ModalContainer extends StatefulWidget {
+  final String userId;
+  final String userName;
+  final String sourceType;
+
   const ModalContainer({
     super.key,
+    required this.userId,
+    required this.userName,
+    required this.sourceType,
   });
+
+  @override
+  State<ModalContainer> createState() => _ModalContainerState();
+}
+
+class _ModalContainerState extends State<ModalContainer> {
+  @override
+  void initState() {
+    super.initState();
+    // Use the modal's own cubit instance
+    Future.microtask(() {
+      if (mounted) {
+        context.read<IncomeCubit>().getIncomeDetail(
+          sourceType: widget.sourceType,
+          userId: widget.userId,
+          year: DateTime.now().year,
+          month: DateTime.now().month,
+        );
+      }
+    });
+  }
+
+  IconData _getIconForCategory(String category) {
+    final lowerCategory = category.toLowerCase();
+    if (lowerCategory.contains('car') || lowerCategory.contains('auto')) {
+      return Icons.directions_car;
+    } else if (lowerCategory.contains('phone') || lowerCategory.contains('mobile')) {
+      return Icons.phone_iphone;
+    } else if (lowerCategory.contains('laptop') || lowerCategory.contains('computer')) {
+      return Icons.laptop;
+    } else if (lowerCategory.contains('home') || lowerCategory.contains('house')) {
+      return Icons.home;
+    }
+    return Icons.shopping_bag;
+  }
+
+  Color _getStatusColor(String status) {
+    final lowerStatus = status.toLowerCase();
+    if (lowerStatus.contains('paid') || lowerStatus.contains('olindi')) {
+      return Colors.green;
+    } else if (lowerStatus.contains('pending') || lowerStatus.contains('kutilmoqda')) {
+      return Colors.orange;
+    } else if (lowerStatus.contains('overdue') || lowerStatus.contains('kechikkan') || lowerStatus.contains('berilmadi')) {
+      return Colors.red;
+    }
+    return Colors.grey;
+  }
+
+  String _getStatusText(String status) {
+    final lowerStatus = status.toLowerCase();
+    if (lowerStatus.contains('paid')) {
+      return 'Olindi';
+    } else if (lowerStatus.contains('pending')) {
+      return 'Qoldirildi';
+    } else if (lowerStatus.contains('overdue')) {
+      return 'Berilmadi';
+    }
+    return status;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.85,
       decoration: BoxDecoration(
         color: AppColors.cxWhite,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25.r),
-            topRight: Radius.circular(25.r),
+          topLeft: Radius.circular(25.r),
+          topRight: Radius.circular(25.r),
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-            top: 20.h, left: 38.w, right: 20.w
-        ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('User name', style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w500,
-                ),)
-              ]
+      child: BlocBuilder<IncomeCubit, IncomeState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            detailLoading: () => Center(
+              child: CircularProgressIndicator(),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 0,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
-                    padding: EdgeInsets.only(right: 16.w, top: 16.h, bottom: 16.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 6,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60.w,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.cxF5F7F9,
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: Icon(
-                            Icons.directions_car,
-                            size: 30.sp,
+            detailLoaded: (incomeDetail) => Column(
+              children: [
+                // Header
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Centered Title
+                      Center(
+                        child: Text(
+                          incomeDetail.userName,
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.cxBlack,
                           ),
                         ),
-                        SizedBox(width: 16.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.cxBlack,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppColors.cxDADADA,
-                                ),
-                              ),
-                            ],
-                          ),
+                      ),
+                      // Close button on the right
+                      Positioned(
+                        right: 0,
+                        child: IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Icon(Icons.close, size: 24.sp),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.cxBlack,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                              decoration: BoxDecoration(
-                                color: AppColors.cx43C19F,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColors.cxWhite,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Contracts List
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    itemCount: incomeDetail.contracts.length,
+                    itemBuilder: (context, index) {
+                      final contract = incomeDetail.contracts[index];
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 12.h),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: Offset(0, 2),
                             ),
                           ],
                         ),
-                      ],
+                        child: Row(
+                          children: [
+                            // Product Image Circle
+                            Container(
+                              width: 55.w,
+                              height: 55.h,
+                              decoration: BoxDecoration(
+                                color: AppColors.cxF5F7F9,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.directions_car,
+                                size: 28.sp,
+                                color: AppColors.cxBlack,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Customer Name
+                                  Text(
+                                    incomeDetail.userName,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.cxBlack,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  // Product Name in Cyan
+                                  Text(
+                                    contract.productName,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF00BCD4), // Cyan color
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // Card and Naqd info
+                                  Row(
+                                    children: [
+                                      Text(
+                                        contract.productCategory,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: AppColors.cxAFB1B1,
+                                        ),
+                                      ),
+                                      if (contract.dueDate != null) ...[
+                                        SizedBox(width: 16.w),
+                                        Text(
+                                          'Naqd \$${(contract.amount * 0.3).toStringAsFixed(0)}',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.cxAFB1B1,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                  if (contract.dueDate != null) ...[
+                                    SizedBox(height: 2.h),
+                                    Text(
+                                      'Berilish sanasi: ${contract.dueDate}',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: AppColors.cxAFB1B1,
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '\$${contract.amount.toStringAsFixed(0)}',
+                                  style: TextStyle(
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.cxBlack,
+                                  ),
+                                ),
+                                SizedBox(height: 6.h),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 5.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _getStatusColor(contract.status),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Text(
+                                    _getStatusText(contract.status),
+                                    style: TextStyle(
+                                      fontSize: 11.sp,
+                                      color: AppColors.cxWhite,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                
+                // Total Section
+                Container(
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 6,
+                        offset: Offset(0, -2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total:',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.cxBlack,
+                            ),
+                          ),
+                          Text(
+                            '\$${incomeDetail.totalAmount.toStringAsFixed(0)}',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.cxBlack,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Yeg\'ilgan:',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.cxAFB1B1,
+                            ),
+                          ),
+                          Text(
+                            '\$${incomeDetail.totalPaid.toStringAsFixed(0)}',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.cxAFB1B1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: Implement accept action
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.cxBlack,
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          child: Text(
+                            'Qabul qilish',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.cxWhite,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            detailError: (message) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Xatolik yuz berdi',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
                     ),
-                  );
-                },
-
+                  ),
+                  SizedBox(height: 8.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32.w),
+                    child: Text(
+                      message,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ]
-        ),
+            orElse: () => Center(child: CircularProgressIndicator()),
+          );
+        },
       ),
     );
   }
