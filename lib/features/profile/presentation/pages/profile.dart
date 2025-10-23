@@ -171,49 +171,49 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: 32.h),
             
             // Menu Items
-            _buildMenuItem(
-              icon: Icons.shield_moon_outlined,
-              iconColor: AppColors.cxFFBCFA,
-              color: AppColors.cxFFBCFA,
-              title: "Kafil shaxs qo'shish",
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.shield_moon_outlined,
+            //   iconColor: AppColors.cxFFBCFA,
+            //   color: AppColors.cxFFBCFA,
+            //   title: "Kafil shaxs qo'shish",
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
             
-            _buildMenuItem(
-              icon: Icons.settings,
-              iconColor: AppColors.cxFEDA84,
-              color: AppColors.cxFEDA84,
-              title: "Sozlamalar",
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.settings,
+            //   iconColor: AppColors.cxFEDA84,
+            //   color: AppColors.cxFEDA84,
+            //   title: "Sozlamalar",
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
             
-            _buildMenuItem(
-              icon: Icons.headset_mic,
-              color: AppColors.cx78D9BF,
-              iconColor: AppColors.cx78D9BF,
-              title: "Qo'llab quvvatlash xizmati",
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.headset_mic,
+            //   color: AppColors.cx78D9BF,
+            //   iconColor: AppColors.cx78D9BF,
+            //   title: "Qo'llab quvvatlash xizmati",
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
             
-            _buildMenuItem(
-              icon: Icons.info,
-              color: AppColors.cx292B2F,
-              iconColor: AppColors.cx292B2F,
-              title: "Dastur haqida",
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.info,
+            //   color: AppColors.cx292B2F,
+            //   iconColor: AppColors.cx292B2F,
+            //   title: "Dastur haqida",
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
             
-            _buildMenuItem(
-              icon: Icons.share,
-              color: AppColors.cxD9D9D9,
-              iconColor: AppColors.cxAFB1B1,
-              title: "Ilovani ulashish",
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.share,
+            //   color: AppColors.cxD9D9D9,
+            //   iconColor: AppColors.cxAFB1B1,
+            //   title: "Ilovani ulashish",
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
 
             _buildMenuItem(
