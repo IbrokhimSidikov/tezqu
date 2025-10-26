@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tezqu/features/products/data/models/category_model.dart';
+import 'package:tezqu/features/products/data/models/product_model.dart';
 import 'package:tezqu/features/products/domain/repositories/product_repository.dart';
 import 'package:tezqu/features/products/presentation/cubit/product_state.dart';
 import '../../../../core/services/wishlist_service.dart';
@@ -30,9 +31,8 @@ class ProductCubit extends Cubit<ProductState> {
       // Use cached categories
       _categories = cachedCategories;
       
-      // Load products for the first category
-      _currentCategoryId = cachedCategories[0].id;
-      await loadProductsByCategory(cachedCategories[0].id);
+      // Load all products grouped by category
+      await loadAllProductsGrouped();
       return;
     }
     
@@ -49,13 +49,8 @@ class ProductCubit extends Cubit<ProductState> {
         // Cache the fetched categories
         _categoryCacheService.cacheCategories(categories);
         
-        // If we have categories, load products for the first category
-        if (categories.isNotEmpty) {
-          _currentCategoryId = categories[0].id;
-          await loadProductsByCategory(categories[0].id);
-        } else {
-          emit(ProductLoaded(categories: categories, products: []));
-        }
+        // Load all products grouped by category
+        await loadAllProductsGrouped();
       },
     );
   }
@@ -95,6 +90,47 @@ class ProductCubit extends Cubit<ProductState> {
     result.fold(
       (failure) => emit(ProductError(failure.message, categories: _categories)),
       (products) => emit(ProductLoaded(categories: _categories, products: products)),
+    );
+  }
+
+  Future<void> loadAllProductsGrouped() async {
+    if (_categories.isEmpty) {
+      await initialize();
+      return;
+    }
+    
+    emit(ProductLoading(categories: _categories));
+    
+    // Load all products
+    final result = await _repository.getProducts();
+    
+    result.fold(
+      (failure) => emit(ProductError(failure.message, categories: _categories)),
+      (products) {
+        // Group products by category
+        final Map<String, List<ProductModel>> grouped = {};
+        
+        // Initialize empty lists for all categories
+        for (var category in _categories) {
+          grouped[category.id] = [];
+        }
+        
+        // Group products by their category
+        for (var product in products) {
+          if (grouped.containsKey(product.category)) {
+            grouped[product.category]!.add(product);
+          } else {
+            // If category not in our list, create a new entry
+            grouped[product.category] = [product];
+          }
+        }
+        
+        emit(ProductLoaded(
+          categories: _categories,
+          products: products,
+          groupedProducts: grouped,
+        ));
+      },
     );
   }
 

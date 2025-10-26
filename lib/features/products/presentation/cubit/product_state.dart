@@ -34,14 +34,16 @@ class CategoriesLoaded extends ProductState {
 class ProductLoaded extends ProductState {
   final List<CategoryModel> categories;
   final List<ProductModel> products;
+  final Map<String, List<ProductModel>>? groupedProducts;
 
   const ProductLoaded({
     required this.categories,
     required this.products,
+    this.groupedProducts,
   });
 
   @override
-  List<Object?> get props => [categories, products];
+  List<Object?> get props => [categories, products, groupedProducts];
 }
 
 class ProductError extends ProductState {

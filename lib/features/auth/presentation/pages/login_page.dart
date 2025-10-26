@@ -29,9 +29,18 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _phoneController = TextEditingController(text: '+998 ');
   final _codeController = TextEditingController();
   bool _isCodeSent = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set cursor position after the prefix
+    _phoneController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _phoneController.text.length),
+    );
+  }
 
   @override
   void dispose() {
@@ -42,7 +51,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void _sendLoginCode(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      final phone = '998${_phoneController.text}';
+      // Extract only the digits from the phone number
+      final phone = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
       context.read<AuthCubit>().sendLoginCode(phone: phone);
     }
   }
@@ -122,24 +132,25 @@ class _LoginPageState extends State<LoginPage> {
                             AppTextField(
                               controller: _phoneController,
                               obscureText: false,
-                              prefixText: '+998 ',
                               keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(9), // Only 9 digits after +998
-                              ],
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.isEmpty || value == '+998 ') {
                                   return 'Telefon raqamni kiriting';
                                 }
-                                if (value.length < 9) {
+                                final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                if (digits.length < 12) { // 998 + 9 digits
                                   return 'Telefon raqam kamida 9 ta raqamdan iborat bo\'lishi kerak';
                                 }
                                 return null;
                               },
                               onChanged: (value) {
-                                // Phone number input changed
-                                // No auto-send, wait for button press
+                                // Ensure the prefix is always present
+                                if (!value.startsWith('+998 ')) {
+                                  _phoneController.text = '+998 ';
+                                  _phoneController.selection = TextSelection.fromPosition(
+                                    TextPosition(offset: _phoneController.text.length),
+                                  );
+                                }
                               },
                             ),
                             if (_isCodeSent) ...[
@@ -213,17 +224,20 @@ class _LoginPageState extends State<LoginPage> {
                     // Button at the bottom
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
+                        final isLoading = state is AuthLoading;
                         return Padding(
                           padding: EdgeInsets.only(bottom: 20.h),
                           child: ButtonWidget(
                             text: _isCodeSent ? 'Dasturga kirish' : 'Kodni olish',
-                            onPressed: state is AuthLoading
+                            isLoading: isLoading,
+                            onPressed: isLoading
                                 ? null
                                 : () {
                                     if (_isCodeSent) {
                                       // Login with code
                                       if (_formKey.currentState?.validate() ?? false) {
-                                        final phone = '998${_phoneController.text}';
+                                        // Extract only the digits from the phone number
+                                        final phone = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
                                         final code = _codeController.text;
                                         context.read<AuthCubit>().login(
                                           phone: phone,
