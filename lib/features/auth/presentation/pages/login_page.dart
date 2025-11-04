@@ -17,6 +17,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/text_widget.dart';
+import '../../../../core/utils/phone_input_formatter.dart';
 import '../cubits/auth_cubit.dart';
 import '../cubits/auth_state.dart';
 
@@ -31,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController(text: '+998 ');
   final _codeController = TextEditingController();
+  final _phoneFocusNode = FocusNode();
   bool _isCodeSent = false;
 
   @override
@@ -46,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _phoneController.dispose();
     _codeController.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
 
@@ -131,8 +134,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             AppTextField(
                               controller: _phoneController,
+                              focusNode: _phoneFocusNode,
                               obscureText: false,
                               keyboardType: TextInputType.phone,
+                              inputFormatters: [PhoneInputFormatter()],
                               validator: (value) {
                                 if (value == null || value.isEmpty || value == '+998 ') {
                                   return 'Telefon raqamni kiriting';
@@ -144,12 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                               onChanged: (value) {
-                                // Ensure the prefix is always present
-                                if (!value.startsWith('+998 ')) {
-                                  _phoneController.text = '+998 ';
-                                  _phoneController.selection = TextSelection.fromPosition(
-                                    TextPosition(offset: _phoneController.text.length),
-                                  );
+                                // Check if 9 digits are entered (after +998)
+                                final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                if (digits.length == 12) { // 998 + 9 digits
+                                  // Dismiss keyboard
+                                  _phoneFocusNode.unfocus();
                                 }
                               },
                             ),

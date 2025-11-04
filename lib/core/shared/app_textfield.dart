@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants/app_colors.dart';
 
 class AppTextField extends StatefulWidget {
-  const AppTextField({super.key, this.hint, this.controller, this.validator, required this.obscureText, this.prefixIcon, this.inputFormatters, this.keyboardType, this.prefixText, this.onChanged});
+  const AppTextField({super.key, this.hint, this.controller, this.validator, required this.obscureText, this.prefixIcon, this.inputFormatters, this.keyboardType, this.prefixText, this.onChanged, this.focusNode});
 
   final String? hint;
   final TextEditingController? controller;
@@ -16,6 +16,7 @@ class AppTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final String? prefixText;
   final ValueChanged<String>? onChanged;
+  final FocusNode? focusNode;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -27,6 +28,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return TextFormField(
       validator: widget.validator,
       controller: widget.controller,
+      focusNode: widget.focusNode,
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,
       style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500),
