@@ -16,6 +16,8 @@ import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/button_widget.dart';
 import '../../../../core/shared/text_widget.dart';
+import '../../../../core/utils/date_input_formatter.dart';
+import '../../../../core/utils/phone_input_formatter.dart';
 import '../cubits/auth_cubit.dart';
 import '../cubits/auth_state.dart';
 
@@ -31,7 +33,9 @@ class _AuthPageState extends State<AuthPage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _phoneController = TextEditingController(text: '+998 ');
+  final _phoneFocusNode = FocusNode();
+  final _dateFocusNode = FocusNode();
   String? _selectedGender;
 
   @override
@@ -40,6 +44,8 @@ class _AuthPageState extends State<AuthPage> {
     _lastNameController.dispose();
     _dateOfBirthController.dispose();
     _phoneController.dispose();
+    _phoneFocusNode.dispose();
+    _dateFocusNode.dispose();
     super.dispose();
   }
 
@@ -52,8 +58,8 @@ class _AuthPageState extends State<AuthPage> {
         return;
       }
 
-      // Format phone number as 998XXXXXXXXX (without +)
-      final phoneNumber = '998${_phoneController.text}';
+      // Extract only digits from the formatted phone number
+      final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
       
       // Convert date from DD.MM.YYYY to ISO 8601 format (YYYY-MM-DD)
       final dateOfBirth = _convertToISO8601(_dateOfBirthController.text);
@@ -119,7 +125,7 @@ class _AuthPageState extends State<AuthPage> {
               SnackBar(content: Text(state.message ?? 'Muvaffaqiyatli')),
             );
             // Pass phone number to OTP page
-            final phoneNumber = '998${_phoneController.text}';
+            final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
             context.push('${AppRoutes.loginOtp}?phone=$phoneNumber');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -228,6 +234,10 @@ class _AuthPageState extends State<AuthPage> {
                                 // date_of_birth
                                 TextFormField(
                                   controller: _dateOfBirthController,
+                                  focusNode: _dateFocusNode,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [DateInputFormatter()],
+                                  style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                                     hintText: '12.03.1999',
@@ -239,9 +249,21 @@ class _AuthPageState extends State<AuthPage> {
                                       borderSide: BorderSide.none,
                                     ),
                                   ),
+                                  onChanged: (value) {
+                                    // Check if full date is entered (8 digits = DD.MM.YYYY)
+                                    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                    if (digitsOnly.length == 8) {
+                                      // Dismiss keyboard
+                                      _dateFocusNode.unfocus();
+                                    }
+                                  },
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Tug\'ulgan sanani kiriting';
+                                    }
+                                    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                    if (digitsOnly.length < 8) {
+                                      return 'To\'liq sanani kiriting';
                                     }
                                     return null;
                                   },
@@ -298,21 +320,27 @@ class _AuthPageState extends State<AuthPage> {
                       // phone_number
                       AppTextField(
                         controller: _phoneController,
+                        focusNode: _phoneFocusNode,
                         obscureText: false,
-                        prefixText: '+998 ',
                         keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(9), // Only 9 digits after +998
-                        ],
+                        inputFormatters: [PhoneInputFormatter()],
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value == '+998 ') {
                             return 'Telefon raqamni kiriting';
                           }
-                          if (value.length < 9) {
+                          final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                          if (digits.length < 12) { // 998 + 9 digits
                             return 'Telefon raqam kamida 9 ta raqamdan iborat bo\'lishi kerak';
                           }
                           return null;
+                        },
+                        onChanged: (value) {
+                          // Check if 9 digits are entered (after +998)
+                          final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+                          if (digits.length == 12) { // 998 + 9 digits
+                            // Dismiss keyboard
+                            _phoneFocusNode.unfocus();
+                          }
                         },
                       ),
                             ],
