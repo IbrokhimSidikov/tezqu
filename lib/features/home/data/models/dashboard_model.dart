@@ -2,19 +2,23 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/dashboard_entity.dart';
 
 part 'dashboard_model.freezed.dart';
-part 'dashboard_model.g.dart';
+// part 'dashboard_model.g.dart';
 
 @freezed
 class DashboardModel with _$DashboardModel {
   const factory DashboardModel({
-    required String role,
+    @Default('customer') String role,
     required DashboardDataModel data,
   }) = _DashboardModel;
 
   const DashboardModel._();
 
-  factory DashboardModel.fromJson(Map<String, dynamic> json) =>
-      _$DashboardModelFromJson(json);
+  factory DashboardModel.fromJson(Map<String, dynamic> json) {
+    return DashboardModel(
+      role: json['role'] as String? ?? 'customer',
+      data: DashboardDataModel.fromJson(json['data'] as Map<String, dynamic>? ?? {}),
+    );
+  }
 
   DashboardEntity toEntity() {
     return DashboardEntity(
@@ -41,18 +45,26 @@ class DashboardModel with _$DashboardModel {
 @freezed
 class DashboardDataModel with _$DashboardDataModel {
   const factory DashboardDataModel({
-    @JsonKey(name: 'total_contract_amount') required double totalContractAmount,
-    @JsonKey(name: 'total_paid') required double totalPaid,
-    @JsonKey(name: 'total_remaining') required double totalRemaining,
-    @JsonKey(name: 'next_payment_amount') required double nextPaymentAmount,
-    @JsonKey(name: 'next_payment_date') required String nextPaymentDate,
-    @JsonKey(name: 'active_contracts') required int activeContracts,
+    @JsonKey(name: 'total_contract_amount') @Default(0.0) double totalContractAmount,
+    @JsonKey(name: 'total_paid') @Default(0.0) double totalPaid,
+    @JsonKey(name: 'total_remaining') @Default(0.0) double totalRemaining,
+    @JsonKey(name: 'next_payment_amount') @Default(0.0) double nextPaymentAmount,
+    @JsonKey(name: 'next_payment_date') @Default('') String nextPaymentDate,
+    @JsonKey(name: 'active_contracts') @Default(0) int activeContracts,
   }) = _DashboardDataModel;
 
   const DashboardDataModel._();
 
-  factory DashboardDataModel.fromJson(Map<String, dynamic> json) =>
-      _$DashboardDataModelFromJson(json);
+  factory DashboardDataModel.fromJson(Map<String, dynamic> json) {
+    return DashboardDataModel(
+      totalContractAmount: (json['total_contract_amount'] as num?)?.toDouble() ?? 0.0,
+      totalPaid: (json['total_paid'] as num?)?.toDouble() ?? 0.0,
+      totalRemaining: (json['total_remaining'] as num?)?.toDouble() ?? 0.0,
+      nextPaymentAmount: (json['next_payment_amount'] as num?)?.toDouble() ?? 0.0,
+      nextPaymentDate: json['next_payment_date'] as String? ?? '',
+      activeContracts: (json['active_contracts'] as num?)?.toInt() ?? 0,
+    );
+  }
 
   DashboardData toEntity() {
     return DashboardData(

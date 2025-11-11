@@ -11,7 +11,6 @@ part of 'dashboard_model.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$DashboardModel {
 
@@ -22,8 +21,6 @@ mixin _$DashboardModel {
 @pragma('vm:prefer-inline')
 $DashboardModelCopyWith<DashboardModel> get copyWith => _$DashboardModelCopyWithImpl<DashboardModel>(this as DashboardModel, _$identity);
 
-  /// Serializes this DashboardModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardModel&&(identical(other.role, role) || other.role == role)&&(identical(other.data, data) || other.data == data));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,role,data);
 
@@ -216,13 +213,13 @@ return $default(_that.role,_that.data);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _DashboardModel extends DashboardModel {
-  const _DashboardModel({required this.role, required this.data}): super._();
-  factory _DashboardModel.fromJson(Map<String, dynamic> json) => _$DashboardModelFromJson(json);
+  const _DashboardModel({this.role = 'customer', required this.data}): super._();
+  
 
-@override final  String role;
+@override@JsonKey() final  String role;
 @override final  DashboardDataModel data;
 
 /// Create a copy of DashboardModel
@@ -231,17 +228,14 @@ class _DashboardModel extends DashboardModel {
 @pragma('vm:prefer-inline')
 _$DashboardModelCopyWith<_DashboardModel> get copyWith => __$DashboardModelCopyWithImpl<_DashboardModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$DashboardModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardModel&&(identical(other.role, role) || other.role == role)&&(identical(other.data, data) || other.data == data));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,role,data);
 
@@ -295,7 +289,6 @@ $DashboardDataModelCopyWith<$Res> get data {
 }
 }
 
-
 /// @nodoc
 mixin _$DashboardDataModel {
 
@@ -306,8 +299,6 @@ mixin _$DashboardDataModel {
 @pragma('vm:prefer-inline')
 $DashboardDataModelCopyWith<DashboardDataModel> get copyWith => _$DashboardDataModelCopyWithImpl<DashboardDataModel>(this as DashboardDataModel, _$identity);
 
-  /// Serializes this DashboardDataModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -315,7 +306,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardDataModel&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
 
@@ -495,11 +486,11 @@ return $default(_that.totalContractAmount,_that.totalPaid,_that.totalRemaining,_
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _DashboardDataModel extends DashboardDataModel {
-  const _DashboardDataModel({@JsonKey(name: 'total_contract_amount') required this.totalContractAmount, @JsonKey(name: 'total_paid') required this.totalPaid, @JsonKey(name: 'total_remaining') required this.totalRemaining, @JsonKey(name: 'next_payment_amount') required this.nextPaymentAmount, @JsonKey(name: 'next_payment_date') required this.nextPaymentDate, @JsonKey(name: 'active_contracts') required this.activeContracts}): super._();
-  factory _DashboardDataModel.fromJson(Map<String, dynamic> json) => _$DashboardDataModelFromJson(json);
+  const _DashboardDataModel({@JsonKey(name: 'total_contract_amount') this.totalContractAmount = 0.0, @JsonKey(name: 'total_paid') this.totalPaid = 0.0, @JsonKey(name: 'total_remaining') this.totalRemaining = 0.0, @JsonKey(name: 'next_payment_amount') this.nextPaymentAmount = 0.0, @JsonKey(name: 'next_payment_date') this.nextPaymentDate = '', @JsonKey(name: 'active_contracts') this.activeContracts = 0}): super._();
+  
 
 @override@JsonKey(name: 'total_contract_amount') final  double totalContractAmount;
 @override@JsonKey(name: 'total_paid') final  double totalPaid;
@@ -514,17 +505,14 @@ class _DashboardDataModel extends DashboardDataModel {
 @pragma('vm:prefer-inline')
 _$DashboardDataModelCopyWith<_DashboardDataModel> get copyWith => __$DashboardDataModelCopyWithImpl<_DashboardDataModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$DashboardDataModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardDataModel&&(identical(other.totalContractAmount, totalContractAmount) || other.totalContractAmount == totalContractAmount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.nextPaymentAmount, nextPaymentAmount) || other.nextPaymentAmount == nextPaymentAmount)&&(identical(other.nextPaymentDate, nextPaymentDate) || other.nextPaymentDate == nextPaymentDate)&&(identical(other.activeContracts, activeContracts) || other.activeContracts == activeContracts));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,totalContractAmount,totalPaid,totalRemaining,nextPaymentAmount,nextPaymentDate,activeContracts);
 

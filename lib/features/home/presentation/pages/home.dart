@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/user_roles.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/dashboard_card.dart';
@@ -32,6 +33,130 @@ class _HomePageContent extends StatelessWidget {
   String _formatCurrency(double amount) {
     final formatter = NumberFormat('#,###', 'en_US');
     return '\$ ${formatter.format(amount)}';
+  }
+
+  List<Widget> _buildDashboardCards(BuildContext context, UserRole userRole) {
+    final allCards = <DashboardCardType, Widget>{
+      DashboardCardType.payments: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.payments);
+        },
+        title: "To'lovlarim",
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cxFF8B92,
+              child: const Icon(Icons.attach_money, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+      DashboardCardType.products: DashboardCard(
+        title: "Maxsulotlar",
+        onTap: () {
+          context.push(AppRoutes.products);
+        },
+        icons: [
+          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
+          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
+          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
+        ],
+      ),
+      DashboardCardType.income: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.income);
+        },
+        title: "Kirimlar",
+        subtitle: "\$123,500",
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cx78D9BF,
+              child: const Icon(Icons.swap_horiz, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+      DashboardCardType.expense: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.expense);
+        },
+        title: "Chiqimlar",
+        subtitle: "\$1,500",
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cxFEC700,
+              child: const Icon(Icons.arrow_upward, color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+      DashboardCardType.warehouse: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.warehouse);
+        },
+        title: 'Omborxona',
+        subtitle: 'Maxsulot: 120',
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cx292B2F,
+              child: const Icon(Icons.inventory_2_outlined, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+      DashboardCardType.dashboard: DashboardCard(
+        title: 'Dashboard',
+        subtitle: 'Faollik: 01.24',
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cx02D5F5,
+              child: const Icon(Icons.bar_chart_outlined, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    };
+
+    // Filter cards based on user role
+    final allowedCards = RolePermissions.getAllowedCards(userRole);
+    return allowedCards
+        .where((cardType) => allCards.containsKey(cardType))
+        .map((cardType) => allCards[cardType]!)
+        .toList();
   }
 
   @override
@@ -113,6 +238,9 @@ class _HomePageContent extends StatelessWidget {
             final totalRemaining = dashboard?.data.totalRemaining ?? 0;
             final nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
             final activeContracts = dashboard?.data.activeContracts ?? 0;
+            
+            // Get user role from dashboard
+            final userRole = UserRole.fromString(dashboard?.role);
 
             // Calculate progress percentage
             final progressPercentage = totalContractAmount > 0 
@@ -212,118 +340,7 @@ class _HomePageContent extends StatelessWidget {
                   mainAxisSpacing: 29.h,
                   crossAxisSpacing: 16.w,
                   childAspectRatio: 1.2, // adjust shape
-                  children: [
-                    DashboardCard(
-                      onTap: () {
-                        context.push(AppRoutes.payments);
-                      },
-                      title: "To'lovlarim",
-                      icons: [
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: CircleAvatar(
-                            radius: 22.r,
-                            backgroundColor: AppColors.cxFF8B92,
-                            child: const Icon(Icons.attach_money, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    DashboardCard(
-                      title: "Maxsulotlar",
-                      onTap: () {
-                        context.push(AppRoutes.products);
-                      },
-                      icons: [
-                        CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
-                        CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
-                        CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
-                      ],
-                    ),
-                    DashboardCard(
-                      onTap: (){context.push(AppRoutes.income);},
-                      title: "Kirimlar",
-                      subtitle: "\$123,500",
-                      icons: [
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: CircleAvatar(
-                            radius: 22.r,
-                            backgroundColor: AppColors.cx78D9BF,
-                            child: const Icon(Icons.swap_horiz, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    DashboardCard(
-                      onTap: (){
-                        context.push(AppRoutes.expense);
-                      },
-                      title: "Chiqimlar",
-                      subtitle: "\$1,500",
-                      icons: [
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: CircleAvatar(
-                            radius: 22.r,
-                            backgroundColor: AppColors.cxFEC700,
-                            child: const Icon(Icons.arrow_upward, color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                    DashboardCard(
-                      onTap: (){
-                        context.push(AppRoutes.warehouse);
-                      },
-                      title: 'Omborxona',
-                      subtitle: 'Maxsulot: 120',
-                      icons: [
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                        child: CircleAvatar(
-                          radius: 22.r,
-                          backgroundColor: AppColors.cx292B2F,
-                          child: const Icon(Icons.inventory_2_outlined, color: Colors.white),
-                          ),
-                      ),
-                      ],
-                    ),
-                    DashboardCard(title: 'Dashboard',
-                      subtitle: 'Faollik: 01.24',
-                      icons: [
-                        Container(
-                          padding: EdgeInsets.all(2), // space for the border
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2), // white border
-                          ),
-                          child: CircleAvatar(
-                            radius: 22.r,
-                            backgroundColor: AppColors.cx02D5F5,
-                            child: const Icon(Icons.bar_chart_outlined, color: Colors.white),
-                          ),
-                        )
-            
-                      ],
-                    ),
-                  ],
+                  children: _buildDashboardCards(context, userRole),
                 )
               ],
             ),
