@@ -78,6 +78,7 @@ import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
 import '../services/category_cache_service.dart' as _i1013;
+import '../services/product_request_service.dart' as _i287;
 import '../services/storage_service.dart' as _i306;
 import '../services/wishlist_service.dart' as _i203;
 import 'register_module.dart' as _i291;
@@ -110,6 +111,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i49.PaymentRemoteDataSource>(
       () => _i49.PaymentRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
+    gh.lazySingleton<_i287.ProductRequestService>(
+      () => _i287.ProductRequestService(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i203.WishlistService>(
       () => _i203.WishlistService(gh<_i667.DioClient>()),
@@ -173,11 +177,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
       () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
     );
-    gh.lazySingleton<_i1004.GetIncomeDetailUseCase>(
-      () => _i1004.GetIncomeDetailUseCase(gh<_i260.IncomeRepository>()),
-    );
     gh.lazySingleton<_i1007.AddToWishlistUseCase>(
       () => _i1007.AddToWishlistUseCase(gh<_i260.IncomeRepository>()),
+    );
+    gh.lazySingleton<_i1004.GetIncomeDetailUseCase>(
+      () => _i1004.GetIncomeDetailUseCase(gh<_i260.IncomeRepository>()),
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(

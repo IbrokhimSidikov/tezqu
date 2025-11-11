@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
-import 'package:tezqu/core/shared/app_banner.dart';
 import 'package:tezqu/core/shared/button_widget_iconless.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/router/app_routes.dart';
-import '../../../../core/shared/button_widget.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/services/wishlist_service.dart';
+import '../../../../core/services/product_request_service.dart';
 import '../../data/models/product_model.dart';
 
 class Details extends StatefulWidget {
@@ -27,6 +25,7 @@ class _DetailsState extends State<Details> {
   ProductModel? get product => widget.product as ProductModel?;
   bool _isFavorite = false;
   bool _isLoading = true;
+  bool _isSubmittingRequest = false;
   
   @override
   void initState() {
@@ -66,6 +65,68 @@ class _DetailsState extends State<Details> {
             _isLoading = false;
           });
         }
+      }
+    }
+  }
+
+  Future<void> _submitProductRequest() async {
+    if (product == null || _isSubmittingRequest) return;
+
+    setState(() {
+      _isSubmittingRequest = true;
+    });
+
+    try {
+      await getIt<ProductRequestService>().createProductRequest(product!.id);
+      if (mounted) {
+        setState(() {
+          _isSubmittingRequest = false;
+        });
+        Navigator.of(context).pop(); // Close the purchase dialog
+        _showSuccessDialog(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isSubmittingRequest = false;
+        });
+        Navigator.of(context).pop(); // Close the purchase dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Xatolik yuz berdi: ${e.toString()}'),
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _makePhoneCall() async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: '889984444');
+    try {
+      if (await canLaunchUrl(phoneUri)) {
+        await launchUrl(phoneUri);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Telefon ilovasini ochib bo\'lmadi'),
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Xatolik: ${e.toString()}'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -409,17 +470,6 @@ class _DetailsState extends State<Details> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  // GestureDetector(
-                                  //   onTap: () => Navigator.of(context).pop(),
-                                  //   child: Container(
-                                  //     padding: EdgeInsets.all(10.w),
-                                  //     decoration: BoxDecoration(
-                                  //       color:AppColors.cxF7F6F9,
-                                  //       borderRadius: BorderRadius.circular(25.r),
-                                  //     ),
-                                  //     child: Icon(Icons.close, size: 22.sp),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                               SizedBox(height: 36.h),
@@ -427,7 +477,7 @@ class _DetailsState extends State<Details> {
                                 children: [
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () => _showSuccessDialog(context),
+                                      onTap: _isSubmittingRequest ? null : _submitProductRequest,
                                       child: Container(
                                         width: 150.w,
                                         height: 100.h,
@@ -438,14 +488,23 @@ class _DetailsState extends State<Details> {
                                         ),
                                         child: Column(
                                           children: [
-                                            Text(
-                                              "Ariza yuborish",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                            _isSubmittingRequest
+                                                ? SizedBox(
+                                                    width: 20.w,
+                                                    height: 20.h,
+                                                    child: CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    "Ariza yuborish",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 20.sp,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
                                             SizedBox(height: 6.h),
                                             Text(
                                               "Men bilan bog’laning",
@@ -462,11 +521,11 @@ class _DetailsState extends State<Details> {
                                   SizedBox(width: 12.w),
                                   Expanded(
                                     child: GestureDetector(
-                                      onTap: () => _showSuccessDialog(context),
+                                      onTap: _makePhoneCall,
                                       child: Container(
                                         width: 150.w,
                                         height: 100.h,
-                                        padding:EdgeInsets.symmetric(vertical: 12.h),
+                                        padding: EdgeInsets.symmetric(vertical: 12.h),
                                         decoration: BoxDecoration(
                                           color: AppColors.cxF7F6F9,
                                           borderRadius: BorderRadius.circular(25.r),
@@ -474,7 +533,7 @@ class _DetailsState extends State<Details> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "O’zim bog’lanaman",
+                                              "O'zim bog'lanaman",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 20.sp,

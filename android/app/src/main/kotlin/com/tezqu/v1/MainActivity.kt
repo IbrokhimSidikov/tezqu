@@ -1,4 +1,4 @@
-package com.example.tezqu
+package com.tezqu.v1
 
 import io.flutter.embedding.android.FlutterActivity
 
