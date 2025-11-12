@@ -29,6 +29,15 @@ import '../../features/auth/domain/usecases/send_login_code_usecase.dart'
     as _i1008;
 import '../../features/auth/domain/usecases/verify_usecase.dart' as _i778;
 import '../../features/auth/presentation/cubits/auth_cubit.dart' as _i521;
+import '../../features/contracts/data/datasources/contract_remote_data_source.dart'
+    as _i902;
+import '../../features/contracts/data/repositories/contract_repository_impl.dart'
+    as _i141;
+import '../../features/contracts/domain/repositories/contract_repository.dart'
+    as _i841;
+import '../../features/contracts/domain/usecases/get_contracts.dart' as _i609;
+import '../../features/contracts/presentation/cubit/contract_cubit.dart'
+    as _i1055;
 import '../../features/home/data/datasources/dashboard_remote_data_source.dart'
     as _i640;
 import '../../features/home/data/repositories/dashboard_repository_impl.dart'
@@ -148,6 +157,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i640.DashboardRemoteDataSource>(
       () => _i640.DashboardRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i902.ContractRemoteDataSource>(
+      () => _i902.ContractRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i386.DashboardRepository>(
       () =>
           _i1057.DashboardRepositoryImpl(gh<_i640.DashboardRemoteDataSource>()),
@@ -200,6 +212,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i814.GetDashboardUseCase>(
       () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
     );
+    gh.lazySingleton<_i841.ContractRepository>(
+      () => _i141.ContractRepositoryImpl(gh<_i902.ContractRemoteDataSource>()),
+    );
     gh.factory<_i941.RegisterUseCase>(
       () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
     );
@@ -218,8 +233,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
     );
+    gh.lazySingleton<_i609.GetContracts>(
+      () => _i609.GetContracts(gh<_i841.ContractRepository>()),
+    );
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),
+    );
+    gh.factory<_i1055.ContractCubit>(
+      () => _i1055.ContractCubit(gh<_i609.GetContracts>()),
     );
     gh.factory<_i521.AuthCubit>(
       () => _i521.AuthCubit(

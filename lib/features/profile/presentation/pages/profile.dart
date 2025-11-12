@@ -207,6 +207,18 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 16.h),
             
+            _buildMenuItemWithBadge(
+              icon: Icons.description_outlined,
+              color: Color(0xFFFFB6C1),
+              iconColor: AppColors.cxBlack,
+              title: "Shartnomalarim",
+              badgeCount: 1,
+              onTap: () {
+                context.push(AppRoutes.contracts);
+              },
+            ),
+            SizedBox(height: 16.h),
+            
             _buildMenuItem(
               icon: Icons.share,
               color: AppColors.cxD9D9D9,
@@ -376,6 +388,80 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16.sp,
+              color: AppColors.cxAFB1B1,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItemWithBadge({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required VoidCallback onTap,
+    required Color color,
+    required int badgeCount,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        child: Row(
+          children: [
+            Container(
+              width: 54.w,
+              height: 54.h,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 29.sp,
+                color: iconColor == AppColors.cx292B2F ? AppColors.cxWhite :
+                       iconColor == AppColors.cxAFB1B1 ? AppColors.cx292B2F : AppColors.cxBlack,
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.cxBlack,
+                ),
+              ),
+            ),
+            if (badgeCount > 0)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: AppColors.cxF42800,
+                  shape: BoxShape.circle,
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 24.w,
+                  minHeight: 24.h,
+                ),
+                child: Center(
+                  child: Text(
+                    badgeCount.toString(),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.cxWhite,
+                    ),
+                  ),
+                ),
+              ),
+            SizedBox(width: 8.w),
             Icon(
               Icons.arrow_forward_ios,
               size: 16.sp,
