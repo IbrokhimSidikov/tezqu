@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
@@ -180,83 +181,202 @@ class ContractsView extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
+        child: Column(
           children: [
-            // Vehicle image/icon
+            Row(
+              children: [
+                // Vehicle image/icon
+                Container(
+                  width: 60.w,
+                  height: 60.h,
+                  decoration: BoxDecoration(
+                    color: AppColors.cxF5F7F9,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: contract.vehicleImage != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: Image.network(
+                            contract.vehicleImage!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(
+                                Icons.directions_car,
+                                size: 30.sp,
+                                color: AppColors.cxBlack,
+                              );
+                            },
+                          ),
+                        )
+                      : Icon(
+                          Icons.directions_car,
+                          size: 30.sp,
+                          color: AppColors.cxBlack,
+                        ),
+                ),
+                SizedBox(width: 16.w),
+                // Contract details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        contract.productName ?? contract.vehicleName,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.cxBlack,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        '${contract.clientName} ${contract.clientId}',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColors.cxAFB1B1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Status badge (if available)
+                if (contract.status != null)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: _getStatusColor(contract.status!),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Text(
+                      contract.status!,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            // Additional contract information
+            SizedBox(height: 12.h),
             Container(
-              width: 60.w,
-              height: 60.h,
+              padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
                 color: AppColors.cxF5F7F9,
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(8.r),
               ),
-              child: contract.vehicleImage != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: Image.network(
-                        contract.vehicleImage!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.directions_car,
-                            size: 30.sp,
-                            color: AppColors.cxBlack,
-                          );
-                        },
-                      ),
-                    )
-                  : Icon(
-                      Icons.directions_car,
-                      size: 30.sp,
-                      color: AppColors.cxBlack,
-                    ),
-            ),
-            SizedBox(width: 16.w),
-            // Contract details
-            Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    contract.vehicleName,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.cxBlack,
+                  // Contract type
+                  if (contract.contractType != null)
+                    _buildInfoRow(
+                      'Shartnoma turi:',
+                      _formatContractType(contract.contractType!),
                     ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '${contract.clientName} ${contract.clientId}',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.cxAFB1B1,
+                  // Total service fee
+                  if (contract.totalServiceFee != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: _buildInfoRow(
+                        'Xizmat to\'lovi:',
+                        '${contract.totalServiceFee} so\'m',
+                      ),
                     ),
-                  ),
+                  // Collector name
+                  if (contract.collectorFirstName != null || contract.collectorLastName != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: _buildInfoRow(
+                        'Yig\'uvchi:',
+                        '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim(),
+                      ),
+                    ),
+                  // Service contract PDF link
+                  if (contract.serviceContractPdf != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: GestureDetector(
+                        onTap: () => _openPdf(contract.serviceContractPdf!),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.picture_as_pdf,
+                              size: 16.sp,
+                              color: AppColors.cx78D9BF,
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Text(
+                                'Shartnoma PDF',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.cx78D9BF,
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.open_in_new,
+                              size: 16.sp,
+                              color: AppColors.cx78D9BF,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
-            // Status badge (if available)
-            if (contract.status != null)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: _getStatusColor(contract.status!),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Text(
-                  contract.status!,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: AppColors.cxAFB1B1,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.cxBlack,
+            ),
+            textAlign: TextAlign.right,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatContractType(String type) {
+    switch (type.toLowerCase()) {
+      case 'two_way':
+        return 'Ikki tomonlama';
+      case 'three_way':
+        return 'Uch tomonlama';
+      default:
+        return type;
+    }
+  }
+
+  Future<void> _openPdf(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   Color _getStatusColor(String status) {

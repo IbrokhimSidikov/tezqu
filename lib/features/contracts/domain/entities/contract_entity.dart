@@ -31,6 +31,12 @@ class ContractItemEntity extends Equatable {
   final String clientId;
   final String? status;
   final String? vehicleImage;
+  final String? contractType;
+  final String? totalServiceFee;
+  final String? serviceContractPdf;
+  final String? productName;
+  final String? collectorFirstName;
+  final String? collectorLastName;
 
   const ContractItemEntity({
     required this.id,
@@ -39,6 +45,12 @@ class ContractItemEntity extends Equatable {
     required this.clientId,
     this.status,
     this.vehicleImage,
+    this.contractType,
+    this.totalServiceFee,
+    this.serviceContractPdf,
+    this.productName,
+    this.collectorFirstName,
+    this.collectorLastName,
   });
 
   @override
@@ -49,5 +61,11 @@ class ContractItemEntity extends Equatable {
         clientId,
         status,
         vehicleImage,
+        contractType,
+        totalServiceFee,
+        serviceContractPdf,
+        productName,
+        collectorFirstName,
+        collectorLastName,
       ];
 }

@@ -88,6 +88,12 @@ class ContractItemModel with _$ContractItemModel {
     required String clientId,
     String? status,
     String? vehicleImage,
+    String? contractType,
+    String? totalServiceFee,
+    String? serviceContractPdf,
+    String? productName,
+    String? collectorFirstName,
+    String? collectorLastName,
   }) = _ContractItemModel;
 
   const ContractItemModel._();
@@ -100,13 +106,33 @@ class ContractItemModel with _$ContractItemModel {
       return 0;
     }
 
+    // Extract product name from nested product object
+    String? productName;
+    if (json['product'] != null && json['product'] is Map) {
+      productName = json['product']['name'] as String?;
+    }
+
+    // Extract collector name from nested collector object
+    String? collectorFirstName;
+    String? collectorLastName;
+    if (json['collector'] != null && json['collector'] is Map) {
+      collectorFirstName = json['collector']['first_name'] as String?;
+      collectorLastName = json['collector']['last_name'] as String?;
+    }
+
     return ContractItemModel(
       id: parseId(json['id']),
-      vehicleName: json['vehicle_name'] as String? ?? json['vehicleName'] as String? ?? '',
+      vehicleName: json['vehicle_name'] as String? ?? json['vehicleName'] as String? ?? productName ?? '',
       clientName: json['client_name'] as String? ?? json['clientName'] as String? ?? '',
       clientId: json['client_id'] as String? ?? json['clientId'] as String? ?? '',
       status: json['status'] as String?,
       vehicleImage: json['vehicle_image'] as String? ?? json['vehicleImage'] as String?,
+      contractType: json['contract_type'] as String?,
+      totalServiceFee: json['total_service_fee'] as String?,
+      serviceContractPdf: json['service_contract_pdf'] as String?,
+      productName: productName,
+      collectorFirstName: collectorFirstName,
+      collectorLastName: collectorLastName,
     );
   }
 
@@ -118,6 +144,12 @@ class ContractItemModel with _$ContractItemModel {
       clientId: clientId,
       status: status,
       vehicleImage: vehicleImage,
+      contractType: contractType,
+      totalServiceFee: totalServiceFee,
+      serviceContractPdf: serviceContractPdf,
+      productName: productName,
+      collectorFirstName: collectorFirstName,
+      collectorLastName: collectorLastName,
     );
   }
 
@@ -144,4 +176,28 @@ class ContractItemModel with _$ContractItemModel {
   @override
   // TODO: implement vehicleName
   String get vehicleName => throw UnimplementedError();
+
+  @override
+  // TODO: implement contractType
+  String? get contractType => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalServiceFee
+  String? get totalServiceFee => throw UnimplementedError();
+
+  @override
+  // TODO: implement serviceContractPdf
+  String? get serviceContractPdf => throw UnimplementedError();
+
+  @override
+  // TODO: implement productName
+  String? get productName => throw UnimplementedError();
+
+  @override
+  // TODO: implement collectorFirstName
+  String? get collectorFirstName => throw UnimplementedError();
+
+  @override
+  // TODO: implement collectorLastName
+  String? get collectorLastName => throw UnimplementedError();
 }
