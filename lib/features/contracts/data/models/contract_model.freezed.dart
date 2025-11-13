@@ -543,7 +543,7 @@ as List<ContractItemModel>,
 /// @nodoc
 mixin _$ContractItemModel {
 
- int get id; String get vehicleName; String get clientName; String get clientId; String? get status; String? get vehicleImage; String? get contractType; String? get totalServiceFee; String? get serviceContractPdf; String? get productName; String? get collectorFirstName; String? get collectorLastName; String? get totalPrice; String? get initialPayment; String? get installmentAmount; int? get installmentPeriodMonths; String? get interestRate; String? get totalInterest; String? get monthlyPayment; String? get productPrice; String? get userFirstName; String? get userLastName; String? get approvedByAdminFirstName; String? get approvedByAdminLastName; List<String>? get productImageUrls;
+ String get id; String get vehicleName; String get clientName; String get clientId; String? get status; String? get vehicleImage; String? get contractType; String? get totalServiceFee; String? get serviceContractPdf; String? get productName; String? get collectorFirstName; String? get collectorLastName; String? get totalPrice; String? get initialPayment; String? get installmentAmount; int? get installmentPeriodMonths; String? get interestRate; String? get totalInterest; String? get monthlyPayment; String? get productPrice; String? get userFirstName; String? get userLastName; String? get approvedByAdminFirstName; String? get approvedByAdminLastName; List<String>? get productImageUrls;
 /// Create a copy of ContractItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -574,7 +574,7 @@ abstract mixin class $ContractItemModelCopyWith<$Res>  {
   factory $ContractItemModelCopyWith(ContractItemModel value, $Res Function(ContractItemModel) _then) = _$ContractItemModelCopyWithImpl;
 @useResult
 $Res call({
- int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
+ String id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
 });
 
 
@@ -594,7 +594,7 @@ class _$ContractItemModelCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,Object? totalPrice = freezed,Object? initialPayment = freezed,Object? installmentAmount = freezed,Object? installmentPeriodMonths = freezed,Object? interestRate = freezed,Object? totalInterest = freezed,Object? monthlyPayment = freezed,Object? productPrice = freezed,Object? userFirstName = freezed,Object? userLastName = freezed,Object? approvedByAdminFirstName = freezed,Object? approvedByAdminLastName = freezed,Object? productImageUrls = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
+as String,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
 as String,clientName: null == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
 as String,clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
 as String,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
@@ -703,7 +703,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContractItemModel() when $default != null:
 return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
@@ -724,7 +724,7 @@ return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)  $default,) {final _that = this;
 switch (_that) {
 case _ContractItemModel():
 return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
@@ -744,7 +744,7 @@ return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,) {final _that = this;
 switch (_that) {
 case _ContractItemModel() when $default != null:
 return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
@@ -762,7 +762,7 @@ class _ContractItemModel extends ContractItemModel {
   const _ContractItemModel({required this.id, required this.vehicleName, required this.clientName, required this.clientId, this.status, this.vehicleImage, this.contractType, this.totalServiceFee, this.serviceContractPdf, this.productName, this.collectorFirstName, this.collectorLastName, this.totalPrice, this.initialPayment, this.installmentAmount, this.installmentPeriodMonths, this.interestRate, this.totalInterest, this.monthlyPayment, this.productPrice, this.userFirstName, this.userLastName, this.approvedByAdminFirstName, this.approvedByAdminLastName, final  List<String>? productImageUrls}): _productImageUrls = productImageUrls,super._();
   
 
-@override final  int id;
+@override final  String id;
 @override final  String vehicleName;
 @override final  String clientName;
 @override final  String clientId;
@@ -826,7 +826,7 @@ abstract mixin class _$ContractItemModelCopyWith<$Res> implements $ContractItemM
   factory _$ContractItemModelCopyWith(_ContractItemModel value, $Res Function(_ContractItemModel) _then) = __$ContractItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
+ String id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
 });
 
 
@@ -846,7 +846,7 @@ class __$ContractItemModelCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,Object? totalPrice = freezed,Object? initialPayment = freezed,Object? installmentAmount = freezed,Object? installmentPeriodMonths = freezed,Object? interestRate = freezed,Object? totalInterest = freezed,Object? monthlyPayment = freezed,Object? productPrice = freezed,Object? userFirstName = freezed,Object? userLastName = freezed,Object? approvedByAdminFirstName = freezed,Object? approvedByAdminLastName = freezed,Object? productImageUrls = freezed,}) {
   return _then(_ContractItemModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
+as String,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
 as String,clientName: null == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
 as String,clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
 as String,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable

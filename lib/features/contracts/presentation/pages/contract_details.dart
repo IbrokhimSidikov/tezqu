@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/di/di.dart';
 import '../../domain/entities/contract_entity.dart';
+import '../cubit/contract_cubit.dart';
 
 class ContractDetails extends StatefulWidget {
   final ContractItemEntity? contract;
@@ -29,7 +32,8 @@ class _ContractDetailsState extends State<ContractDetails> {
   @override
   Widget build(BuildContext context) {
     final contract = widget.contract;
-    
+
+
     if (contract == null) {
       return Scaffold(
         appBar: AppBar(
@@ -382,8 +386,8 @@ class _ContractDetailsState extends State<ContractDetails> {
               child: Text(
                 'Rad etish',
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -407,8 +411,8 @@ class _ContractDetailsState extends State<ContractDetails> {
               child: Text(
                 'Tasdiqlash',
                 style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -426,20 +430,62 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 
   void _showRejectDialog() {
+    final contract = widget.contract;
+    if (contract == null) return;
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Rad etish'),
         content: const Text('Shartnomani rad etishni xohlaysizmi?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Bekor qilish'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Implement reject logic here
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              
+              // Show loading indicator
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+
+              // Call reject API
+              final cubit = getIt<ContractCubit>();
+              final success = await cubit.rejectContractAction(contract.id);
+              
+              // Hide loading
+              if (mounted) Navigator.pop(context);
+              
+              if (success) {
+                // Show success message
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Shartnoma rad etildi'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  // Go back to contracts list
+                  Navigator.pop(context);
+                }
+              } else {
+                // Show error message
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Xatolik yuz berdi'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
             child: const Text('Rad etish'),
           ),
@@ -449,20 +495,62 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 
   void _showApproveDialog() {
+    final contract = widget.contract;
+    if (contract == null) return;
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Tasdiqlash'),
         content: const Text('Shartnomani tasdiqlashni xohlaysizmi?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Bekor qilish'),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Implement approve logic here
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              
+              // Show loading indicator
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+
+              // Call accept API
+              final cubit = getIt<ContractCubit>();
+              final success = await cubit.acceptContractAction(contract.id);
+              
+              // Hide loading
+              if (mounted) Navigator.pop(context);
+              
+              if (success) {
+                // Show success message
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Shartnoma tasdiqlandi'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  // Go back to contracts list
+                  Navigator.pop(context);
+                }
+              } else {
+                // Show error message
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Xatolik yuz berdi'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
             child: const Text('Tasdiqlash'),
           ),

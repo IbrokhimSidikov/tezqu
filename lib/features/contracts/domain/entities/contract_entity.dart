@@ -25,7 +25,7 @@ class ContractGroupEntity extends Equatable {
 }
 
 class ContractItemEntity extends Equatable {
-  final int id;
+  final String id;
   final String vehicleName;
   final String clientName;
   final String clientId;

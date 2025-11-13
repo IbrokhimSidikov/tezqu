@@ -82,7 +82,7 @@ class ContractGroupModel with _$ContractGroupModel {
 @Freezed(toJson: false, fromJson: false)
 class ContractItemModel with _$ContractItemModel {
   const factory ContractItemModel({
-    required int id,
+    required String id,
     required String vehicleName,
     required String clientName,
     required String clientId,
@@ -113,10 +113,10 @@ class ContractItemModel with _$ContractItemModel {
 
   factory ContractItemModel.fromJson(Map<String, dynamic> json) {
     // Handle id as either int or String
-    int parseId(dynamic value) {
-      if (value is int) return value;
-      if (value is String) return int.tryParse(value) ?? 0;
-      return 0;
+    String parseId(dynamic value) {
+      if (value is String) return value;
+      if (value is int) return value.toString();
+      return '';
     }
 
     // Extract product name, price, and image URLs from nested product object
@@ -228,7 +228,7 @@ class ContractItemModel with _$ContractItemModel {
 
   @override
   // TODO: implement id
-  int get id => throw UnimplementedError();
+  String get id => throw UnimplementedError();
 
   @override
   // TODO: implement status

@@ -25,4 +25,32 @@ class ContractRepositoryImpl implements ContractRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> acceptContract(String contractId) async {
+    try {
+      await remoteDataSource.acceptContract(contractId);
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ServerFailure(
+        e.response?.data['message'] ?? 'Failed to accept contract',
+      ));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> rejectContract(String contractId) async {
+    try {
+      await remoteDataSource.rejectContract(contractId);
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ServerFailure(
+        e.response?.data['message'] ?? 'Failed to reject contract',
+      ));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

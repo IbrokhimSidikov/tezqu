@@ -35,7 +35,9 @@ import '../../features/contracts/data/repositories/contract_repository_impl.dart
     as _i141;
 import '../../features/contracts/domain/repositories/contract_repository.dart'
     as _i841;
+import '../../features/contracts/domain/usecases/accept_contract.dart' as _i432;
 import '../../features/contracts/domain/usecases/get_contracts.dart' as _i609;
+import '../../features/contracts/domain/usecases/reject_contract.dart' as _i594;
 import '../../features/contracts/presentation/cubit/contract_cubit.dart'
     as _i1055;
 import '../../features/home/data/datasources/dashboard_remote_data_source.dart'
@@ -233,14 +235,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
     );
+    gh.lazySingleton<_i594.RejectContract>(
+      () => _i594.RejectContract(gh<_i841.ContractRepository>()),
+    );
     gh.lazySingleton<_i609.GetContracts>(
       () => _i609.GetContracts(gh<_i841.ContractRepository>()),
     );
+    gh.lazySingleton<_i432.AcceptContract>(
+      () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
+    );
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),
-    );
-    gh.factory<_i1055.ContractCubit>(
-      () => _i1055.ContractCubit(gh<_i609.GetContracts>()),
     );
     gh.factory<_i521.AuthCubit>(
       () => _i521.AuthCubit(
@@ -250,6 +255,13 @@ extension GetItInjectableX on _i174.GetIt {
         sendCodeUseCase: gh<_i789.SendCodeUseCase>(),
         sendLoginCodeUseCase: gh<_i1008.SendLoginCodeUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),
+      ),
+    );
+    gh.factory<_i1055.ContractCubit>(
+      () => _i1055.ContractCubit(
+        gh<_i609.GetContracts>(),
+        gh<_i432.AcceptContract>(),
+        gh<_i594.RejectContract>(),
       ),
     );
     return this;
