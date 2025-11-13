@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../domain/entities/contract_entity.dart';
 import '../cubit/contract_cubit.dart';
 import '../cubit/contract_state.dart';
@@ -165,7 +167,10 @@ class ContractsView extends StatelessWidget {
   Widget _buildContractItem(BuildContext context, ContractItemEntity contract) {
     return GestureDetector(
       onTap: () {
-        // TODO: Navigate to contract details
+        context.pushNamed(
+          'contractDetails',
+          extra: contract,
+        );
       },
       child: Container(
         padding: EdgeInsets.all(16.w),

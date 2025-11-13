@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tezqu/features/auth/presentation/pages/login_otp_page.dart';
+import 'package:tezqu/features/contracts/domain/entities/contract_entity.dart';
+import 'package:tezqu/features/contracts/presentation/pages/contract_details.dart';
 import 'package:tezqu/features/contracts/presentation/pages/contracts.dart';
 import 'package:tezqu/features/home/presentation/pages/home.dart';
 import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
@@ -37,6 +39,7 @@ class AppRoutes {
   static const String favourites = '/favourites';
   static const String notifications = '/notifications';
   static const String contracts = '/contracts';
+  static const String contractDetails = '/contractDetails';
 
   static final GoRouter router = GoRouter(
     initialLocation: splash,
@@ -150,6 +153,14 @@ class AppRoutes {
         path: contracts,
         name: 'contracts',
         builder: (context, state) => const ContractsPage(),
+      ),
+      GoRoute(
+        path: contractDetails,
+        name: 'contractDetails',
+        builder: (context, state) {
+          final contract = state.extra != null ? state.extra as ContractItemEntity : null;
+          return ContractDetails(contract: contract);
+        },
       ),
     ],
   );
