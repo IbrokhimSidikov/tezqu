@@ -354,6 +354,9 @@ class _ContractDetailsState extends State<ContractDetails> {
   }
 
   Widget _buildBottomButtons() {
+    final contract = widget.contract;
+    final isUserAccepted = contract?.userAccepted ?? false;
+    
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -371,17 +374,19 @@ class _ContractDetailsState extends State<ContractDetails> {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: isUserAccepted ? null : () {
                 _showRejectDialog();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.cxFEDA84,
+                backgroundColor: isUserAccepted ? AppColors.cxAFB1B1 : AppColors.cxFEDA84,
                 foregroundColor: AppColors.cxBlack,
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.r),
                 ),
+                disabledBackgroundColor: AppColors.cxAFB1B1,
+                disabledForegroundColor: AppColors.cxBlack.withValues(alpha: 0.5),
               ),
               child: Text(
                 'Rad etish',
@@ -395,18 +400,20 @@ class _ContractDetailsState extends State<ContractDetails> {
           SizedBox(width: 12.w),
           Expanded(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: isUserAccepted ? null : () {
                 // Handle approve action
                 _showApproveDialog();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.cxBlack,
+                backgroundColor: isUserAccepted ? AppColors.cxAFB1B1 : AppColors.cxBlack,
                 foregroundColor: AppColors.cxWhite,
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.r),
                 ),
+                disabledBackgroundColor: AppColors.cxAFB1B1,
+                disabledForegroundColor: AppColors.cxWhite.withValues(alpha: 0.5),
               ),
               child: Text(
                 'Tasdiqlash',

@@ -107,6 +107,7 @@ class ContractItemModel with _$ContractItemModel {
     String? approvedByAdminFirstName,
     String? approvedByAdminLastName,
     List<String>? productImageUrls,
+    bool? userAccepted,
   }) = _ContractItemModel;
 
   const ContractItemModel._();
@@ -185,6 +186,7 @@ class ContractItemModel with _$ContractItemModel {
       approvedByAdminFirstName: approvedByAdminFirstName,
       approvedByAdminLastName: approvedByAdminLastName,
       productImageUrls: productImageUrls,
+      userAccepted: json['user_accepted'] as bool?,
     );
   }
 
@@ -215,6 +217,7 @@ class ContractItemModel with _$ContractItemModel {
       approvedByAdminFirstName: approvedByAdminFirstName,
       approvedByAdminLastName: approvedByAdminLastName,
       productImageUrls: productImageUrls,
+      userAccepted: userAccepted,
     );
   }
 
@@ -317,4 +320,8 @@ class ContractItemModel with _$ContractItemModel {
   @override
   // TODO: implement productImageUrls
   List<String>? get productImageUrls => throw UnimplementedError();
+
+  @override
+  // TODO: implement userAccepted
+  bool? get userAccepted => throw UnimplementedError();
 }
