@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -220,18 +222,23 @@ class _ContractDetailsState extends State<ContractDetails> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.r),
-                  child: Image.network(
-                    images[index],
+                  child: CachedNetworkImage(
+                    imageUrl: images[index],
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Icon(
-                          Icons.directions_car,
-                          size: 80.sp,
-                          color: AppColors.cxAFB1B1,
-                        ),
-                      );
-                    },
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        color: Colors.white,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Center(
+                      child: Icon(
+                        Icons.directions_car,
+                        size: 80.sp,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
                   ),
                 ),
               );
