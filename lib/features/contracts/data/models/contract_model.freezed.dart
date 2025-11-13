@@ -543,7 +543,7 @@ as List<ContractItemModel>,
 /// @nodoc
 mixin _$ContractItemModel {
 
- int get id; String get vehicleName; String get clientName; String get clientId; String? get status; String? get vehicleImage; String? get contractType; String? get totalServiceFee; String? get serviceContractPdf; String? get productName; String? get collectorFirstName; String? get collectorLastName;
+ int get id; String get vehicleName; String get clientName; String get clientId; String? get status; String? get vehicleImage; String? get contractType; String? get totalServiceFee; String? get serviceContractPdf; String? get productName; String? get collectorFirstName; String? get collectorLastName; String? get totalPrice; String? get initialPayment; String? get installmentAmount; int? get installmentPeriodMonths; String? get interestRate; String? get totalInterest; String? get monthlyPayment; String? get productPrice; String? get userFirstName; String? get userLastName; String? get approvedByAdminFirstName; String? get approvedByAdminLastName; List<String>? get productImageUrls;
 /// Create a copy of ContractItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -554,16 +554,16 @@ $ContractItemModelCopyWith<ContractItemModel> get copyWith => _$ContractItemMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.vehicleName, vehicleName) || other.vehicleName == vehicleName)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.status, status) || other.status == status)&&(identical(other.vehicleImage, vehicleImage) || other.vehicleImage == vehicleImage)&&(identical(other.contractType, contractType) || other.contractType == contractType)&&(identical(other.totalServiceFee, totalServiceFee) || other.totalServiceFee == totalServiceFee)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.collectorFirstName, collectorFirstName) || other.collectorFirstName == collectorFirstName)&&(identical(other.collectorLastName, collectorLastName) || other.collectorLastName == collectorLastName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.vehicleName, vehicleName) || other.vehicleName == vehicleName)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.status, status) || other.status == status)&&(identical(other.vehicleImage, vehicleImage) || other.vehicleImage == vehicleImage)&&(identical(other.contractType, contractType) || other.contractType == contractType)&&(identical(other.totalServiceFee, totalServiceFee) || other.totalServiceFee == totalServiceFee)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.collectorFirstName, collectorFirstName) || other.collectorFirstName == collectorFirstName)&&(identical(other.collectorLastName, collectorLastName) || other.collectorLastName == collectorLastName)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.initialPayment, initialPayment) || other.initialPayment == initialPayment)&&(identical(other.installmentAmount, installmentAmount) || other.installmentAmount == installmentAmount)&&(identical(other.installmentPeriodMonths, installmentPeriodMonths) || other.installmentPeriodMonths == installmentPeriodMonths)&&(identical(other.interestRate, interestRate) || other.interestRate == interestRate)&&(identical(other.totalInterest, totalInterest) || other.totalInterest == totalInterest)&&(identical(other.monthlyPayment, monthlyPayment) || other.monthlyPayment == monthlyPayment)&&(identical(other.productPrice, productPrice) || other.productPrice == productPrice)&&(identical(other.userFirstName, userFirstName) || other.userFirstName == userFirstName)&&(identical(other.userLastName, userLastName) || other.userLastName == userLastName)&&(identical(other.approvedByAdminFirstName, approvedByAdminFirstName) || other.approvedByAdminFirstName == approvedByAdminFirstName)&&(identical(other.approvedByAdminLastName, approvedByAdminLastName) || other.approvedByAdminLastName == approvedByAdminLastName)&&const DeepCollectionEquality().equals(other.productImageUrls, productImageUrls));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,vehicleName,clientName,clientId,status,vehicleImage,contractType,totalServiceFee,serviceContractPdf,productName,collectorFirstName,collectorLastName);
+int get hashCode => Object.hashAll([runtimeType,id,vehicleName,clientName,clientId,status,vehicleImage,contractType,totalServiceFee,serviceContractPdf,productName,collectorFirstName,collectorLastName,totalPrice,initialPayment,installmentAmount,installmentPeriodMonths,interestRate,totalInterest,monthlyPayment,productPrice,userFirstName,userLastName,approvedByAdminFirstName,approvedByAdminLastName,const DeepCollectionEquality().hash(productImageUrls)]);
 
 @override
 String toString() {
-  return 'ContractItemModel(id: $id, vehicleName: $vehicleName, clientName: $clientName, clientId: $clientId, status: $status, vehicleImage: $vehicleImage, contractType: $contractType, totalServiceFee: $totalServiceFee, serviceContractPdf: $serviceContractPdf, productName: $productName, collectorFirstName: $collectorFirstName, collectorLastName: $collectorLastName)';
+  return 'ContractItemModel(id: $id, vehicleName: $vehicleName, clientName: $clientName, clientId: $clientId, status: $status, vehicleImage: $vehicleImage, contractType: $contractType, totalServiceFee: $totalServiceFee, serviceContractPdf: $serviceContractPdf, productName: $productName, collectorFirstName: $collectorFirstName, collectorLastName: $collectorLastName, totalPrice: $totalPrice, initialPayment: $initialPayment, installmentAmount: $installmentAmount, installmentPeriodMonths: $installmentPeriodMonths, interestRate: $interestRate, totalInterest: $totalInterest, monthlyPayment: $monthlyPayment, productPrice: $productPrice, userFirstName: $userFirstName, userLastName: $userLastName, approvedByAdminFirstName: $approvedByAdminFirstName, approvedByAdminLastName: $approvedByAdminLastName, productImageUrls: $productImageUrls)';
 }
 
 
@@ -574,7 +574,7 @@ abstract mixin class $ContractItemModelCopyWith<$Res>  {
   factory $ContractItemModelCopyWith(ContractItemModel value, $Res Function(ContractItemModel) _then) = _$ContractItemModelCopyWithImpl;
 @useResult
 $Res call({
- int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName
+ int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
 });
 
 
@@ -591,7 +591,7 @@ class _$ContractItemModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractItemModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,Object? totalPrice = freezed,Object? initialPayment = freezed,Object? installmentAmount = freezed,Object? installmentPeriodMonths = freezed,Object? interestRate = freezed,Object? totalInterest = freezed,Object? monthlyPayment = freezed,Object? productPrice = freezed,Object? userFirstName = freezed,Object? userLastName = freezed,Object? approvedByAdminFirstName = freezed,Object? approvedByAdminLastName = freezed,Object? productImageUrls = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
@@ -605,7 +605,20 @@ as String?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceCont
 as String?,productName: freezed == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String?,collectorFirstName: freezed == collectorFirstName ? _self.collectorFirstName : collectorFirstName // ignore: cast_nullable_to_non_nullable
 as String?,collectorLastName: freezed == collectorLastName ? _self.collectorLastName : collectorLastName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,totalPrice: freezed == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
+as String?,initialPayment: freezed == initialPayment ? _self.initialPayment : initialPayment // ignore: cast_nullable_to_non_nullable
+as String?,installmentAmount: freezed == installmentAmount ? _self.installmentAmount : installmentAmount // ignore: cast_nullable_to_non_nullable
+as String?,installmentPeriodMonths: freezed == installmentPeriodMonths ? _self.installmentPeriodMonths : installmentPeriodMonths // ignore: cast_nullable_to_non_nullable
+as int?,interestRate: freezed == interestRate ? _self.interestRate : interestRate // ignore: cast_nullable_to_non_nullable
+as String?,totalInterest: freezed == totalInterest ? _self.totalInterest : totalInterest // ignore: cast_nullable_to_non_nullable
+as String?,monthlyPayment: freezed == monthlyPayment ? _self.monthlyPayment : monthlyPayment // ignore: cast_nullable_to_non_nullable
+as String?,productPrice: freezed == productPrice ? _self.productPrice : productPrice // ignore: cast_nullable_to_non_nullable
+as String?,userFirstName: freezed == userFirstName ? _self.userFirstName : userFirstName // ignore: cast_nullable_to_non_nullable
+as String?,userLastName: freezed == userLastName ? _self.userLastName : userLastName // ignore: cast_nullable_to_non_nullable
+as String?,approvedByAdminFirstName: freezed == approvedByAdminFirstName ? _self.approvedByAdminFirstName : approvedByAdminFirstName // ignore: cast_nullable_to_non_nullable
+as String?,approvedByAdminLastName: freezed == approvedByAdminLastName ? _self.approvedByAdminLastName : approvedByAdminLastName // ignore: cast_nullable_to_non_nullable
+as String?,productImageUrls: freezed == productImageUrls ? _self.productImageUrls : productImageUrls // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 
@@ -690,10 +703,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContractItemModel() when $default != null:
-return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName);case _:
+return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
   return orElse();
 
 }
@@ -711,10 +724,10 @@ return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)  $default,) {final _that = this;
 switch (_that) {
 case _ContractItemModel():
-return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName);case _:
+return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -731,10 +744,10 @@ return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String vehicleName,  String clientName,  String clientId,  String? status,  String? vehicleImage,  String? contractType,  String? totalServiceFee,  String? serviceContractPdf,  String? productName,  String? collectorFirstName,  String? collectorLastName,  String? totalPrice,  String? initialPayment,  String? installmentAmount,  int? installmentPeriodMonths,  String? interestRate,  String? totalInterest,  String? monthlyPayment,  String? productPrice,  String? userFirstName,  String? userLastName,  String? approvedByAdminFirstName,  String? approvedByAdminLastName,  List<String>? productImageUrls)?  $default,) {final _that = this;
 switch (_that) {
 case _ContractItemModel() when $default != null:
-return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName);case _:
+return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that.status,_that.vehicleImage,_that.contractType,_that.totalServiceFee,_that.serviceContractPdf,_that.productName,_that.collectorFirstName,_that.collectorLastName,_that.totalPrice,_that.initialPayment,_that.installmentAmount,_that.installmentPeriodMonths,_that.interestRate,_that.totalInterest,_that.monthlyPayment,_that.productPrice,_that.userFirstName,_that.userLastName,_that.approvedByAdminFirstName,_that.approvedByAdminLastName,_that.productImageUrls);case _:
   return null;
 
 }
@@ -746,7 +759,7 @@ return $default(_that.id,_that.vehicleName,_that.clientName,_that.clientId,_that
 
 
 class _ContractItemModel extends ContractItemModel {
-  const _ContractItemModel({required this.id, required this.vehicleName, required this.clientName, required this.clientId, this.status, this.vehicleImage, this.contractType, this.totalServiceFee, this.serviceContractPdf, this.productName, this.collectorFirstName, this.collectorLastName}): super._();
+  const _ContractItemModel({required this.id, required this.vehicleName, required this.clientName, required this.clientId, this.status, this.vehicleImage, this.contractType, this.totalServiceFee, this.serviceContractPdf, this.productName, this.collectorFirstName, this.collectorLastName, this.totalPrice, this.initialPayment, this.installmentAmount, this.installmentPeriodMonths, this.interestRate, this.totalInterest, this.monthlyPayment, this.productPrice, this.userFirstName, this.userLastName, this.approvedByAdminFirstName, this.approvedByAdminLastName, final  List<String>? productImageUrls}): _productImageUrls = productImageUrls,super._();
   
 
 @override final  int id;
@@ -761,6 +774,27 @@ class _ContractItemModel extends ContractItemModel {
 @override final  String? productName;
 @override final  String? collectorFirstName;
 @override final  String? collectorLastName;
+@override final  String? totalPrice;
+@override final  String? initialPayment;
+@override final  String? installmentAmount;
+@override final  int? installmentPeriodMonths;
+@override final  String? interestRate;
+@override final  String? totalInterest;
+@override final  String? monthlyPayment;
+@override final  String? productPrice;
+@override final  String? userFirstName;
+@override final  String? userLastName;
+@override final  String? approvedByAdminFirstName;
+@override final  String? approvedByAdminLastName;
+ final  List<String>? _productImageUrls;
+@override List<String>? get productImageUrls {
+  final value = _productImageUrls;
+  if (value == null) return null;
+  if (_productImageUrls is EqualUnmodifiableListView) return _productImageUrls;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of ContractItemModel
 /// with the given fields replaced by the non-null parameter values.
@@ -772,16 +806,16 @@ _$ContractItemModelCopyWith<_ContractItemModel> get copyWith => __$ContractItemM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.vehicleName, vehicleName) || other.vehicleName == vehicleName)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.status, status) || other.status == status)&&(identical(other.vehicleImage, vehicleImage) || other.vehicleImage == vehicleImage)&&(identical(other.contractType, contractType) || other.contractType == contractType)&&(identical(other.totalServiceFee, totalServiceFee) || other.totalServiceFee == totalServiceFee)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.collectorFirstName, collectorFirstName) || other.collectorFirstName == collectorFirstName)&&(identical(other.collectorLastName, collectorLastName) || other.collectorLastName == collectorLastName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractItemModel&&(identical(other.id, id) || other.id == id)&&(identical(other.vehicleName, vehicleName) || other.vehicleName == vehicleName)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.status, status) || other.status == status)&&(identical(other.vehicleImage, vehicleImage) || other.vehicleImage == vehicleImage)&&(identical(other.contractType, contractType) || other.contractType == contractType)&&(identical(other.totalServiceFee, totalServiceFee) || other.totalServiceFee == totalServiceFee)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.collectorFirstName, collectorFirstName) || other.collectorFirstName == collectorFirstName)&&(identical(other.collectorLastName, collectorLastName) || other.collectorLastName == collectorLastName)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.initialPayment, initialPayment) || other.initialPayment == initialPayment)&&(identical(other.installmentAmount, installmentAmount) || other.installmentAmount == installmentAmount)&&(identical(other.installmentPeriodMonths, installmentPeriodMonths) || other.installmentPeriodMonths == installmentPeriodMonths)&&(identical(other.interestRate, interestRate) || other.interestRate == interestRate)&&(identical(other.totalInterest, totalInterest) || other.totalInterest == totalInterest)&&(identical(other.monthlyPayment, monthlyPayment) || other.monthlyPayment == monthlyPayment)&&(identical(other.productPrice, productPrice) || other.productPrice == productPrice)&&(identical(other.userFirstName, userFirstName) || other.userFirstName == userFirstName)&&(identical(other.userLastName, userLastName) || other.userLastName == userLastName)&&(identical(other.approvedByAdminFirstName, approvedByAdminFirstName) || other.approvedByAdminFirstName == approvedByAdminFirstName)&&(identical(other.approvedByAdminLastName, approvedByAdminLastName) || other.approvedByAdminLastName == approvedByAdminLastName)&&const DeepCollectionEquality().equals(other._productImageUrls, _productImageUrls));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,vehicleName,clientName,clientId,status,vehicleImage,contractType,totalServiceFee,serviceContractPdf,productName,collectorFirstName,collectorLastName);
+int get hashCode => Object.hashAll([runtimeType,id,vehicleName,clientName,clientId,status,vehicleImage,contractType,totalServiceFee,serviceContractPdf,productName,collectorFirstName,collectorLastName,totalPrice,initialPayment,installmentAmount,installmentPeriodMonths,interestRate,totalInterest,monthlyPayment,productPrice,userFirstName,userLastName,approvedByAdminFirstName,approvedByAdminLastName,const DeepCollectionEquality().hash(_productImageUrls)]);
 
 @override
 String toString() {
-  return 'ContractItemModel(id: $id, vehicleName: $vehicleName, clientName: $clientName, clientId: $clientId, status: $status, vehicleImage: $vehicleImage, contractType: $contractType, totalServiceFee: $totalServiceFee, serviceContractPdf: $serviceContractPdf, productName: $productName, collectorFirstName: $collectorFirstName, collectorLastName: $collectorLastName)';
+  return 'ContractItemModel(id: $id, vehicleName: $vehicleName, clientName: $clientName, clientId: $clientId, status: $status, vehicleImage: $vehicleImage, contractType: $contractType, totalServiceFee: $totalServiceFee, serviceContractPdf: $serviceContractPdf, productName: $productName, collectorFirstName: $collectorFirstName, collectorLastName: $collectorLastName, totalPrice: $totalPrice, initialPayment: $initialPayment, installmentAmount: $installmentAmount, installmentPeriodMonths: $installmentPeriodMonths, interestRate: $interestRate, totalInterest: $totalInterest, monthlyPayment: $monthlyPayment, productPrice: $productPrice, userFirstName: $userFirstName, userLastName: $userLastName, approvedByAdminFirstName: $approvedByAdminFirstName, approvedByAdminLastName: $approvedByAdminLastName, productImageUrls: $productImageUrls)';
 }
 
 
@@ -792,7 +826,7 @@ abstract mixin class _$ContractItemModelCopyWith<$Res> implements $ContractItemM
   factory _$ContractItemModelCopyWith(_ContractItemModel value, $Res Function(_ContractItemModel) _then) = __$ContractItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName
+ int id, String vehicleName, String clientName, String clientId, String? status, String? vehicleImage, String? contractType, String? totalServiceFee, String? serviceContractPdf, String? productName, String? collectorFirstName, String? collectorLastName, String? totalPrice, String? initialPayment, String? installmentAmount, int? installmentPeriodMonths, String? interestRate, String? totalInterest, String? monthlyPayment, String? productPrice, String? userFirstName, String? userLastName, String? approvedByAdminFirstName, String? approvedByAdminLastName, List<String>? productImageUrls
 });
 
 
@@ -809,7 +843,7 @@ class __$ContractItemModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractItemModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? vehicleName = null,Object? clientName = null,Object? clientId = null,Object? status = freezed,Object? vehicleImage = freezed,Object? contractType = freezed,Object? totalServiceFee = freezed,Object? serviceContractPdf = freezed,Object? productName = freezed,Object? collectorFirstName = freezed,Object? collectorLastName = freezed,Object? totalPrice = freezed,Object? initialPayment = freezed,Object? installmentAmount = freezed,Object? installmentPeriodMonths = freezed,Object? interestRate = freezed,Object? totalInterest = freezed,Object? monthlyPayment = freezed,Object? productPrice = freezed,Object? userFirstName = freezed,Object? userLastName = freezed,Object? approvedByAdminFirstName = freezed,Object? approvedByAdminLastName = freezed,Object? productImageUrls = freezed,}) {
   return _then(_ContractItemModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,vehicleName: null == vehicleName ? _self.vehicleName : vehicleName // ignore: cast_nullable_to_non_nullable
@@ -823,7 +857,20 @@ as String?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceCont
 as String?,productName: freezed == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String?,collectorFirstName: freezed == collectorFirstName ? _self.collectorFirstName : collectorFirstName // ignore: cast_nullable_to_non_nullable
 as String?,collectorLastName: freezed == collectorLastName ? _self.collectorLastName : collectorLastName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,totalPrice: freezed == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
+as String?,initialPayment: freezed == initialPayment ? _self.initialPayment : initialPayment // ignore: cast_nullable_to_non_nullable
+as String?,installmentAmount: freezed == installmentAmount ? _self.installmentAmount : installmentAmount // ignore: cast_nullable_to_non_nullable
+as String?,installmentPeriodMonths: freezed == installmentPeriodMonths ? _self.installmentPeriodMonths : installmentPeriodMonths // ignore: cast_nullable_to_non_nullable
+as int?,interestRate: freezed == interestRate ? _self.interestRate : interestRate // ignore: cast_nullable_to_non_nullable
+as String?,totalInterest: freezed == totalInterest ? _self.totalInterest : totalInterest // ignore: cast_nullable_to_non_nullable
+as String?,monthlyPayment: freezed == monthlyPayment ? _self.monthlyPayment : monthlyPayment // ignore: cast_nullable_to_non_nullable
+as String?,productPrice: freezed == productPrice ? _self.productPrice : productPrice // ignore: cast_nullable_to_non_nullable
+as String?,userFirstName: freezed == userFirstName ? _self.userFirstName : userFirstName // ignore: cast_nullable_to_non_nullable
+as String?,userLastName: freezed == userLastName ? _self.userLastName : userLastName // ignore: cast_nullable_to_non_nullable
+as String?,approvedByAdminFirstName: freezed == approvedByAdminFirstName ? _self.approvedByAdminFirstName : approvedByAdminFirstName // ignore: cast_nullable_to_non_nullable
+as String?,approvedByAdminLastName: freezed == approvedByAdminLastName ? _self.approvedByAdminLastName : approvedByAdminLastName // ignore: cast_nullable_to_non_nullable
+as String?,productImageUrls: freezed == productImageUrls ? _self._productImageUrls : productImageUrls // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

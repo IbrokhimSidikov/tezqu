@@ -39,10 +39,9 @@ class _ContractDetailsState extends State<ContractDetails> {
       );
     }
 
-    // Create a list of images (for now, we'll use the single image if available)
-    final List<String> images = contract.vehicleImage != null 
-        ? [contract.vehicleImage!] 
-        : [];
+    // Use product image URLs if available, otherwise fall back to vehicle image
+    final List<String> images = contract.productImageUrls ?? 
+        (contract.vehicleImage != null ? [contract.vehicleImage!] : []);
 
     return Scaffold(
       backgroundColor: AppColors.cxWhite,
@@ -114,13 +113,25 @@ class _ContractDetailsState extends State<ContractDetails> {
                   ),
                   SizedBox(height: 12.h),
                   
-                  _buildDetailItem('Sotuvchi', '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim().isEmpty 
-                      ? 'Bahrom Ismoilov ID 2382' 
-                      : '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
-                  _buildDetailItem('Boshlang\'ich to\'lov', '10.000\$'),
-                  _buildDetailItem('Narx', contract.totalServiceFee != null ? '${contract.totalServiceFee} so\'m' : '55.000\$'),
-                  _buildDetailItem('Kafil shaxs', 'Shoqosim Komolov'),
-                  _buildDetailItem('Guvoh', 'Adham Mamajonov'),
+                  // Sotuvchi (Seller/Collector)
+                  if (contract.collectorFirstName != null || contract.collectorLastName != null)
+                    _buildDetailItem('Kollektor', '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
+                  
+                  // Boshlang'ich to'lov (Initial Payment)
+                  if (contract.initialPayment != null)
+                    _buildDetailItem('Boshlang\'ich to\'lov', '${contract.initialPayment} USD'),
+                  
+                  // Narx (Price from product)
+                  if (contract.productPrice != null)
+                    _buildDetailItem('Narx', '${contract.productPrice} USD'),
+                  
+                  // Mijoz (Customer/User)
+                  if (contract.userFirstName != null || contract.userLastName != null)
+                    _buildDetailItem('Mijoz', '${contract.userFirstName ?? ''} ${contract.userLastName ?? ''}'.trim()),
+                  
+                  // Tasdiqlagan admin (Approved by admin)
+                  if (contract.approvedByAdminFirstName != null || contract.approvedByAdminLastName != null)
+                    _buildDetailItem('Tasdiqlagan', '${contract.approvedByAdminFirstName ?? ''} ${contract.approvedByAdminLastName ?? ''}'.trim()),
                   
                   SizedBox(height: 24.h),
                   
@@ -130,20 +141,25 @@ class _ContractDetailsState extends State<ContractDetails> {
                       Expanded(
                         child: _buildInfoCard(
                           'Kelishuv',
-                          'Oyiga: 200\$',
-                          'Muddat: 14 oy',
+                          'Oyiga: ${contract.monthlyPayment ?? "0"} USD',
+                          'Muddat: ${contract.installmentPeriodMonths ?? 0} oy',
                           AppColors.cxF5F7F9,
                           AppColors.cx78D9BF,
                         ),
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
-                        child: _buildInfoCard(
-                          'PDF',
-                          'Shartnoma',
-                          'No.32211',
-                          AppColors.cxF5F7F9,
-                          AppColors.cxAFB1B1,
+                        child: GestureDetector(
+                          onTap: contract.serviceContractPdf != null
+                              ? () => _openPdf(contract.serviceContractPdf!)
+                              : null,
+                          child: _buildInfoCard(
+                            'PDF',
+                            'Shartnoma',
+                            contract.serviceContractPdf != null ? 'Ko\'rish' : 'Mavjud emas',
+                            AppColors.cxF5F7F9,
+                            contract.serviceContractPdf != null ? AppColors.cx78D9BF : AppColors.cxAFB1B1,
+                          ),
                         ),
                       ),
                     ],
@@ -345,16 +361,15 @@ class _ContractDetailsState extends State<ContractDetails> {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                // Handle reject action
                 _showRejectDialog();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFF4E6),
-                foregroundColor: const Color(0xFFFF9800),
+                backgroundColor: AppColors.cxFEDA84,
+                foregroundColor: AppColors.cxBlack,
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(30.r),
                 ),
               ),
               child: Text(
@@ -379,7 +394,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(30.r),
                 ),
               ),
               child: Text(
@@ -394,6 +409,13 @@ class _ContractDetailsState extends State<ContractDetails> {
         ],
       ),
     );
+  }
+
+  Future<void> _openPdf(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   void _showRejectDialog() {

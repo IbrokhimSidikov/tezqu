@@ -37,6 +37,19 @@ class ContractItemEntity extends Equatable {
   final String? productName;
   final String? collectorFirstName;
   final String? collectorLastName;
+  final String? totalPrice;
+  final String? initialPayment;
+  final String? installmentAmount;
+  final int? installmentPeriodMonths;
+  final String? interestRate;
+  final String? totalInterest;
+  final String? monthlyPayment;
+  final String? productPrice;
+  final String? userFirstName;
+  final String? userLastName;
+  final String? approvedByAdminFirstName;
+  final String? approvedByAdminLastName;
+  final List<String>? productImageUrls;
 
   const ContractItemEntity({
     required this.id,
@@ -51,6 +64,19 @@ class ContractItemEntity extends Equatable {
     this.productName,
     this.collectorFirstName,
     this.collectorLastName,
+    this.totalPrice,
+    this.initialPayment,
+    this.installmentAmount,
+    this.installmentPeriodMonths,
+    this.interestRate,
+    this.totalInterest,
+    this.monthlyPayment,
+    this.productPrice,
+    this.userFirstName,
+    this.userLastName,
+    this.approvedByAdminFirstName,
+    this.approvedByAdminLastName,
+    this.productImageUrls,
   });
 
   @override
@@ -67,5 +93,18 @@ class ContractItemEntity extends Equatable {
         productName,
         collectorFirstName,
         collectorLastName,
+        totalPrice,
+        initialPayment,
+        installmentAmount,
+        installmentPeriodMonths,
+        interestRate,
+        totalInterest,
+        monthlyPayment,
+        productPrice,
+        userFirstName,
+        userLastName,
+        approvedByAdminFirstName,
+        approvedByAdminLastName,
+        productImageUrls,
       ];
 }

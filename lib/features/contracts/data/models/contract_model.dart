@@ -94,6 +94,19 @@ class ContractItemModel with _$ContractItemModel {
     String? productName,
     String? collectorFirstName,
     String? collectorLastName,
+    String? totalPrice,
+    String? initialPayment,
+    String? installmentAmount,
+    int? installmentPeriodMonths,
+    String? interestRate,
+    String? totalInterest,
+    String? monthlyPayment,
+    String? productPrice,
+    String? userFirstName,
+    String? userLastName,
+    String? approvedByAdminFirstName,
+    String? approvedByAdminLastName,
+    List<String>? productImageUrls,
   }) = _ContractItemModel;
 
   const ContractItemModel._();
@@ -106,10 +119,20 @@ class ContractItemModel with _$ContractItemModel {
       return 0;
     }
 
-    // Extract product name from nested product object
+    // Extract product name, price, and image URLs from nested product object
     String? productName;
+    String? productPrice;
+    List<String>? productImageUrls;
     if (json['product'] != null && json['product'] is Map) {
       productName = json['product']['name'] as String?;
+      productPrice = json['product']['price'] as String?;
+      
+      // Extract image_urls array
+      if (json['product']['image_urls'] != null && json['product']['image_urls'] is List) {
+        productImageUrls = (json['product']['image_urls'] as List)
+            .map((url) => url.toString())
+            .toList();
+      }
     }
 
     // Extract collector name from nested collector object
@@ -118,6 +141,22 @@ class ContractItemModel with _$ContractItemModel {
     if (json['collector'] != null && json['collector'] is Map) {
       collectorFirstName = json['collector']['first_name'] as String?;
       collectorLastName = json['collector']['last_name'] as String?;
+    }
+
+    // Extract user name from nested user object
+    String? userFirstName;
+    String? userLastName;
+    if (json['user'] != null && json['user'] is Map) {
+      userFirstName = json['user']['first_name'] as String?;
+      userLastName = json['user']['last_name'] as String?;
+    }
+
+    // Extract admin name from nested approved_by_admin_user object
+    String? approvedByAdminFirstName;
+    String? approvedByAdminLastName;
+    if (json['approved_by_admin_user'] != null && json['approved_by_admin_user'] is Map) {
+      approvedByAdminFirstName = json['approved_by_admin_user']['first_name'] as String?;
+      approvedByAdminLastName = json['approved_by_admin_user']['last_name'] as String?;
     }
 
     return ContractItemModel(
@@ -133,6 +172,19 @@ class ContractItemModel with _$ContractItemModel {
       productName: productName,
       collectorFirstName: collectorFirstName,
       collectorLastName: collectorLastName,
+      totalPrice: json['total_price'] as String?,
+      initialPayment: json['initial_payment'] as String?,
+      installmentAmount: json['installment_amount'] as String?,
+      installmentPeriodMonths: json['installment_period_months'] as int?,
+      interestRate: json['interest_rate'] as String?,
+      totalInterest: json['total_interest'] as String?,
+      monthlyPayment: json['monthly_payment'] as String?,
+      productPrice: productPrice,
+      userFirstName: userFirstName,
+      userLastName: userLastName,
+      approvedByAdminFirstName: approvedByAdminFirstName,
+      approvedByAdminLastName: approvedByAdminLastName,
+      productImageUrls: productImageUrls,
     );
   }
 
@@ -150,6 +202,19 @@ class ContractItemModel with _$ContractItemModel {
       productName: productName,
       collectorFirstName: collectorFirstName,
       collectorLastName: collectorLastName,
+      totalPrice: totalPrice,
+      initialPayment: initialPayment,
+      installmentAmount: installmentAmount,
+      installmentPeriodMonths: installmentPeriodMonths,
+      interestRate: interestRate,
+      totalInterest: totalInterest,
+      monthlyPayment: monthlyPayment,
+      productPrice: productPrice,
+      userFirstName: userFirstName,
+      userLastName: userLastName,
+      approvedByAdminFirstName: approvedByAdminFirstName,
+      approvedByAdminLastName: approvedByAdminLastName,
+      productImageUrls: productImageUrls,
     );
   }
 
@@ -200,4 +265,56 @@ class ContractItemModel with _$ContractItemModel {
   @override
   // TODO: implement collectorLastName
   String? get collectorLastName => throw UnimplementedError();
+
+  @override
+  // TODO: implement approvedByAdminFirstName
+  String? get approvedByAdminFirstName => throw UnimplementedError();
+
+  @override
+  // TODO: implement approvedByAdminLastName
+  String? get approvedByAdminLastName => throw UnimplementedError();
+
+  @override
+  // TODO: implement initialPayment
+  String? get initialPayment => throw UnimplementedError();
+
+  @override
+  // TODO: implement installmentAmount
+  String? get installmentAmount => throw UnimplementedError();
+
+  @override
+  // TODO: implement installmentPeriodMonths
+  int? get installmentPeriodMonths => throw UnimplementedError();
+
+  @override
+  // TODO: implement interestRate
+  String? get interestRate => throw UnimplementedError();
+
+  @override
+  // TODO: implement monthlyPayment
+  String? get monthlyPayment => throw UnimplementedError();
+
+  @override
+  // TODO: implement productPrice
+  String? get productPrice => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalInterest
+  String? get totalInterest => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalPrice
+  String? get totalPrice => throw UnimplementedError();
+
+  @override
+  // TODO: implement userFirstName
+  String? get userFirstName => throw UnimplementedError();
+
+  @override
+  // TODO: implement userLastName
+  String? get userLastName => throw UnimplementedError();
+
+  @override
+  // TODO: implement productImageUrls
+  List<String>? get productImageUrls => throw UnimplementedError();
 }
