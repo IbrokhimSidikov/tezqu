@@ -13,34 +13,36 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   final _formKey = GlobalKey<FormState>();
-  final _nomiController = TextEditingController();
-  final _yiliController = TextEditingController();
-  final _davlatRaqamiController = TextEditingController();
-  final _narxiController = TextEditingController();
-  final _izohController = TextEditingController();
-  
-  String? _selectedRangi;
-  String? _selectedYurgani;
-  String? _selectedUzatmalar;
-  String? _selectedYoqilgi;
-  String? _selectedOlinganJoy;
+  final _nameController = TextEditingController();
+  final _yearController = TextEditingController();
+  final _mileageController = TextEditingController();
+  final _plateController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  String? _selectedColor;
+  String? _selectedMileage;
+  String? _selectedTransmission;
+  String? _selectedFuelType;
+  String? _selectedOrigin;
   XFile? _selectedImage;
   
-  final List<String> _ranglar = ['Qora', 'Oq', 'Kulrang', 'Qizil', 'Ko\'k'];
-  final List<String> _yurganlar = ['O\'zbekiston', 'Rossiya', 'Xitoy', 'Koreya', 'Yaponiya'];
-  final List<String> _uzatmalarQutisi = ['Mexanika', 'Avtomat', 'Robot'];
-  final List<String> _yoqilgiTurlari = ['Benzin', 'Dizel', 'Gaz', 'Elektr', 'Gibrid'];
-  final List<String> _olinganJoylar = ['Toshkent', 'Samarqand', 'Buxoro', 'Andijon', 'Farg\'ona'];
+  final List<String> _colors = ['Qora', 'Oq', 'Kulrang', 'Qizil', 'Ko\'k', 'Yashil'];
+  // final List<String> _origin = ['O\'zbekiston', 'Rossiya', 'Xitoy', 'Koreya', 'Yaponiya'];
+  final List<String> _transmission = ['Mexanika', 'Avtomat', 'Robot'];
+  final List<String> _fuelType = ['Benzin', 'Dizel', 'Gaz', 'Elektr', 'Gibrid'];
+  final List<String> _origin = ['Toshkent', 'Samarqand', 'Buxoro', 'Andijon', 'Farg\'ona', 'Xorazm', 'Jizzax', 'Namangan', 'Qashqadaryo', 'Surxondaryo', 'Qoraqalpogiston','Navoiy'];
   
   final ImagePicker _picker = ImagePicker();
   
   @override
   void dispose() {
-    _nomiController.dispose();
-    _yiliController.dispose();
-    _davlatRaqamiController.dispose();
-    _narxiController.dispose();
-    _izohController.dispose();
+    _nameController.dispose();
+    _yearController.dispose();
+    _mileageController.dispose();
+    _plateController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
   
@@ -92,26 +94,28 @@ class _AddProductState extends State<AddProduct> {
         ),
         centerTitle: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
             Row(
               children: [
                 Expanded(
                   child: _buildTextField(
                     label: 'Nomi',
-                    controller: _nomiController,
+                    controller: _nameController,
                   ),
                 ),
                 SizedBox(width: 12.w,),
                 Expanded(
                   child: _buildDropdown(
                     label: 'Yili',
-                    value: _selectedYurgani,
+                    value: _selectedMileage,
                     items: List.generate(30, (index) => (2025 - index).toString()),
-                    onChanged: (value) => setState(() => _selectedYurgani = value),
+                    onChanged: (value) => setState(() => _selectedMileage = value),
                   ),
                 ),
               ],
@@ -122,16 +126,18 @@ class _AddProductState extends State<AddProduct> {
                 Expanded(
                   child: _buildDropdown(
                     label: 'Rangi',
-                    value: _selectedRangi,
-                    items: _ranglar,
-                    onChanged: (value) => setState(() => _selectedRangi = value),
+                    value: _selectedColor,
+                    items: _colors,
+                    onChanged: (value) => setState(() => _selectedColor = value),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: _buildTextField(
                     label: 'Yurgani',
-                    controller: TextEditingController(),
+                    controller: _mileageController,
+                    keyboardType: TextInputType.number,
+                    suffixText: 'km',
                   ),
                 ),
               ],
@@ -142,18 +148,18 @@ class _AddProductState extends State<AddProduct> {
                 Expanded(
                   child: _buildDropdown(
                     label: 'Uzatmalar qutisi',
-                    value: _selectedUzatmalar,
-                    items: _uzatmalarQutisi,
-                    onChanged: (value) => setState(() => _selectedUzatmalar = value),
+                    value: _selectedTransmission,
+                    items: _transmission,
+                    onChanged: (value) => setState(() => _selectedTransmission = value),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildDropdown(
                     label: 'Yoqilg\'i turi',
-                    value: _selectedYoqilgi,
-                    items: _yoqilgiTurlari,
-                    onChanged: (value) => setState(() => _selectedYoqilgi = value),
+                    value: _selectedFuelType,
+                    items: _fuelType,
+                    onChanged: (value) => setState(() => _selectedFuelType = value),
                   ),
                 ),
               ],
@@ -164,14 +170,14 @@ class _AddProductState extends State<AddProduct> {
                 Expanded(
                   child: _buildTextField(
                     label: 'Davlat raqami',
-                    controller: _davlatRaqamiController,
+                    controller: _plateController,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildTextField(
                     label: 'Narxi',
-                    controller: _narxiController,
+                    controller: _priceController,
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -187,9 +193,9 @@ class _AddProductState extends State<AddProduct> {
                 Expanded(
                   child: _buildDropdown(
                     label: 'Olingan joy',
-                    value: _selectedOlinganJoy,
-                    items: _olinganJoylar,
-                    onChanged: (value) => setState(() => _selectedOlinganJoy = value),
+                    value: _selectedOrigin,
+                    items: _origin,
+                    onChanged: (value) => setState(() => _selectedOrigin = value),
                   ),
                 ),
               ],
@@ -197,7 +203,7 @@ class _AddProductState extends State<AddProduct> {
             SizedBox(height: 16.h),
             _buildTextField(
               label: 'Izoh',
-              controller: _izohController,
+              controller: _descriptionController,
               maxLines: 3,
             ),
             SizedBox(height: 32.h),
@@ -222,6 +228,7 @@ class _AddProductState extends State<AddProduct> {
               ),
             ),
           ],
+          ),
         ),
       ),
     );
@@ -232,6 +239,7 @@ class _AddProductState extends State<AddProduct> {
     required TextEditingController controller,
     TextInputType? keyboardType,
     int maxLines = 1,
+    String? suffixText,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,6 +268,11 @@ class _AddProductState extends State<AddProduct> {
             contentPadding: EdgeInsets.symmetric(
               horizontal: 16.h,
               vertical: 16.w,
+            ),
+            suffixText: suffixText,
+            suffixStyle: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.grey.shade600,
             ),
           ),
         ),
