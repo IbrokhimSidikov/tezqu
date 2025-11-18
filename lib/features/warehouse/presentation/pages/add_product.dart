@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -168,12 +169,9 @@ class _AddProductState extends State<AddProduct> {
             Row(
               children: [
                 Expanded(
-                  child: _buildTextField(
-                    label: 'Davlat raqami',
-                    controller: _plateController,
-                  ),
+                  child: _buildPlateNumberField(),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: _buildTextField(
                     label: 'Narxi',
@@ -327,6 +325,51 @@ class _AddProductState extends State<AddProduct> {
     );
   }
   
+  Widget _buildPlateNumberField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Davlat raqami',
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+            color: AppColors.cxBlack,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        TextFormField(
+          controller: _plateController,
+          textCapitalization: TextCapitalization.characters,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z]')),
+            LengthLimitingTextInputFormatter(10),
+            _PlateNumberFormatter(),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFF5F5F5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.r),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16.h,
+              vertical: 16.w,
+            ),
+            hintText: '01 A 234 BC',
+            hintStyle: TextStyle(
+              fontSize: 16.sp,
+              color: Colors.grey.shade400,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildImagePicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,6 +415,42 @@ class _AddProductState extends State<AddProduct> {
           ),
         ),
       ],
+    );
+  }
+}
+
+// Custom formatter for Uzbekistan plate numbers
+// Format: 01 A 234 BC (2 digits + 1 letter + 3 digits + 2 letters)
+class _PlateNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.toUpperCase().replaceAll(' ', '');
+    final buffer = StringBuffer();
+    
+    for (int i = 0; i < text.length; i++) {
+      // Add space after 2nd digit
+      if (i == 2) {
+        buffer.write(' ');
+      }
+      // Add space after 1st letter (position 3 in formatted string)
+      else if (i == 3) {
+        buffer.write(' ');
+      }
+      // Add space after 3 more digits (position 6 in formatted string)
+      else if (i == 6) {
+        buffer.write(' ');
+      }
+      buffer.write(text[i]);
+    }
+    
+    final formatted = buffer.toString();
+    
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
     );
   }
 }
