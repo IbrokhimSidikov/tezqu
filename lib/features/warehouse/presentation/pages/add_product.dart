@@ -202,7 +202,7 @@ class _AddProductState extends State<AddProduct> {
             ),
             SizedBox(height: 32.h),
             SizedBox(
-              height: 56,
+              height: 48.h,
               child: ElevatedButton(
                 onPressed: _submitForm,
                 style: ElevatedButton.styleFrom(
@@ -249,6 +249,7 @@ class _AddProductState extends State<AddProduct> {
           controller: controller,
           keyboardType: keyboardType,
           maxLines: maxLines,
+          textInputAction: maxLines > 1 ? TextInputAction.done : TextInputAction.next,
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color(0xFFF5F5F5),
