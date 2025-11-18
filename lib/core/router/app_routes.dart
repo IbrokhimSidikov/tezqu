@@ -7,6 +7,7 @@ import 'package:tezqu/features/contracts/presentation/pages/contracts.dart';
 import 'package:tezqu/features/home/presentation/pages/home.dart';
 import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
 import 'package:tezqu/features/onboard/presentation/pages/splash_page.dart';
+import 'package:tezqu/features/warehouse/presentation/pages/add_product.dart';
 
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -40,6 +41,7 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String contracts = '/contracts';
   static const String contractDetails = '/contractDetails';
+  static const String addProduct = '/addProduct';
 
   static final GoRouter router = GoRouter(
     initialLocation: splash,
@@ -162,6 +164,12 @@ class AppRoutes {
           return ContractDetails(contract: contract);
         },
       ),
+      GoRoute(
+        path: addProduct,
+        name: 'addProduct',
+        builder: (context, state) => const AddProduct(),
+      ),
+
     ],
   );
 }

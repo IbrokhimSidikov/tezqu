@@ -108,7 +108,9 @@ class _WarehouseState extends State<Warehouse> {
                   iconSize: 29.sp,
                   icon: Icon(Icons.add),
                   color: AppColors.cx43C19F,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(AppRoutes.addProduct);
+                  },
                 ),
               ),
             ),

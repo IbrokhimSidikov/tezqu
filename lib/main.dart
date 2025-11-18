@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezqu/core/constants/app_colors.dart';
 import 'package:tezqu/core/router/app_routes.dart';
 
 import 'core/di/di.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: const Color.fromARGB(255, 214, 135, 18),
+                  seedColor: AppColors.cxWhite,
               ),
               useMaterial3: true,
               fontFamily: 'SFCompact',
