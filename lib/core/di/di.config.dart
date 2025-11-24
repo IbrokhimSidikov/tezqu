@@ -83,6 +83,8 @@ import '../../features/warehouse/data/repositories/warehouse_repository_impl.dar
     as _i413;
 import '../../features/warehouse/domain/repositories/warehouse_repository.dart'
     as _i624;
+import '../../features/warehouse/presentation/cubit/add_product_cubit.dart'
+    as _i279;
 import '../../features/warehouse/presentation/cubit/warehouse_cubit.dart'
     as _i410;
 import '../network/dio_client.dart' as _i667;
@@ -203,6 +205,9 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i852.AuthLocalDataSource>(),
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
+    );
+    gh.factory<_i279.AddProductCubit>(
+      () => _i279.AddProductCubit(gh<_i624.WarehouseRepository>()),
     );
     gh.factory<_i1006.IncomeCubit>(
       () => _i1006.IncomeCubit(

@@ -7,4 +7,15 @@ abstract class WarehouseRepository {
   Future<Either<Failure, List<CategoryModel>>> getCategories();
   Future<Either<Failure, List<ProductModel>>> getAllProducts();
   Future<Either<Failure, List<ProductModel>>> getProductsByCategory(String category);
+  Future<Either<Failure, ProductModel>> createProduct({
+    required String name,
+    required String categoryId,
+    required double price,
+    String? description,
+    String? currencyId,
+    String? carBrandId,
+    String? carModelId,
+    Map<String, dynamic>? customFields,
+    List<String>? imageIds,
+  });
 }

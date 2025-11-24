@@ -167,7 +167,28 @@ class AppRoutes {
       GoRoute(
         path: addProduct,
         name: 'addProduct',
-        builder: (context, state) => const AddProduct(),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: const AddProductWrapper(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0); // from bottom
+              const end = Offset.zero;
+              const curve = Curves.easeOutCubic;
+              
+              final tween = Tween(begin: begin, end: end)
+                  .chain(CurveTween(curve: curve));
+              
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: FadeTransition(
+                  opacity: animation,
+                  child: child,
+                ),
+              );
+            },
+          );
+        },
       ),
 
     ],

@@ -66,4 +66,52 @@ class WarehouseRepositoryImpl implements WarehouseRepository {
       return Left(ServerFailure('Failed to load products by category: ${e.toString()}'));
     }
   }
+
+  @override
+  Future<Either<Failure, ProductModel>> createProduct({
+    required String name,
+    required String categoryId,
+    required double price,
+    String? description,
+    String? currencyId,
+    String? carBrandId,
+    String? carModelId,
+    Map<String, dynamic>? customFields,
+    List<String>? imageIds,
+  }) async {
+    try {
+      final Map<String, dynamic> data = {
+        'name': name,
+        'category_id': categoryId,
+        'price': price,
+      };
+
+      if (description != null && description.isNotEmpty) {
+        data['description'] = description;
+      }
+      if (currencyId != null && currencyId.isNotEmpty) {
+        data['currency_id'] = currencyId;
+      }
+      if (carBrandId != null && carBrandId.isNotEmpty) {
+        data['car_brand_id'] = carBrandId;
+      }
+      if (carModelId != null && carModelId.isNotEmpty) {
+        data['car_model_id'] = carModelId;
+      }
+      if (customFields != null && customFields.isNotEmpty) {
+        data['custom_fields'] = customFields;
+      }
+      if (imageIds != null && imageIds.isNotEmpty) {
+        data['image_ids'] = imageIds;
+      }
+
+      final response = await dioClient.post('/products', data: data);
+      final product = ProductModel.fromJson(response.data);
+      return Right(product);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure('Failed to create product: ${e.toString()}'));
+    }
+  }
 }
