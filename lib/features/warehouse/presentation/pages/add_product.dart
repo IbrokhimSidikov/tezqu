@@ -667,7 +667,7 @@ class _AddProductState extends State<AddProduct> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Rasmlar ($_selectedImages.length/$_maxImages)',
+              'Rasmlar',
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
