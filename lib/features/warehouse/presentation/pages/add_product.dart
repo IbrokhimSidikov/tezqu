@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/network/dio_client.dart';
 import '../cubit/add_product_cubit.dart';
 import '../cubit/add_product_state.dart';
 import '../cubit/warehouse_cubit.dart';
@@ -54,9 +56,12 @@ class _AddProductState extends State<AddProduct> {
   String? _selectedFuelType;
   String? _selectedOrigin;
   String? _selectedCategory;
-  XFile? _selectedImage;
+  List<XFile> _selectedImages = []; // Multiple images
   List<CategoryModel> _categories = [];
   bool _isLoadingCategories = true;
+  bool _isUploadingImages = false;
+  
+  static const int _maxImages = 10;
   
   static const List<String> _colors = ['Qora', 'Oq', 'Kulrang', 'Qizil', 'Ko\'k', 'Yashil'];
   // final List<String> _origin = ['O\'zbekiston', 'Rossiya', 'Xitoy', 'Koreya', 'Yaponiya'];
@@ -125,17 +130,47 @@ class _AddProductState extends State<AddProduct> {
     super.dispose();
   }
   
-  Future<void> _pickImage() async {
-    _picker ??= ImagePicker(); // Lazy initialization
-    final XFile? image = await _picker!.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _selectedImage = image;
-      });
+  Future<void> _pickImages() async {
+    _picker ??= ImagePicker();
+    
+    // Calculate remaining slots
+    final remainingSlots = _maxImages - _selectedImages.length;
+    if (remainingSlots <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Maksimal $_maxImages ta rasm qo\'shish mumkin')),
+      );
+      return;
+    }
+    
+    final List<XFile> images = await _picker!.pickMultiImage();
+    
+    if (images.isNotEmpty) {
+      // Check if adding these would exceed the limit
+      if (_selectedImages.length + images.length > _maxImages) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Faqat $remainingSlots ta rasm qo\'shishingiz mumkin'),
+          ),
+        );
+        // Take only what fits
+        setState(() {
+          _selectedImages.addAll(images.take(remainingSlots));
+        });
+      } else {
+        setState(() {
+          _selectedImages.addAll(images);
+        });
+      }
     }
   }
   
-  void _submitForm() {
+  void _removeImage(int index) {
+    setState(() {
+      _selectedImages.removeAt(index);
+    });
+  }
+  
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       if (_selectedCategory == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -162,12 +197,43 @@ class _AddProductState extends State<AddProduct> {
       if (_plateController.text.isNotEmpty) customFields['plate_number'] = _plateController.text;
       if (_selectedOrigin != null) customFields['origin'] = _selectedOrigin;
 
+      // Phase 1: Upload images first (if any)
+      List<String>? imageIds;
+      if (_selectedImages.isNotEmpty) {
+        setState(() {
+          _isUploadingImages = true;
+        });
+        
+        try {
+          final dioClient = getIt<DioClient>();
+          final imagePaths = _selectedImages.map((xfile) => xfile.path).toList();
+          final uploadedFiles = await dioClient.uploadMultiple(imagePaths, folder: 'products');
+          
+          // Extract IDs from uploaded files
+          imageIds = uploadedFiles.map((file) => file['id'] as String).toList();
+        } catch (e) {
+          setState(() {
+            _isUploadingImages = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Rasmlarni yuklashda xatolik: ${e.toString()}')),
+          );
+          return;
+        }
+        
+        setState(() {
+          _isUploadingImages = false;
+        });
+      }
+
+      // Phase 2: Create product with image IDs
       context.read<AddProductCubit>().createProduct(
         name: _nameController.text,
         categoryId: _selectedCategory!,
         price: price,
         description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
         customFields: customFields.isEmpty ? null : customFields,
+        imageIds: imageIds,
       );
     }
   }
@@ -223,7 +289,7 @@ class _AddProductState extends State<AddProduct> {
         ),
         body: BlocBuilder<AddProductCubit, AddProductState>(
           builder: (context, state) {
-            final isLoading = state is AddProductLoading;
+            final isLoading = state is AddProductLoading || _isUploadingImages;
             
             return Stack(
               children: [
@@ -345,22 +411,14 @@ class _AddProductState extends State<AddProduct> {
               ],
             ),
             SizedBox(height: 16.h),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildImagePicker(),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: _buildDropdown(
-                    label: 'Olingan joy',
-                    value: _selectedOrigin,
-                    items: _origin,
-                    onChanged: (value) => setState(() => _selectedOrigin = value),
-                  ),
-                ),
-              ],
+            _buildDropdown(
+              label: 'Olingan joy',
+              value: _selectedOrigin,
+              items: _origin,
+              onChanged: (value) => setState(() => _selectedOrigin = value),
             ),
+            SizedBox(height: 16.h),
+            _buildImagePicker(),
             SizedBox(height: 16.h),
             _buildTextField(
               label: 'Izoh',
@@ -406,8 +464,35 @@ class _AddProductState extends State<AddProduct> {
                 if (isLoading)
                   Container(
                     color: Colors.black.withOpacity(0.3),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                          if (_isUploadingImages) ...[
+                            SizedBox(height: 16.h),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24.w,
+                                vertical: 12.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                'Rasmlar yuklanmoqda...',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
               ],
@@ -578,46 +663,107 @@ class _AddProductState extends State<AddProduct> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Foto qo\'shish',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.cxBlack,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Rasmlar ($_selectedImages.length/$_maxImages)',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.cxBlack,
+              ),
+            ),
+            if (_selectedImages.length < _maxImages)
+              TextButton.icon(
+                onPressed: _pickImages,
+                icon: Icon(Icons.add_photo_alternate, size: 20.sp),
+                label: const Text('Qo\'shish'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.teal,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                ),
+              ),
+          ],
         ),
         SizedBox(height: 8.h),
-        InkWell(
-          onTap: _pickImage,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.w),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.image_outlined,
-                  color: Colors.teal.shade300,
-                  size: 21.sp,
+        if (_selectedImages.isEmpty)
+          InkWell(
+            onTap: _pickImages,
+            child: Container(
+              height: 120.h,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: Colors.grey.shade300, width: 2),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_photo_alternate_outlined,
+                      size: 48.sp,
+                      color: Colors.grey.shade400,
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'Rasm qo\'shish',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: Text(
-                    _selectedImage?.name ?? '',
-                    style: TextStyle(fontSize: 14.sp),
-                    overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
+        else
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 8.w,
+              mainAxisSpacing: 8.h,
+              childAspectRatio: 1,
+            ),
+            itemCount: _selectedImages.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Image.file(
+                      File(_selectedImages[index].path),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.more_vert,
-                  size: 20.sp,
-                ),
-              ],
-            ),
+                  Positioned(
+                    top: 4.h,
+                    right: 4.w,
+                    child: GestureDetector(
+                      onTap: () => _removeImage(index),
+                      child: Container(
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          size: 16.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-        ),
       ],
     );
   }

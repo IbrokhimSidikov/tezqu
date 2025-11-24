@@ -282,4 +282,48 @@ class DioClient {
   Future<void> clearToken() async {
     await _prefs.remove('auth_token');
   }
+
+  // Upload multiple files
+  Future<List<Map<String, dynamic>>> uploadMultiple(
+    List<String> filePaths, {
+    String folder = 'products',
+  }) async {
+    try {
+      final formData = FormData();
+      
+      // Add all files
+      for (final filePath in filePaths) {
+        formData.files.add(
+          MapEntry(
+            'files',
+            await MultipartFile.fromFile(filePath),
+          ),
+        );
+      }
+      
+      // Add folder parameter
+      formData.fields.add(MapEntry('folder', folder));
+
+      final response = await _dio.post(
+        '/upload/multiple',
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+
+      // Response should be a list of uploaded file objects
+      if (response.data is List) {
+        return (response.data as List)
+            .map((item) => item as Map<String, dynamic>)
+            .toList();
+      }
+      
+      return [];
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
 }
