@@ -35,15 +35,17 @@ class ProductLoaded extends ProductState {
   final List<CategoryModel> categories;
   final List<ProductModel> products;
   final Map<String, List<ProductModel>>? groupedProducts;
+  final String? searchQuery;
 
   const ProductLoaded({
     required this.categories,
     required this.products,
     this.groupedProducts,
+    this.searchQuery,
   });
 
   @override
-  List<Object?> get props => [categories, products, groupedProducts];
+  List<Object?> get props => [categories, products, groupedProducts, searchQuery];
 }
 
 class ProductError extends ProductState {

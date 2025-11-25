@@ -14,6 +14,7 @@ class ProductCubit extends Cubit<ProductState> {
   final CategoryCacheService _categoryCacheService;
   List<CategoryModel> _categories = [];
   String? _currentCategoryId;
+  List<ProductModel> _allProducts = []; // Cache all products for search
 
   ProductCubit(
     this._repository, 
@@ -107,6 +108,9 @@ class ProductCubit extends Cubit<ProductState> {
     result.fold(
       (failure) => emit(ProductError(failure.message, categories: _categories)),
       (products) {
+        // Cache all products for search
+        _allProducts = products;
+        
         // Group products by category
         final Map<String, List<ProductModel>> grouped = {};
         
@@ -146,5 +150,66 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> refreshCategories() async {
     _categoryCacheService.clearCache();
     await initialize();
+  }
+
+  /// Search products by query
+  void searchProducts(String query) {
+    if (state is! ProductLoaded) return;
+    
+    final trimmedQuery = query.trim();
+    
+    if (trimmedQuery.isEmpty) {
+      // If search is cleared, reload all products grouped
+      loadAllProductsGrouped();
+      return;
+    }
+    
+    // Filter products based on search query
+    final searchLower = trimmedQuery.toLowerCase();
+    final filteredProducts = _allProducts.where((product) {
+      // Search in product name
+      if (product.name.isNotEmpty && product.name.toLowerCase().contains(searchLower)) {
+        return true;
+      }
+      
+      // Search in description/details
+      if (product.details.isNotEmpty && product.details.toLowerCase().contains(searchLower)) {
+        return true;
+      }
+      
+      // Search in year
+      if (product.year.isNotEmpty && product.year.toLowerCase().contains(searchLower)) {
+        return true;
+      }
+      
+      // Search in price
+      if (product.price.isNotEmpty && product.price.toLowerCase().contains(searchLower)) {
+        return true;
+      }
+      
+      // Search in custom fields
+      if (product.customFields != null) {
+        final fields = product.customFields!;
+        for (var value in fields.values) {
+          if (value != null && value.toString().toLowerCase().contains(searchLower)) {
+            return true;
+          }
+        }
+      }
+      
+      return false;
+    }).toList();
+    
+    // Don't group products when searching - show flat list
+    emit(ProductLoaded(
+      categories: _categories,
+      products: filteredProducts,
+      searchQuery: trimmedQuery,
+    ));
+  }
+
+  /// Clear search and return to grouped view
+  void clearSearch() {
+    loadAllProductsGrouped();
   }
 }
