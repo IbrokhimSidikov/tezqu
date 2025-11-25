@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tezqu/features/products/data/models/category_model.dart';
+import 'package:tezqu/features/products/data/models/product_model.dart';
 import 'package:tezqu/features/warehouse/domain/repositories/warehouse_repository.dart';
 import 'package:tezqu/features/warehouse/presentation/cubit/warehouse_state.dart';
 import '../../../../core/services/category_cache_service.dart';
@@ -11,6 +12,7 @@ class WarehouseCubit extends Cubit<WarehouseState> {
   final CategoryCacheService _categoryCacheService;
   List<CategoryModel> _categories = [];
   String? _currentCategoryId;
+  List<ProductModel> _allProducts = []; // Cache all products for search
 
   WarehouseCubit(
     this._repository,
@@ -69,7 +71,14 @@ class WarehouseCubit extends Cubit<WarehouseState> {
     
     result.fold(
       (failure) => emit(WarehouseError(failure.message, categories: _categories)),
-      (products) => emit(WarehouseLoaded(categories: _categories, products: products)),
+      (products) {
+        _allProducts = products;
+        print('📦 loadAllProducts: Cached ${products.length} products');
+        if (products.isNotEmpty) {
+          print('📦 Sample names: ${products.take(3).map((p) => p.name).join(", ")}');
+        }
+        emit(WarehouseLoaded(categories: _categories, products: products));
+      },
     );
   }
 
@@ -91,7 +100,14 @@ class WarehouseCubit extends Cubit<WarehouseState> {
     
     result.fold(
       (failure) => emit(WarehouseError(failure.message, categories: _categories)),
-      (products) => emit(WarehouseLoaded(categories: _categories, products: products)),
+      (products) {
+        _allProducts = products;
+        print('📦 loadProductsByCategory: Cached ${products.length} products for category $category');
+        if (products.isNotEmpty) {
+          print('📦 Sample names: ${products.take(3).map((p) => p.name).join(", ")}');
+        }
+        emit(WarehouseLoaded(categories: _categories, products: products));
+      },
     );
   }
 
@@ -99,5 +115,86 @@ class WarehouseCubit extends Cubit<WarehouseState> {
   Future<void> refreshCategories() async {
     _categoryCacheService.clearCache();
     await initialize();
+  }
+
+  /// Search products by query
+  void searchProducts(String query) {
+    if (state is! WarehouseLoaded) {
+      print('🔍 Search aborted: State is not WarehouseLoaded');
+      return;
+    }
+    
+    final trimmedQuery = query.trim();
+    print('🔍 Searching for: "$trimmedQuery"');
+    print('🔍 Total products in cache: ${_allProducts.length}');
+    
+    if (trimmedQuery.isEmpty) {
+      // If search is cleared, reload current category
+      if (_currentCategoryId != null) {
+        loadProductsByCategory(_currentCategoryId!);
+      } else {
+        emit(WarehouseLoaded(
+          categories: _categories,
+          products: _allProducts,
+        ));
+      }
+      return;
+    }
+    
+    // Filter products based on search query
+    final searchLower = trimmedQuery.toLowerCase();
+    final filteredProducts = _allProducts.where((product) {
+      // Search in product name
+      if (product.name.isNotEmpty && product.name.toLowerCase().contains(searchLower)) {
+        print('✅ Found match in name: ${product.name}');
+        return true;
+      }
+      
+      // Search in description/details
+      if (product.details.isNotEmpty && product.details.toLowerCase().contains(searchLower)) {
+        print('✅ Found match in details: ${product.name}');
+        return true;
+      }
+      
+      // Search in year
+      if (product.year.isNotEmpty && product.year.toLowerCase().contains(searchLower)) {
+        print('✅ Found match in year: ${product.name}');
+        return true;
+      }
+      
+      // Search in price
+      if (product.price.isNotEmpty && product.price.toLowerCase().contains(searchLower)) {
+        print('✅ Found match in price: ${product.name}');
+        return true;
+      }
+      
+      // Search in custom fields
+      if (product.customFields != null) {
+        final fields = product.customFields!;
+        for (var value in fields.values) {
+          if (value != null && value.toString().toLowerCase().contains(searchLower)) {
+            print('✅ Found match in custom field: ${product.name}');
+            return true;
+          }
+        }
+      }
+      
+      return false;
+    }).toList();
+    
+    print('🔍 Found ${filteredProducts.length} matching products');
+    
+    emit(WarehouseLoaded(
+      categories: _categories,
+      products: filteredProducts,
+      searchQuery: trimmedQuery,
+    ));
+  }
+
+  /// Clear search and return to category view
+  void clearSearch() {
+    if (_currentCategoryId != null) {
+      loadProductsByCategory(_currentCategoryId!);
+    }
   }
 }

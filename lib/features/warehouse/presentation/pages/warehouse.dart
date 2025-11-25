@@ -24,6 +24,39 @@ class Warehouse extends StatefulWidget {
 
 class _WarehouseState extends State<Warehouse> {
   int selectedTabIndex = 0;
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+  late final WarehouseCubit _warehouseCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _warehouseCubit = getIt<WarehouseCubit>()..initialize();
+    _searchController.addListener(() {
+      setState(() {}); // Rebuild to show/hide clear button
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    _warehouseCubit.close();
+    super.dispose();
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+      if (!_isSearching) {
+        _searchController.clear();
+        _warehouseCubit.clearSearch();
+      } else {
+        _searchFocusNode.requestFocus();
+      }
+    });
+  }
 
   String _getStatusText(String status) {
     switch (status.toLowerCase()) {
@@ -72,8 +105,8 @@ class _WarehouseState extends State<Warehouse> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<WarehouseCubit>()..initialize(),
+    return BlocProvider.value(
+      value: _warehouseCubit,
       child: Scaffold(
         backgroundColor: AppColors.cxWhite,
         appBar: AppBar(
@@ -171,17 +204,101 @@ class _WarehouseState extends State<Warehouse> {
                   return SizedBox.shrink();
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Toifalar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
-                  Iconify(Tabler.search, size: 27.sp, color: AppColors.cxDADADA),
-                ],
+              // Search bar with animation
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutQuart,
+                child: _isSearching
+                    ? Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5F5F5),
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.search, size: 24.sp, color: Colors.grey),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _searchController,
+                                focusNode: _searchFocusNode,
+                                decoration: InputDecoration(
+                                  hintText: 'Qidirish...',
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                style: TextStyle(fontSize: 16.sp),
+                                onChanged: (query) {
+                                  print('🔎 TextField onChanged called with: "$query"');
+                                  _warehouseCubit.searchProducts(query);
+                                },
+                              ),
+                            ),
+                            if (_searchController.text.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  _searchController.clear();
+                                  _warehouseCubit.clearSearch();
+                                },
+                                child: Icon(Icons.clear, size: 20.sp, color: Colors.grey),
+                              ),
+                            SizedBox(width: 8.w),
+                            GestureDetector(
+                              onTap: _toggleSearch,
+                              child: Text(
+                                'Bekor qilish',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.cxBlack,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Toifalar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
+                          GestureDetector(
+                            onTap: _toggleSearch,
+                            child: Container(
+                              padding: EdgeInsets.all(8.w),
+                              child: Iconify(Tabler.search, size: 27.sp, color: AppColors.cxDADADA),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
               SizedBox(height: 18.h),
-              // Category tabs
+              // Category tabs or search results indicator
               BlocBuilder<WarehouseCubit, WarehouseState>(
                 builder: (context, state) {
+                  // Show search results count when searching
+                  if (_isSearching && state is WarehouseLoaded && state.searchQuery != null) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Text(
+                        '${state.products.length} ta natija topildi',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: AppColors.cx6B7280,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  }
+                  
+                  // Hide category tabs when searching
+                  if (_isSearching) {
+                    return SizedBox.shrink();
+                  }
+                  
                   final categories = state is WarehouseLoaded 
                       ? state.categories 
                       : state is WarehouseLoading && state.categories != null
@@ -218,7 +335,7 @@ class _WarehouseState extends State<Warehouse> {
                                   selectedTabIndex = index;
                                 });
                                 // Load products for the selected category
-                                context.read<WarehouseCubit>().loadProductsByCategory(categories[index].id);
+                                _warehouseCubit.loadProductsByCategory(categories[index].id);
                               }
                             },
                           ),
@@ -245,7 +362,37 @@ class _WarehouseState extends State<Warehouse> {
                   if (state is WarehouseLoaded && state.products.isEmpty) {
                     return Expanded(
                       child: Center(
-                        child: Text('No products found'),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              state.searchQuery != null ? Icons.search_off : Icons.inventory_2_outlined,
+                              size: 64.sp,
+                              color: Colors.grey.shade400,
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              state.searchQuery != null 
+                                  ? 'Hech narsa topilmadi' 
+                                  : 'Maxsulotlar yo\'q',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            if (state.searchQuery != null) ...[
+                              SizedBox(height: 8.h),
+                              Text(
+                                'Boshqa so\'z bilan qidiring',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
                     );
                   }

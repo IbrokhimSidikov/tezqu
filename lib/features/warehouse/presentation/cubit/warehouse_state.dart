@@ -34,14 +34,16 @@ class CategoriesLoaded extends WarehouseState {
 class WarehouseLoaded extends WarehouseState {
   final List<CategoryModel> categories;
   final List<ProductModel> products;
+  final String? searchQuery;
 
   const WarehouseLoaded({
     required this.categories,
     required this.products,
+    this.searchQuery,
   });
 
   @override
-  List<Object?> get props => [categories, products];
+  List<Object?> get props => [categories, products, searchQuery];
 }
 
 class WarehouseError extends WarehouseState {
