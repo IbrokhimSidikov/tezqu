@@ -171,20 +171,20 @@ class AppRoutes {
           return CustomTransitionPage(
             key: state.pageKey,
             child: const AddProductWrapper(),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 250),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0); // from bottom
               const end = Offset.zero;
-              const curve = Curves.easeOutCubic;
+              const curve = Curves.easeOutQuart;
               
               final tween = Tween(begin: begin, end: end)
                   .chain(CurveTween(curve: curve));
               
+              // Use only slide transition for smoother performance
               return SlideTransition(
                 position: animation.drive(tween),
-                child: FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
+                child: child,
               );
             },
           );

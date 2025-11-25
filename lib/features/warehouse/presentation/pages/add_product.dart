@@ -74,36 +74,49 @@ class _AddProductState extends State<AddProduct> {
   @override
   void initState() {
     super.initState();
-    _loadCategories();
+    // Load categories after the first frame to avoid blocking the transition animation
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadCategories();
+    });
   }
 
   void _loadCategories() async {
+    if (!mounted) return;
+    
     final warehouseCubit = context.read<WarehouseCubit>();
     
     // Check if categories are already loaded
     final currentState = warehouseCubit.state;
     if (currentState is WarehouseLoaded) {
-      setState(() {
-        _categories = currentState.categories;
-        _isLoadingCategories = false;
-      });
+      if (mounted) {
+        setState(() {
+          _categories = currentState.categories;
+          _isLoadingCategories = false;
+        });
+      }
       return;
     } else if (currentState is CategoriesLoaded) {
-      setState(() {
-        _categories = currentState.categories;
-        _isLoadingCategories = false;
-      });
+      if (mounted) {
+        setState(() {
+          _categories = currentState.categories;
+          _isLoadingCategories = false;
+        });
+      }
       return;
     } else if (currentState is WarehouseLoading && currentState.categories != null) {
-      setState(() {
-        _categories = currentState.categories!;
-        _isLoadingCategories = false;
-      });
+      if (mounted) {
+        setState(() {
+          _categories = currentState.categories!;
+          _isLoadingCategories = false;
+        });
+      }
       return;
     }
     
     // If not loaded, initialize
     await warehouseCubit.initialize();
+    
+    if (!mounted) return;
     
     final state = warehouseCubit.state;
     if (state is WarehouseLoaded) {
@@ -266,18 +279,24 @@ class _AddProductState extends State<AddProduct> {
           elevation: 0,
           leading: Padding(
             padding: EdgeInsets.only(left: 10.w),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFF5F7F9),
-              ),
-              child: IconButton(
-                iconSize: 29.sp,
-                icon: Icon(Icons.arrow_back),
-                color: Colors.black,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+            child: Hero(
+              tag: 'add_product_button',
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFF5F7F9),
+                  ),
+                  child: IconButton(
+                    iconSize: 29.sp,
+                    icon: Icon(Icons.close),
+                    color: Colors.black,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
               ),
             ),
           ),

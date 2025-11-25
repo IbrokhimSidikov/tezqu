@@ -99,18 +99,24 @@ class _WarehouseState extends State<Warehouse> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.cxF5F7F9,
-                ),
-                child: IconButton(
-                  iconSize: 29.sp,
-                  icon: Icon(Icons.add),
-                  color: AppColors.cx43C19F,
-                  onPressed: () {
-                    context.push(AppRoutes.addProduct);
-                  },
+              child: Hero(
+                tag: 'add_product_button',
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.cxF5F7F9,
+                    ),
+                    child: IconButton(
+                      iconSize: 29.sp,
+                      icon: Icon(Icons.add),
+                      color: AppColors.cx43C19F,
+                      onPressed: () {
+                        context.push(AppRoutes.addProduct);
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
