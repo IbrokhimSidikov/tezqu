@@ -35,7 +35,7 @@ class _ProductsState extends State<Products> {
     super.initState();
     _productCubit = getIt<ProductCubit>()..initialize();
     _searchController.addListener(() {
-      setState(() {}); // Rebuild to show/hide clear button
+      setState(() {});
     });
   }
 
