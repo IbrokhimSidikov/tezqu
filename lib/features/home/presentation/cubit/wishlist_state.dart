@@ -18,11 +18,12 @@ class WishlistLoading extends WishlistState {
 
 class WishlistLoaded extends WishlistState {
   final List<ProductModel> products;
+  final String? searchQuery;
 
-  const WishlistLoaded(this.products);
+  const WishlistLoaded(this.products, {this.searchQuery});
 
   @override
-  List<Object?> get props => [products];
+  List<Object?> get props => [products, searchQuery];
 }
 
 class WishlistError extends WishlistState {

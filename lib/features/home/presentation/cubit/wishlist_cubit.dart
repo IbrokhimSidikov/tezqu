@@ -7,6 +7,7 @@ import 'wishlist_state.dart';
 @injectable
 class WishlistCubit extends Cubit<WishlistState> {
   final WishlistService _wishlistService;
+  List<ProductModel> _allProducts = [];
 
   WishlistCubit(this._wishlistService) : super(const WishlistInitial());
 
@@ -19,17 +20,48 @@ class WishlistCubit extends Cubit<WishlistState> {
           .map((json) => ProductModel.fromJson(json))
           .toList();
       
+      _allProducts = products;
       emit(WishlistLoaded(products));
     } catch (e) {
       emit(WishlistError(e.toString()));
     }
   }
 
+  void searchProducts(String query) {
+    if (query.isEmpty) {
+      emit(WishlistLoaded(_allProducts));
+      return;
+    }
+
+    final filteredProducts = _allProducts.where((product) {
+      final nameLower = product.name.toLowerCase();
+      final queryLower = query.toLowerCase();
+      final detailsLower = product.details.toLowerCase();
+      final yearMatch = product.year.toLowerCase();
+      
+      return nameLower.contains(queryLower) ||
+             detailsLower.contains(queryLower) ||
+             yearMatch.contains(queryLower);
+    }).toList();
+
+    emit(WishlistLoaded(filteredProducts, searchQuery: query));
+  }
+
+  void clearSearch() {
+    emit(WishlistLoaded(_allProducts));
+  }
+
   Future<void> removeFromWishlist(String productId) async {
     try {
       await _wishlistService.removeFromWishlist(productId);
-      // Reload wishlist after removal
-      await loadWishlist();
+      _allProducts.removeWhere((product) => product.id == productId);
+      
+      final currentState = state;
+      if (currentState is WishlistLoaded && currentState.searchQuery != null) {
+        searchProducts(currentState.searchQuery!);
+      } else {
+        emit(WishlistLoaded(_allProducts));
+      }
     } catch (e) {
       emit(WishlistError(e.toString()));
     }

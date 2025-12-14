@@ -11,64 +11,152 @@ import '../../../products/data/models/product_model.dart';
 import '../cubit/wishlist_cubit.dart';
 import '../cubit/wishlist_state.dart';
 
-class Favourites extends StatelessWidget {
+class Favourites extends StatefulWidget {
   const Favourites({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<WishlistCubit>()..loadWishlist(),
-      child: const _FavouritesContent(),
-    );
-  }
+  State<Favourites> createState() => _FavouritesState();
 }
 
-class _FavouritesContent extends StatelessWidget {
-  const _FavouritesContent();
+class _FavouritesState extends State<Favourites> {
+  late final WishlistCubit _wishlistCubit;
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _wishlistCubit = getIt<WishlistCubit>()..loadWishlist();
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    _wishlistCubit.close();
+    super.dispose();
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+      if (!_isSearching) {
+        _searchController.clear();
+        _wishlistCubit.clearSearch();
+      } else {
+        _searchFocusNode.requestFocus();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.cxWhite,
-      appBar: AppBar(
+    return BlocProvider.value(
+      value: _wishlistCubit,
+      child: Scaffold(
         backgroundColor: AppColors.cxWhite,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 10.w),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: const Color(0xFFF5F7F9),
-            ),
-            child: IconButton(
-              iconSize: 29.sp,
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-        ),
-        title: Text('Sevimlilar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 15.w),
+        appBar: AppBar(
+          backgroundColor: AppColors.cxWhite,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 10.w),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.cxF5F7F9,
+                color: const Color(0xFFF5F7F9),
               ),
               child: IconButton(
                 iconSize: 29.sp,
-                icon: Icon(Icons.search),
-                color: AppColors.cxBlack,
-                onPressed: () {},
+                icon: Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
           ),
-        ],
-      ),
-      body: BlocBuilder<WishlistCubit, WishlistState>(
+          title: Text('Sevimlilar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+          actions: [
+            if (!_isSearching)
+              Padding(
+                padding: EdgeInsets.only(right: 15.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.cxF5F7F9,
+                  ),
+                  child: IconButton(
+                    iconSize: 29.sp,
+                    icon: Icon(Icons.search),
+                    color: AppColors.cxBlack,
+                    onPressed: _toggleSearch,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        body: Column(
+          children: [
+            if (_isSearching)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.search, size: 24.sp, color: Colors.grey),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          focusNode: _searchFocusNode,
+                          decoration: InputDecoration(
+                            hintText: 'Qidirish...',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          style: TextStyle(fontSize: 16.sp),
+                          onChanged: (query) {
+                            _wishlistCubit.searchProducts(query);
+                          },
+                        ),
+                      ),
+                      if (_searchController.text.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            _searchController.clear();
+                            _wishlistCubit.clearSearch();
+                          },
+                          child: Icon(Icons.clear, size: 20.sp, color: Colors.grey),
+                        ),
+                      SizedBox(width: 8.w),
+                      GestureDetector(
+                        onTap: _toggleSearch,
+                        child: Text(
+                          'Bekor qilish',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.cxBlack,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            Expanded(
+              child: BlocBuilder<WishlistCubit, WishlistState>(
         builder: (context, state) {
           if (state is WishlistLoading) {
             return Padding(
@@ -121,15 +209,23 @@ class _FavouritesContent extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.favorite_border, size: 64.sp, color: Colors.grey),
+                    Icon(
+                      state.searchQuery != null ? Icons.search_off : Icons.favorite_border,
+                      size: 64.sp,
+                      color: Colors.grey,
+                    ),
                     SizedBox(height: 16.h),
                     Text(
-                      'Sevimlilar ro\'yxati bo\'sh',
+                      state.searchQuery != null
+                          ? 'Hech narsa topilmadi'
+                          : 'Sevimlilar ro\'yxati bo\'sh',
                       style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      'Mahsulotlarni sevimlilar ro\'yxatiga qo\'shing',
+                      state.searchQuery != null
+                          ? 'Boshqa so\'z bilan qidiring'
+                          : 'Mahsulotlarni sevimlilar ro\'yxatiga qo\'shing',
                       style: TextStyle(fontSize: 14.sp, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
@@ -140,23 +236,46 @@ class _FavouritesContent extends StatelessWidget {
             
             return Padding(
               padding: EdgeInsets.only(top: 16.h, bottom: 16.h, left: 16.w, right: 20.w),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.w,
-                  mainAxisSpacing: 22.h,
-                  childAspectRatio: 0.75,
-                ),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  return _buildFavoriteCard(context, state.products[index]);
-                },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (state.searchQuery != null)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: Text(
+                        '${state.products.length} ta natija topildi',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: AppColors.cxBlack.withOpacity(0.6),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.w,
+                        mainAxisSpacing: 22.h,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: state.products.length,
+                      itemBuilder: (context, index) {
+                        return _buildFavoriteCard(context, state.products[index]);
+                      },
+                    ),
+                  ),
+                ],
               ),
             );
           }
           
           return const SizedBox.shrink();
-        },
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
