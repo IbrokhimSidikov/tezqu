@@ -40,6 +40,13 @@ import '../../features/contracts/domain/usecases/get_contracts.dart' as _i609;
 import '../../features/contracts/domain/usecases/reject_contract.dart' as _i594;
 import '../../features/contracts/presentation/cubit/contract_cubit.dart'
     as _i1055;
+import '../../features/expense/data/datasources/expense_remote_data_source.dart'
+    as _i66;
+import '../../features/expense/data/repositories/expense_repository_impl.dart'
+    as _i587;
+import '../../features/expense/domain/repositories/expense_repository.dart'
+    as _i31;
+import '../../features/expense/presentation/cubit/expense_cubit.dart' as _i501;
 import '../../features/home/data/datasources/dashboard_remote_data_source.dart'
     as _i640;
 import '../../features/home/data/repositories/dashboard_repository_impl.dart'
@@ -91,6 +98,7 @@ import '../network/dio_client.dart' as _i667;
 import '../network/network_info.dart' as _i932;
 import '../network/network_module.dart' as _i200;
 import '../services/category_cache_service.dart' as _i1013;
+import '../services/expense_service.dart' as _i986;
 import '../services/product_request_service.dart' as _i287;
 import '../services/storage_service.dart' as _i306;
 import '../services/wishlist_service.dart' as _i203;
@@ -131,14 +139,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i203.WishlistService>(
       () => _i203.WishlistService(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i986.ExpenseService>(
+      () => _i986.ExpenseService(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i610.IncomeRemoteDataSource>(
       () => _i610.IncomeRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
+    gh.lazySingleton<_i66.ExpenseRemoteDataSource>(
+      () => _i66.ExpenseRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i852.AuthLocalDataSource>(
       () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
     gh.lazySingleton<_i624.WarehouseRepository>(
       () => _i413.WarehouseRepositoryImpl(gh<_i667.DioClient>()),
+    );
+    gh.lazySingleton<_i31.ExpenseRepository>(
+      () => _i587.ExpenseRepositoryImpl(gh<_i66.ExpenseRemoteDataSource>()),
     );
     gh.lazySingleton<_i315.PaymentRepository>(
       () => _i842.PaymentRepositoryImpl(gh<_i49.PaymentRemoteDataSource>()),
@@ -157,6 +174,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i107.AuthRemoteDataSource>(
       () => _i107.AuthRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
+    gh.factory<_i501.ExpenseCubit>(
+      () => _i501.ExpenseCubit(
+        gh<_i31.ExpenseRepository>(),
+        gh<_i986.ExpenseService>(),
+      ),
     );
     gh.lazySingleton<_i640.DashboardRemoteDataSource>(
       () => _i640.DashboardRemoteDataSourceImpl(gh<_i667.DioClient>()),
@@ -190,14 +213,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1013.CategoryCacheService>(),
       ),
     );
-    gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
-      () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
-    );
     gh.lazySingleton<_i1007.AddToWishlistUseCase>(
       () => _i1007.AddToWishlistUseCase(gh<_i260.IncomeRepository>()),
     );
     gh.lazySingleton<_i1004.GetIncomeDetailUseCase>(
       () => _i1004.GetIncomeDetailUseCase(gh<_i260.IncomeRepository>()),
+    );
+    gh.lazySingleton<_i263.GetIncomeSourcesUseCase>(
+      () => _i263.GetIncomeSourcesUseCase(gh<_i260.IncomeRepository>()),
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
@@ -222,32 +245,32 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i841.ContractRepository>(
       () => _i141.ContractRepositoryImpl(gh<_i902.ContractRemoteDataSource>()),
     );
-    gh.factory<_i941.RegisterUseCase>(
-      () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.factory<_i1008.SendLoginCodeUseCase>(
-      () => _i1008.SendLoginCodeUseCase(gh<_i787.AuthRepository>()),
-    );
     gh.factory<_i188.LoginUseCase>(
       () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),
     );
     gh.factory<_i48.LogoutUseCase>(
       () => _i48.LogoutUseCase(gh<_i787.AuthRepository>()),
     );
-    gh.factory<_i778.VerifyUseCase>(
-      () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
+    gh.factory<_i941.RegisterUseCase>(
+      () => _i941.RegisterUseCase(gh<_i787.AuthRepository>()),
     );
     gh.factory<_i789.SendCodeUseCase>(
       () => _i789.SendCodeUseCase(gh<_i787.AuthRepository>()),
     );
-    gh.lazySingleton<_i594.RejectContract>(
-      () => _i594.RejectContract(gh<_i841.ContractRepository>()),
+    gh.factory<_i1008.SendLoginCodeUseCase>(
+      () => _i1008.SendLoginCodeUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i778.VerifyUseCase>(
+      () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i432.AcceptContract>(
+      () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
     );
     gh.lazySingleton<_i609.GetContracts>(
       () => _i609.GetContracts(gh<_i841.ContractRepository>()),
     );
-    gh.lazySingleton<_i432.AcceptContract>(
-      () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
+    gh.lazySingleton<_i594.RejectContract>(
+      () => _i594.RejectContract(gh<_i841.ContractRepository>()),
     );
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),

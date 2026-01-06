@@ -283,6 +283,38 @@ class DioClient {
     await _prefs.remove('auth_token');
   }
 
+  // Upload single file
+  Future<String> uploadSingle(
+    String filePath, {
+    String folder = 'products',
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(filePath),
+        'folder': folder,
+      });
+
+      final response = await _dio.post(
+        '/upload/single',
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+
+      // Response should contain the URL
+      if (response.data is Map<String, dynamic>) {
+        return response.data['url'] ?? response.data['file_url'] ?? '';
+      }
+      
+      return '';
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   // Upload multiple files
   Future<List<Map<String, dynamic>>> uploadMultiple(
     List<String> filePaths, {
