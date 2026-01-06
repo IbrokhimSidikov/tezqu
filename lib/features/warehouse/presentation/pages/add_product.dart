@@ -47,6 +47,7 @@ class _AddProductState extends State<AddProduct> {
   final _yearController = TextEditingController();
   final _mileageController = TextEditingController();
   final _plateController = TextEditingController();
+  final _regionController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
 
@@ -138,6 +139,7 @@ class _AddProductState extends State<AddProduct> {
     _yearController.dispose();
     _mileageController.dispose();
     _plateController.dispose();
+    _regionController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
     super.dispose();
@@ -207,7 +209,9 @@ class _AddProductState extends State<AddProduct> {
       if (_mileageController.text.isNotEmpty) customFields['mileage'] = _mileageController.text;
       if (_selectedTransmission != null) customFields['transmission'] = _selectedTransmission;
       if (_selectedFuelType != null) customFields['fuel_type'] = _selectedFuelType;
-      if (_plateController.text.isNotEmpty) customFields['plate_number'] = _plateController.text;
+      if (_plateController.text.isNotEmpty || _regionController.text.isNotEmpty) {
+        customFields['plate_number'] = '${_regionController.text} ${_plateController.text}'.trim();
+      }
       if (_selectedOrigin != null) customFields['origin'] = _selectedOrigin;
 
       // Phase 1: Upload images first (if any)
@@ -410,7 +414,10 @@ class _AddProductState extends State<AddProduct> {
                 Expanded(
                   child: _buildPlateNumberField(),
                 ),
-                SizedBox(width: 12.w),
+              ],
+            ),
+            Row(
+              children: [
                 Expanded(
                   child: _buildTextField(
                     label: 'Narxi *',
@@ -638,7 +645,7 @@ class _AddProductState extends State<AddProduct> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Davlat raqami',
+          'Avtomobil raqami',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w500,
@@ -646,32 +653,151 @@ class _AddProductState extends State<AddProduct> {
           ),
         ),
         SizedBox(height: 8.h),
-        TextFormField(
-          controller: _plateController,
-          textCapitalization: TextCapitalization.characters,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z]')),
-            LengthLimitingTextInputFormatter(10),
-            _PlateNumberFormatter(),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: const Color(0xFFF5F5F5),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.r),
-              borderSide: BorderSide.none,
+        Container(
+          height: 56.h,
+          decoration: BoxDecoration(
+            color: const Color(0xFF2C2C2C),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: Colors.grey.shade700,
+              width: 2,
             ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.h,
-              vertical: 16.w,
-            ),
-            hintText: '01 A 234 BC',
-            hintStyle: TextStyle(
-              fontSize: 16.sp,
-              color: Colors.grey.shade400,
-            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 70.w,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: Colors.grey.shade700,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                child: Center(
+                  child: TextFormField(
+                    controller: _regionController,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade400,
+                      letterSpacing: 2,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(2),
+                    ],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '01',
+                      hintStyle: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                        letterSpacing: 2,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: TextFormField(
+                    controller: _plateController,
+                    textCapitalization: TextCapitalization.characters,
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade400,
+                      letterSpacing: 4,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z]')),
+                      LengthLimitingTextInputFormatter(8),
+                      _PlateNumberFormatter(),
+                    ],
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'A 111 AA',
+                      hintStyle: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                        letterSpacing: 4,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 12.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 32.w,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2.r),
+                        border: Border.all(
+                          color: Colors.grey.shade700,
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          //uz flag
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0072CE),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(1.5.r),
+                                  topRight: Radius.circular(1.5.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF43B02A),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(1.5.r),
+                                  bottomRight: Radius.circular(1.5.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      'UZ',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF00A0E3),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -789,7 +915,7 @@ class _AddProductState extends State<AddProduct> {
 }
 
 // Custom formatter for Uzbekistan plate numbers
-// Format: 01 A 234 BC (2 digits + 1 letter + 3 digits + 2 letters)
+// Format: A 111 AA (1 letter + 3 digits + 2 letters)
 class _PlateNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -800,16 +926,12 @@ class _PlateNumberFormatter extends TextInputFormatter {
     final buffer = StringBuffer();
     
     for (int i = 0; i < text.length; i++) {
-      // Add space after 2nd digit
-      if (i == 2) {
+      // Add space after 1st letter
+      if (i == 1) {
         buffer.write(' ');
       }
-      // Add space after 1st letter (position 3 in formatted string)
-      else if (i == 3) {
-        buffer.write(' ');
-      }
-      // Add space after 3 more digits (position 6 in formatted string)
-      else if (i == 6) {
+      // Add space after 3 digits (position 4 in original string)
+      else if (i == 4) {
         buffer.write(' ');
       }
       buffer.write(text[i]);
