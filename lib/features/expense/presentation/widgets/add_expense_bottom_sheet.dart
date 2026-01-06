@@ -240,12 +240,26 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 ),
               ),
               SizedBox(height: 20.h),
-              Text(
-                'Yangi chiqim qo\'shish',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Yangi chiqim qo\'shish',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.close),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.grey[200],
+                      foregroundColor: Colors.black,
+                      padding: EdgeInsets.all(8.w),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 20.h),
               Text(
@@ -259,7 +273,8 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(
-                  hintText: 'Masalan: Notarius Xizmati',
+                  hintText: 'Chiqim Turi',
+                  hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide(color: Colors.grey[300]!),
@@ -297,7 +312,8 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 controller: _descriptionController,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText: 'Masalan: Notarius uchun chiqimlar',
+                  hintText: 'Chiqim uchun tavsif',
+                  hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide(color: Colors.grey[300]!),
@@ -395,7 +411,8 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                           controller: _amountController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: '5000000',
+                            hintText: '0 00',
+                            hintStyle: TextStyle(color: Colors.grey),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
                               borderSide: BorderSide(color: Colors.grey[300]!),
@@ -519,7 +536,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Yetkazib beruvchi',
+                'To\'lovchi shaxs',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -529,7 +546,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               TextFormField(
                 controller: _vendorController,
                 decoration: InputDecoration(
-                  hintText: 'Masalan: ABC Property Management',
+                  hintText: 'Ism va familiyasi',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide(color: Colors.grey[300]!),
