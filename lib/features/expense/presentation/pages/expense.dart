@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
@@ -12,6 +13,7 @@ import '../cubit/expense_cubit.dart';
 import '../cubit/expense_state.dart';
 import '../widgets/add_expense_bottom_sheet.dart';
 import '../widgets/expense_card.dart';
+import '../widgets/expense_card_shimmer.dart';
 
 class Expense extends StatefulWidget {
   const Expense({super.key});
@@ -115,9 +117,55 @@ class _ExpenseState extends State<Expense> with TickerProviderStateMixin {
         body: BlocBuilder<ExpenseCubit, ExpenseState>(
           builder: (context, state) {
             if (state is ExpenseLoading) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.cx43C19F,
+              return Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Row(
+                        children: List.generate(3, (index) {
+                          return Container(
+                            margin: EdgeInsets.only(right: 12.w),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Container(
+                              width: 80.w,
+                              height: 16.h,
+                              color: Colors.white,
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 150.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return ExpenseCardShimmer();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
@@ -236,46 +284,49 @@ class _ExpenseState extends State<Expense> with TickerProviderStateMixin {
                     'Chiqimlar ro\'yxati',
                     style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                   ),
-                  Iconify(
-                    Tabler.search,
-                    size: 27.sp,
-                    color: AppColors.cxDADADA,
-                  ),
+
                 ],
               ),
               SizedBox(height: 16.h),
               Expanded(
-                child: expenses.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              category.icon,
-                              style: TextStyle(fontSize: 48.sp),
-                            ),
-                            SizedBox(height: 16.h),
-                            Text(
-                              'Bu toifa uchun chiqimlar yo\'q',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: expenses.length,
+                child: !hasLoadedExpenses
+                    ? ListView.builder(
+                        itemCount: 5,
                         itemBuilder: (context, index) {
-                          final expense = expenses[index];
-                          return ExpenseCard(
-                            expense: expense,
-                            categoryIcon: category.icon,
-                            categoryColor: category.color,
-                          );
+                          return ExpenseCardShimmer();
                         },
-                      ),
+                      )
+                    : expenses.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  category.icon,
+                                  style: TextStyle(fontSize: 48.sp),
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  'Bu toifa uchun chiqimlar yo\'q',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: expenses.length,
+                            itemBuilder: (context, index) {
+                              final expense = expenses[index];
+                              return ExpenseCard(
+                                expense: expense,
+                                categoryIcon: category.icon,
+                                categoryColor: category.color,
+                              );
+                            },
+                          ),
               ),
             ],
           ),
