@@ -43,7 +43,10 @@ class AppRoutes {
   static const String contractDetails = '/contractDetails';
   static const String addProduct = '/addProduct';
 
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: splash,
     routes: [
       GoRoute(

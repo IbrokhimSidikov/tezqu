@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import '../cubit/notification_cubit.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({super.key});
@@ -25,54 +28,59 @@ class _NotificationsState extends State<Notifications> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header with title and notification icon
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Zo'r taklif",
+                      "Bildirishnomalar",
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.3),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Text(
-                              '3',
-                              style: TextStyle(
-                                color: Color(0xFF5FCCB4),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                    BlocBuilder<NotificationCubit, NotificationState>(
+                      builder: (context, state) {
+                        final unreadCount = state.notifications.where((n) => !n.isRead).length;
+                        return Stack(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.3),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: 28,
                               ),
                             ),
-                          ),
-                        ),
-                      ],
+                            if (unreadCount > 0)
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    '$unreadCount',
+                                    style: const TextStyle(
+                                      color: Color(0xFF5FCCB4),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -80,149 +88,125 @@ class _NotificationsState extends State<Notifications> {
               
               const SizedBox(height: 20),
               
-              // Notification cards list
               Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: 3, // Placeholder count
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        children: [
-                          // Yellow banner
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
+                child: BlocBuilder<NotificationCubit, NotificationState>(
+                  builder: (context, state) {
+                    if (state.notifications.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.notifications_none,
+                              size: 80,
+                              color: Colors.white.withOpacity(0.5),
                             ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFD88A),
-                              borderRadius: BorderRadius.circular(12),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Bildirishnomalar yo\'q',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white.withOpacity(0.7),
+                              ),
                             ),
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.handshake,
-                                  color: Colors.black,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Nasiya savdo va naqdga',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 12),
-                          
-                          // White card with product details
-                          Container(
+                          ],
+                        ),
+                      );
+                    }
+                    
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: state.notifications.length,
+                      itemBuilder: (context, index) {
+                        final notification = state.notifications[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                // Product title
-                                const Text(
-                                  'BYD HAN',
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const Text(
-                                  'Luxury Electric',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 12),
-                                
-                                // Product description
-                                const Text(
-                                  'Dual mator 3.9 limited edition 610km\nYili 2022 yurgani 35.000km',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 20),
-                                
-                                // Product image placeholder
-                                Container(
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.directions_car,
-                                      size: 80,
-                                      color: Colors.grey[400],
-                                    ),
-                                  ),
-                                ),
-                                
-                                const SizedBox(height: 20),
-                                
-                                // Details button
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // Navigate to details
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF2D3436),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 16,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Batafsil',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+                                  context.read<NotificationCubit>().markAsRead(notification.id);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              notification.title,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          if (!notification.isRead)
+                                            Container(
+                                              width: 10,
+                                              height: 10,
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFF5FCCB4),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                      
+                                      const SizedBox(height: 8),
+                                      
+                                      Text(
+                                        notification.body,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                      
+                                      const SizedBox(height: 12),
+                                      
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.access_time,
+                                            size: 16,
+                                            color: Colors.grey[600],
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            DateFormat('dd MMM yyyy, HH:mm').format(notification.timestamp),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 ),
