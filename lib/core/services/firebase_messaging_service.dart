@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -194,6 +195,10 @@ class FirebaseMessagingService {
   }
 
   Future<String?> _getToken() async {
+    if (Platform.isIOS) {
+      await _firebaseMessaging.getAPNSToken();
+    }
+    
     String? token = await _firebaseMessaging.getToken();
     print('FCM Token: $token');
     

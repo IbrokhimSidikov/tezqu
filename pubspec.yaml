@@ -1,7 +1,7 @@
 name: tezqu
 description: "TezQu"
 publish_to: 'none'
-version: 1.2.0+7
+version: 1.2.0+8
 environment:
   sdk: ^3.8.0
 
@@ -51,6 +51,7 @@ dev_dependencies:
   freezed: ^3.2.0
   json_serializable: ^6.11.0
   injectable_generator: ^2.8.1
+  flutter_launcher_icons: ^0.14.1
 
 
 flutter:
@@ -69,4 +70,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/SF_Compact_Text_Light.ttf
           weight: 300
-      
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "ios/Runner/Assets.xcassets/AppIcon.appiconset/1024.png"
+  remove_alpha_ios: true
