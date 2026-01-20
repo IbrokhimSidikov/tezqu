@@ -6,7 +6,7 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> register({
     required String firstName,
     required String lastName,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required String gender,
     required String phoneNumber,
   });
@@ -40,19 +40,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> register({
     required String firstName,
     required String lastName,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required String gender,
     required String phoneNumber,
   }) async {
+    final data = {
+      'first_name': firstName,
+      'last_name': lastName,
+      'gender': gender,
+      'phone_number': phoneNumber,
+    };
+    
+    if (dateOfBirth != null && dateOfBirth.isNotEmpty) {
+      data['date_of_birth'] = dateOfBirth;
+    }
+    
     final response = await dioClient.post(
       '/auth/register',
-      data: {
-        'first_name': firstName,
-        'last_name': lastName,
-        'date_of_birth': dateOfBirth,
-        'gender': gender,
-        'phone_number': phoneNumber,
-      },
+      data: data,
     );
 
     final userData = response.data['data'] ?? response.data;

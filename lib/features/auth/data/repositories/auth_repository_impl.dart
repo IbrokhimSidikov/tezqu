@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> register({
     required String firstName,
     required String lastName,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required String gender,
     required String phoneNumber,
   }) async {

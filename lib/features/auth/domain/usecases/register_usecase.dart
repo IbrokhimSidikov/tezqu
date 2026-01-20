@@ -13,7 +13,7 @@ class RegisterUseCase {
   Future<Either<Failure, UserEntity>> call({
     required String firstName,
     required String lastName,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required String gender,
     required String phoneNumber,
   }) async {

@@ -30,7 +30,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> register({
     required String firstName,
     required String lastName,
-    required String dateOfBirth,
+    String? dateOfBirth,
     required String gender,
     required String phoneNumber,
   }) async {

@@ -62,13 +62,16 @@ class _AuthPageState extends State<AuthPage> {
       final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
       
       // Convert date from DD.MM.YYYY to ISO 8601 format (YYYY-MM-DD)
-      final dateOfBirth = _convertToISO8601(_dateOfBirthController.text);
-      
-      if (dateOfBirth == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Tug\'ulgan sanani to\'g\'ri formatda kiriting (DD.MM.YYYY)')),
-        );
-        return;
+      String? dateOfBirth;
+      if (_dateOfBirthController.text.isNotEmpty) {
+        dateOfBirth = _convertToISO8601(_dateOfBirthController.text);
+        
+        if (dateOfBirth == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Tug\'ulgan sanani to\'g\'ri formatda kiriting (DD.MM.YYYY)')),
+          );
+          return;
+        }
       }
       
       context.read<AuthCubit>().register(
@@ -178,7 +181,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Ism', style: TextStyle(
+                          'Ism *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -199,7 +202,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Familiya', style: TextStyle(
+                          'Familiya *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -258,12 +261,11 @@ class _AuthPageState extends State<AuthPage> {
                                     }
                                   },
                                   validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Tug\'ulgan sanani kiriting';
-                                    }
-                                    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
-                                    if (digitsOnly.length < 8) {
-                                      return 'To\'liq sanani kiriting';
+                                    if (value != null && value.isNotEmpty) {
+                                      final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                                      if (digitsOnly.length < 8) {
+                                        return 'To\'liq sanani kiriting';
+                                      }
                                     }
                                     return null;
                                   },
@@ -278,7 +280,7 @@ class _AuthPageState extends State<AuthPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Jinsi', style: TextStyle(
+                                  'Jinsi *', style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -311,7 +313,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Telefon nomer', style: TextStyle(
+                          'Telefon nomer *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
