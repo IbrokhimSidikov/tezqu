@@ -26,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String firstName,
     required String lastName,
     String? dateOfBirth,
-    required String gender,
+    String? gender,
     required String phoneNumber,
   }) async {
     if (!await networkInfo.isConnected) {

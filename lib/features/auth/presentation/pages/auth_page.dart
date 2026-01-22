@@ -51,13 +51,6 @@ class _AuthPageState extends State<AuthPage> {
 
   void _handleRegister(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      if (_selectedGender == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Jinsni tanlang')),
-        );
-        return;
-      }
-
       // Extract only digits from the formatted phone number
       final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
       
@@ -78,7 +71,7 @@ class _AuthPageState extends State<AuthPage> {
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         dateOfBirth: dateOfBirth,
-        gender: _selectedGender!,
+        gender: _selectedGender,
         phoneNumber: phoneNumber,
       );
     }
@@ -280,7 +273,7 @@ class _AuthPageState extends State<AuthPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Jinsi *', style: TextStyle(
+                                  'Jinsi ', style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                 ),

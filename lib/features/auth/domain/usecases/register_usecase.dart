@@ -14,7 +14,7 @@ class RegisterUseCase {
     required String firstName,
     required String lastName,
     String? dateOfBirth,
-    required String gender,
+    String? gender,
     required String phoneNumber,
   }) async {
     return await repository.register(
