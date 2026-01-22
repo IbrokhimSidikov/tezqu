@@ -23,7 +23,7 @@ class AppLocalizations {
 
       // Profile
       'myProfile': 'My Profile',
-      'addGuard': 'Add Kafil',
+      'addGuard': 'Add \'Kafil\'',
       'settings': 'Settings',
       'support': 'Support',
       'about': 'About App',

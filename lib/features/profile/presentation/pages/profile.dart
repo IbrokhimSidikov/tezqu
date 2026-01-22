@@ -645,7 +645,7 @@ class _ProfileState extends State<Profile> {
                       color: AppColors.cxAFB1B1,
                     ),
                     onTap: () {
-                      // TODO: Handle account deletion
+                      _showDeleteAccountConfirmation();
                     },
                   ),
                   SizedBox(height: 24.h),
@@ -1613,6 +1613,62 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDeleteAccountConfirmation() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          title: Text(
+            'Hisobni o\'chirish',
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.cxBlack,
+            ),
+          ),
+          content: Text(
+            'Hisobingizni o\'chirishni xohlaysizmi? Bu amalni qaytarib bo\'lmaydi.',
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: AppColors.cxAFB1B1,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Bekor qilish',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.cxAFB1B1,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                // TODO: Implement account deletion logic
+              },
+              child: Text(
+                'O\'chirish',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.cxFF8B92,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
