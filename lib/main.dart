@@ -7,11 +7,16 @@ import 'package:tezqu/core/constants/app_colors.dart';
 import 'package:tezqu/core/router/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/di/di.dart';
+import 'core/providers/locale_provider.dart';
 import 'core/services/firebase_messaging_service.dart';
 import 'core/services/version_service.dart';
 import 'core/widgets/force_update_dialog.dart';
+import 'l10n/app_localizations.dart';
+import 'l10n/app_localizations_delegate.dart';
 import 'features/notification/presentation/cubit/notification_cubit.dart';
 import 'features/onboard/presentation/cubit/splash_screen_cubit.dart';
 
@@ -48,14 +53,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final NotificationCubit _notificationCubit = NotificationCubit();
   late final VersionService _versionService;
   final _navigatorKey = GlobalKey<NavigatorState>();
+  final _localeProvider = LocaleProvider();
 
   @override
   void initState() {
     super.initState();
-
+    _initializeApp();
     WidgetsBinding.instance.addObserver(this);
     FirebaseMessagingService().setRouter(AppRoutes.router);
     FirebaseMessagingService().setNotificationCubit(_notificationCubit);
+  }
+
+  Future<void> _initializeApp() async {
+    await _initializeVersionService();
+    await _checkForUpdates();
+    await _localeProvider.initialize();
   }
 
   @override
@@ -119,28 +131,47 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => getIt<SplashScreenCubit>()),
-            BlocProvider.value(value: _notificationCubit),
-          ],
-          child: MaterialApp.router(
-            title: 'TezQu',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                  seedColor: AppColors.cxWhite,
-              ),
-              useMaterial3: true,
-              fontFamily: 'SFCompact',
-              textTheme: const TextTheme(
-                bodyMedium: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+        return ChangeNotifierProvider.value(
+          value: _localeProvider,
+          child: Consumer<LocaleProvider>(
+            builder: (context, localeProvider, child) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => getIt<SplashScreenCubit>()),
+                  BlocProvider.value(value: _notificationCubit),
+                ],
+                child: MaterialApp.router(
+                  title: 'TezQu',
+                  debugShowCheckedModeBanner: false,
+                  locale: localeProvider.locale,
+                  localizationsDelegates: const [
+                    AppLocalizationsDelegate(),
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en'),
+                    Locale('uz'),
+                    Locale('ru'),
+                  ],
+                  theme: ThemeData(
+                    colorScheme: ColorScheme.fromSeed(
+                        seedColor: AppColors.cxWhite,
+                    ),
+                    useMaterial3: true,
+                    fontFamily: 'SFCompact',
+                    textTheme: const TextTheme(
+                      bodyMedium: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  routerConfig: AppRoutes.router,
                 ),
-              ),
-            ),
-            routerConfig: AppRoutes.router,
+              );
+            },
           ),
         );
       }

@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tezqu/l10n/app_localizations_delegate.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/payment_entity.dart';
 import '../cubit/payment_cubit.dart';
 import '../cubit/payment_state.dart';
@@ -52,7 +54,7 @@ class PaymentsView extends StatelessWidget {
           ),
         ),
         title: Text(
-          'To\'lovlarim',
+          AppLocalizations.of(context).myPayments,
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
         ),
         actions: [

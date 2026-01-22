@@ -5,10 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/providers/locale_provider.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../auth/data/models/user_model.dart';
 
 class Profile extends StatefulWidget {
@@ -28,6 +31,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _loadUserData();
+    _loadSelectedLanguage();
   }
 
   Future<void> _loadUserData() async {
@@ -47,14 +51,23 @@ class _ProfileState extends State<Profile> {
         });
       }
       
-      _selectedLanguage = prefs.getString('app_language') ?? 'uz';
-      _isDarkMode = prefs.getBool('dark_mode') ?? false;
+      final darkMode = prefs.getBool('dark_mode') ?? false;
+      setState(() {
+        _isDarkMode = darkMode;
+      });
     } catch (e) {
       print('Error loading user data: $e');
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void _loadSelectedLanguage() {
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+    setState(() {
+      _selectedLanguage = localeProvider.locale.languageCode;
+    });
   }
 
   Future<void> _showLogoutConfirmation() async {
@@ -66,7 +79,7 @@ class _ProfileState extends State<Profile> {
             borderRadius: BorderRadius.circular(16.r),
           ),
           title: Text(
-            'Ilovadan chiqish',
+            AppLocalizations.of(context).logout,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -164,7 +177,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 20.h),
               Text(
-                'Ilovani ulashish',
+                AppLocalizations.of(context).shareApp,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
@@ -534,7 +547,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(height: 20.h),
                   Text(
-                    'Sozlamalar',
+                    AppLocalizations.of(context).settings,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
@@ -566,44 +579,44 @@ class _ProfileState extends State<Profile> {
                     },
                   ),
                   SizedBox(height: 12.h),
-                  _buildSettingItem(
-                    icon: Icons.dark_mode,
-                    title: 'Tungi rejim',
-                    subtitle: _isDarkMode ? 'Yoqilgan' : 'O\'chirilgan',
-                    color: AppColors.cx292B2F,
-                    trailing: Switch(
-                      value: _isDarkMode,
-                      activeColor: AppColors.cx78D9BF,
-                      onChanged: (value) async {
-                        setModalState(() {
-                          _isDarkMode = value;
-                        });
-                        setState(() {
-                          _isDarkMode = value;
-                        });
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool('dark_mode', value);
-                        
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                _isDarkMode
-                                    ? 'Tungi rejim yoqildi'
-                                    : 'Tungi rejim o\'chirildi',
-                              ),
-                              duration: Duration(seconds: 1),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    onTap: null,
-                  ),
+                  // _buildSettingItem(
+                  //   icon: Icons.dark_mode,
+                  //   title: 'Tungi rejim',
+                  //   subtitle: _isDarkMode ? 'Yoqilgan' : 'O\'chirilgan',
+                  //   color: AppColors.cx292B2F,
+                  //   trailing: Switch(
+                  //     value: _isDarkMode,
+                  //     activeColor: AppColors.cx78D9BF,
+                  //     onChanged: (value) async {
+                  //       setModalState(() {
+                  //         _isDarkMode = value;
+                  //       });
+                  //       setState(() {
+                  //         _isDarkMode = value;
+                  //       });
+                  //       final prefs = await SharedPreferences.getInstance();
+                  //       await prefs.setBool('dark_mode', value);
+                  //
+                  //       if (mounted) {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           SnackBar(
+                  //             content: Text(
+                  //               _isDarkMode
+                  //                   ? 'Tungi rejim yoqildi'
+                  //                   : 'Tungi rejim o\'chirildi',
+                  //             ),
+                  //             duration: Duration(seconds: 1),
+                  //             behavior: SnackBarBehavior.floating,
+                  //             shape: RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.circular(10.r),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       }
+                  //     },
+                  //   ),
+                  //   onTap: null,
+                  // ),
                   SizedBox(height: 12.h),
                   _buildSettingItem(
                     icon: Icons.notifications,
@@ -617,12 +630,22 @@ class _ProfileState extends State<Profile> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Bildirishnomalar sozlamalari'),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
+                      context.push(AppRoutes.notifications);
+                    },
+                  ),
+                  SizedBox(height: 12.h),
+                  _buildSettingItem(
+                    icon: Icons.delete_forever,
+                    title: 'Hisobni o\'chirish',
+                    subtitle: 'Hisobingizni butunlay o\'chirish',
+                    color: AppColors.cxFF8B92,
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16.sp,
+                      color: AppColors.cxAFB1B1,
+                    ),
+                    onTap: () {
+                      // TODO: Handle account deletion
                     },
                   ),
                   SizedBox(height: 24.h),
@@ -703,8 +726,9 @@ class _ProfileState extends State<Profile> {
         setState(() {
           _selectedLanguage = code;
         });
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('app_language', code);
+        
+        final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+        await localeProvider.setLocale(Locale(code));
         
         Navigator.pop(context);
         
@@ -810,7 +834,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Qo\'llab quvvatlash',
+                AppLocalizations.of(context).support,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
@@ -996,7 +1020,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         title: Text(
-          'Mening profilim',
+          AppLocalizations.of(context).myProfile,
           style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w500
@@ -1018,7 +1042,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.shield_moon_outlined,
               iconColor: AppColors.cxFFBCFA,
               color: AppColors.cxFFBCFA,
-              title: "Kafil shaxs qo'shish",
+              title: AppLocalizations.of(context).addGuard,
               onTap: () {},
             ),
             SizedBox(height: 16.h),
@@ -1027,7 +1051,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.settings,
               iconColor: AppColors.cxFEDA84,
               color: AppColors.cxFEDA84,
-              title: "Sozlamalar",
+              title: AppLocalizations.of(context).settings,
               onTap: _showSettingsBottomSheet,
             ),
             SizedBox(height: 16.h),
@@ -1036,7 +1060,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.headset_mic,
               color: AppColors.cx78D9BF,
               iconColor: AppColors.cx78D9BF,
-              title: "Qo'llab quvvatlash xizmati",
+              title: AppLocalizations.of(context).support,
               onTap: _showSupportBottomSheet,
             ),
             SizedBox(height: 16.h),
@@ -1045,7 +1069,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.info,
               color: AppColors.cx292B2F,
               iconColor: AppColors.cx292B2F,
-              title: "Dastur haqida",
+              title: AppLocalizations.of(context).about,
               onTap: _showAboutBottomSheet,
             ),
             SizedBox(height: 16.h),
@@ -1054,7 +1078,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.description_outlined,
               color: Color(0xFFFFB6C1),
               iconColor: AppColors.cxBlack,
-              title: "Shartnomalarim",
+              title: AppLocalizations.of(context).contracts,
               badgeCount: 1,
               onTap: () {
                 context.push(AppRoutes.contracts);
@@ -1066,7 +1090,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.share,
               color: AppColors.cxD9D9D9,
               iconColor: AppColors.cxAFB1B1,
-              title: "Ilovani ulashish",
+              title: AppLocalizations.of(context).shareApp,
               onTap: _showShareBottomSheet,
             ),
             SizedBox(height: 16.h),
@@ -1075,7 +1099,7 @@ class _ProfileState extends State<Profile> {
               icon: Icons.exit_to_app,
               color: AppColors.cxF42800,
               iconColor: AppColors.cxWhite,
-              title: "Ilovadan chiqish",
+              title: AppLocalizations.of(context).logout,
               onTap: _showLogoutConfirmation,
             ),
 

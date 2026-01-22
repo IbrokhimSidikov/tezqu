@@ -12,6 +12,7 @@ import '../../../../core/constants/user_roles.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/dashboard_card.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
 
@@ -41,7 +42,7 @@ class _HomePageContent extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.payments);
         },
-        title: "To'lovlarim",
+        title: AppLocalizations.of(context).myPayments,
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -58,7 +59,7 @@ class _HomePageContent extends StatelessWidget {
         ],
       ),
       DashboardCardType.products: DashboardCard(
-        title: "Maxsulotlar",
+        title: AppLocalizations.of(context).products,
         onTap: () {
           context.push(AppRoutes.products);
         },
@@ -72,7 +73,7 @@ class _HomePageContent extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.income);
         },
-        title: "Kirimlar",
+        title: AppLocalizations.of(context).income,
         subtitle: "\$123,500",
         icons: [
           Container(
@@ -93,7 +94,7 @@ class _HomePageContent extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.expense);
         },
-        title: "Chiqimlar",
+        title: AppLocalizations.of(context).expenses,
         subtitle: "\$1,500",
         icons: [
           Container(
@@ -114,7 +115,7 @@ class _HomePageContent extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.warehouse);
         },
-        title: 'Omborxona',
+        title: AppLocalizations.of(context).warehouse,
         subtitle: 'Maxsulot: 120',
         icons: [
           Container(
@@ -132,7 +133,7 @@ class _HomePageContent extends StatelessWidget {
         ],
       ),
       DashboardCardType.dashboard: DashboardCard(
-        title: 'Dashboard',
+        title: AppLocalizations.of(context).dashboard,
         subtitle: 'Faollik: 01.24',
         icons: [
           Container(
@@ -257,7 +258,7 @@ class _HomePageContent extends StatelessWidget {
                       children: [
                         Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
                         SizedBox(width: 10.w),
-                        Text('Umumiy to\'lovlarim', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+                        Text(AppLocalizations.of(context).totalPayments, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
                       ],
                     ),
                     SizedBox(height: 0),
@@ -282,7 +283,7 @@ class _HomePageContent extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Expanded(
                               child: Text(
-                                "Keyingi to'lov",
+                                AppLocalizations.of(context).nextPayment,
                                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -368,7 +369,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                 Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7),
                 SizedBox(width: 10.w),
                 Text(
-                  'Umumiy to\'lovlarim',
+                  AppLocalizations.of(context).totalPayments,
                   style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                 ),
               ],
@@ -407,7 +408,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                     // Static text (no shimmer)
                     Expanded(
                       child: Text(
-                        "Keyingi to'lov",
+                        AppLocalizations.of(context).nextPayment,
                         style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -460,7 +461,7 @@ class _HomeShimmerLoading extends StatelessWidget {
               children: [
                 DashboardCard(
                   onTap: () {},
-                  title: "To'lovlarim",
+                  title: AppLocalizations.of(context).myPayments,
                   icons: [
                     Container(
                       padding: EdgeInsets.all(2),
@@ -477,7 +478,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                   ],
                 ),
                 DashboardCard(
-                  title: "Maxsulotlar",
+                  title: AppLocalizations.of(context).products,
                   onTap: () {},
                   icons: [
                     CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
@@ -487,7 +488,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                 ),
                 DashboardCard(
                   onTap: () {},
-                  title: "Kirimlar",
+                  title: AppLocalizations.of(context).income,
                   subtitle: "\$123,500",
                   icons: [
                     Container(
@@ -506,7 +507,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                 ),
                 DashboardCard(
                   onTap: () {},
-                  title: "Chiqimlar",
+                  title: AppLocalizations.of(context).expenses,
                   subtitle: "\$1,500",
                   icons: [
                     Container(
@@ -525,7 +526,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                 ),
                 DashboardCard(
                   onTap: () {},
-                  title: 'Omborxona',
+                  title: AppLocalizations.of(context).warehouse,
                   subtitle: 'Maxsulot: 120',
                   icons: [
                     Container(
@@ -543,7 +544,7 @@ class _HomeShimmerLoading extends StatelessWidget {
                   ],
                 ),
                 DashboardCard(
-                  title: 'Dashboard',
+                  title: AppLocalizations.of(context).dashboard,
                   subtitle: 'Faollik: 01.24',
                   icons: [
                     Container(
