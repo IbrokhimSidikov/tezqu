@@ -12,6 +12,7 @@ import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_banner.dart';
 import '../../../../core/shared/skeleton_loader.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/models/product_model.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
@@ -255,7 +256,7 @@ class _ProductsState extends State<Products> {
             ),
           ),
         ),
-        title: Text('Maxsulotlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+        title: Text(AppLocalizations.of(context).products, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
         actions: [
           if (!_isSearching)
             Padding(
@@ -373,7 +374,7 @@ class _ProductsState extends State<Products> {
                           GestureDetector(
                             onTap: _toggleSearch,
                             child: Text(
-                              'Bekor qilish',
+                              AppLocalizations.of(context).cancel,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: AppColors.cxBlack,
@@ -387,7 +388,7 @@ class _ProductsState extends State<Products> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Maxsulotlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
+                        Text(AppLocalizations.of(context).products, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
                         IconButton(
                           icon: Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA),
                           onPressed: () {

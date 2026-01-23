@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/income_entity.dart';
 import '../cubit/income_cubit.dart';
 import '../cubit/income_state.dart';
@@ -60,7 +61,7 @@ class _IncomeViewState extends State<IncomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Kirim manbalari', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+              Text(AppLocalizations.of(context).incomeSources, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
               Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA,
               ),
             ],
@@ -73,7 +74,7 @@ class _IncomeViewState extends State<IncomeView> {
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
                   color:AppColors.cxF5F7F9,
-                  child: Text('Kollektor',
+                  child: Text(AppLocalizations.of(context).collector,
                     style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
@@ -89,7 +90,7 @@ class _IncomeViewState extends State<IncomeView> {
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
                   color:AppColors.cxF5F7F9,
-                  child: Text('Mijoz',
+                  child: Text(AppLocalizations.of(context).customer,
                     style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
@@ -105,7 +106,7 @@ class _IncomeViewState extends State<IncomeView> {
                   padding: EdgeInsets.symmetric(horizontal: 22.sp, vertical: 12.sp),
                   borderRadius: BorderRadius.circular(30.r),
                   color: AppColors.cxF5F7F9,
-                  child: Text('Investor',
+                  child: Text(AppLocalizations.of(context).investor,
                     style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
@@ -397,7 +398,7 @@ class _IncomeViewState extends State<IncomeView> {
             ),
           ),
         ),
-        title: Text('Kirimlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+        title: Text(AppLocalizations.of(context).income, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
@@ -429,7 +430,7 @@ class _IncomeViewState extends State<IncomeView> {
                   Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
                   SizedBox(height: 16.h),
                   Text(
-                    'Xatolik yuz berdi',
+                    AppLocalizations.of(context).error,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
@@ -455,7 +456,7 @@ class _IncomeViewState extends State<IncomeView> {
                         month: DateTime.now().month,
                       );
                     },
-                    child: const Text('Qayta urinish'),
+                    child: Text(AppLocalizations.of(context).retry),
                   ),
                 ],
               ),
@@ -532,11 +533,11 @@ class _ModalContainerState extends State<ModalContainer> {
   String _getStatusText(String status) {
     final lowerStatus = status.toLowerCase();
     if (lowerStatus.contains('paid')) {
-      return 'Olindi';
+      return AppLocalizations.of(context).paid;
     } else if (lowerStatus.contains('pending')) {
-      return 'Qoldirildi';
+      return AppLocalizations.of(context).postponed;
     } else if (lowerStatus.contains('overdue')) {
-      return 'Berilmadi';
+      return AppLocalizations.of(context).overdue;
     }
     return status;
   }
@@ -563,7 +564,7 @@ class _ModalContainerState extends State<ModalContainer> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'To\'lov jarayoni',
+                      AppLocalizations.of(context).payment_process,
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
@@ -581,15 +582,15 @@ class _ModalContainerState extends State<ModalContainer> {
                 SizedBox(height: 24.h),
                 
                 // Naqd field
-                _buildInputField('Naqd', '\$'),
+                _buildInputField(AppLocalizations.of(context).cash, '\$'),
                 SizedBox(height: 16.h),
                 
                 // Karta field
-                _buildInputField('Karta', ''),
+                _buildInputField(AppLocalizations.of(context).card, ''),
                 SizedBox(height: 16.h),
                 
                 // O'tkazma field
-                _buildInputField('O\'tkazma', ''),
+                _buildInputField(AppLocalizations.of(context).transfer, ''),
                 SizedBox(height: 24.h),
                 
                 // Tolovni kechiktirish dropdown
@@ -603,7 +604,7 @@ class _ModalContainerState extends State<ModalContainer> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Tolovni kechiktirish',
+                        AppLocalizations.of(context).delay_payment,
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: AppColors.cxBlack,
@@ -635,7 +636,7 @@ class _ModalContainerState extends State<ModalContainer> {
                       ),
                     ),
                     child: Text(
-                      'Tasdiqlash',
+                      AppLocalizations.of(context).confirm,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
@@ -996,7 +997,7 @@ class _ModalContainerState extends State<ModalContainer> {
                                       if (contract.dueDate != null) ...[
                                         SizedBox(width: 16.w),
                                         Text(
-                                          'Naqd \$${(contract.amount * 0.3).toStringAsFixed(0)}',
+                                          '${AppLocalizations.of(context).cash} \$${(contract.amount * 0.3).toStringAsFixed(0)}',
                                           style: TextStyle(
                                             fontSize: 14.sp,
                                             color: AppColors.cxAFB1B1,
@@ -1008,7 +1009,7 @@ class _ModalContainerState extends State<ModalContainer> {
                                   if (contract.dueDate != null) ...[
                                     SizedBox(height: 4.h),
                                     Text(
-                                      'Berilish sanasi: ${contract.dueDate}',
+                                      '${AppLocalizations.of(context).dateOfPayment}: ${contract.dueDate}',
                                       style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.cxAFB1B1,
@@ -1078,7 +1079,7 @@ class _ModalContainerState extends State<ModalContainer> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Total:',
+                            '${AppLocalizations.of(context).total}:',
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
@@ -1100,7 +1101,7 @@ class _ModalContainerState extends State<ModalContainer> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Yeg\'ilgan:',
+                            '${AppLocalizations.of(context).collected}:',
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: AppColors.cxAFB1B1,
@@ -1130,7 +1131,7 @@ class _ModalContainerState extends State<ModalContainer> {
                             ),
                           ),
                           child: Text(
-                            'Qabul qilish',
+                            AppLocalizations.of(context).confirm,
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
@@ -1151,7 +1152,7 @@ class _ModalContainerState extends State<ModalContainer> {
                   Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
                   SizedBox(height: 16.h),
                   Text(
-                    'Xatolik yuz berdi',
+                    AppLocalizations.of(context).error,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,

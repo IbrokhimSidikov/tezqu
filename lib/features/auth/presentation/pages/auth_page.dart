@@ -163,7 +163,8 @@ class _AuthPageState extends State<AuthPage> {
                           child: Column(
                             spacing: 10,
                             children: [
-                      SizedBox(height: 36.h,),
+                            SizedBox(height: 36.h,),
+
                       Center(
                         child: Text(
                           'Ro\'yxatdan o\'tish',
@@ -338,7 +339,14 @@ class _AuthPageState extends State<AuthPage> {
                           }
                         },
                       ),
+                              GestureDetector(
+                                onTap: (){
+                                  context.go(AppRoutes.login);
+                                },
+                                child: Text('Login page ga o\'tish', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: AppColors.cx6B7280, decoration: TextDecoration.underline),),
+                              ),
                             ],
+
                           ),
                         ),
                       ),

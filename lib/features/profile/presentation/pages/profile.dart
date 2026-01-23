@@ -6,13 +6,17 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/providers/locale_provider.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../auth/data/models/user_model.dart';
+import '../../../auth/data/datasources/auth_local_data_source.dart';
+import '../cubit/profile_cubit.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -204,17 +208,7 @@ class _ProfileState extends State<Profile> {
                 },
               ),
               SizedBox(height: 12.h),
-              _buildShareOption(
-                icon: Icons.copy,
-                title: 'Havolani nusxalash',
-                subtitle: 'Ilovaga havolani nusxalash',
-                color: AppColors.cxFEDA84,
-                onTap: () {
-                  Navigator.pop(context);
-                  _copyAppLink();
-                },
-              ),
-              SizedBox(height: 12.h),
+
               _buildShareOption(
                 icon: Icons.phone_android,
                 title: 'Play Store',
@@ -556,7 +550,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Ilovani sozlang',
+                    AppLocalizations.of(context).appSetup,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: AppColors.cxAFB1B1,
@@ -565,7 +559,7 @@ class _ProfileState extends State<Profile> {
                   SizedBox(height: 24.h),
                   _buildSettingItem(
                     icon: Icons.language,
-                    title: 'Til',
+                    title: AppLocalizations.of(context).language,
                     subtitle: _getLanguageName(_selectedLanguage),
                     color: AppColors.cxFEDA84,
                     trailing: Icon(
@@ -620,8 +614,8 @@ class _ProfileState extends State<Profile> {
                   SizedBox(height: 12.h),
                   _buildSettingItem(
                     icon: Icons.notifications,
-                    title: 'Bildirishnomalar',
-                    subtitle: 'Barcha bildirishnomalar',
+                    title: AppLocalizations.of(context).notification,
+                    subtitle: AppLocalizations.of(context).allNotifications,
                     color: AppColors.cxFFBCFA,
                     trailing: Icon(
                       Icons.arrow_forward_ios,
@@ -636,8 +630,8 @@ class _ProfileState extends State<Profile> {
                   SizedBox(height: 12.h),
                   _buildSettingItem(
                     icon: Icons.delete_forever,
-                    title: 'Hisobni o\'chirish',
-                    subtitle: 'Hisobingizni butunlay o\'chirish',
+                    title: AppLocalizations.of(context).deleteAccount,
+                    subtitle: AppLocalizations.of(context).deleteAccount,
                     color: AppColors.cxFF8B92,
                     trailing: Icon(
                       Icons.arrow_forward_ios,
@@ -698,7 +692,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 20.h),
               Text(
-                'Tilni tanlang',
+                AppLocalizations.of(context).chooseLanguage,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
@@ -739,7 +733,7 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Icon(Icons.check_circle, color: AppColors.cxWhite),
                   SizedBox(width: 12.w),
-                  Text('Til o\'zgartirildi: $name'),
+                  Text('${AppLocalizations.of(context).languageSnackbar} : $name'),
                 ],
               ),
               backgroundColor: AppColors.cx78D9BF,
@@ -843,7 +837,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'Biz bilan bog\'laning',
+                AppLocalizations.of(context).supportSubtitle,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: AppColors.cxAFB1B1,
@@ -863,7 +857,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 12.h),
               _buildSupportOption(
                 icon: Icons.phone,
-                title: 'Telefon',
+                title: AppLocalizations.of(context).phone,
                 subtitle: '+998 90 123 45 67',
                 color: AppColors.cx78D9BF,
                 onTap: () {
@@ -874,7 +868,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 12.h),
               _buildSupportOption(
                 icon: Icons.email,
-                title: 'Email',
+                title: AppLocalizations.of(context).email,
                 subtitle: 'support@tezqu.uz',
                 color: AppColors.cxFEDA84,
                 onTap: () {
@@ -899,7 +893,7 @@ class _ProfileState extends State<Profile> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        'Ish vaqti: Dushanba-Juma, 9:00-18:00',
+                        '${AppLocalizations.of(context).workHours}: Dushanba-Juma, 9:00-18:00',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: AppColors.cxAFB1B1,
@@ -927,7 +921,7 @@ class _ProfileState extends State<Profile> {
             children: [
               Icon(Icons.telegram, color: AppColors.cxWhite),
               SizedBox(width: 12.w),
-              Text('Telegram ochilmoqda...'),
+              Text('${AppLocalizations.of(context).tgOpening}...'),
             ],
           ),
           backgroundColor: Color(0xFF0088CC),
@@ -985,7 +979,7 @@ class _ProfileState extends State<Profile> {
           ),
           duration: Duration(seconds: 2),
           action: SnackBarAction(
-            label: 'Nusxalash',
+            label: AppLocalizations.of(context).copy,
             textColor: AppColors.cxWhite,
             onPressed: () async {
               await Clipboard.setData(ClipboardData(text: 'support@tezqu.uz'));
@@ -1038,13 +1032,13 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: 32.h),
             
             // Menu Items
-            _buildMenuItem(
-              icon: Icons.shield_moon_outlined,
-              iconColor: AppColors.cxFFBCFA,
-              color: AppColors.cxFFBCFA,
-              title: AppLocalizations.of(context).addGuard,
-              onTap: () {},
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.shield_moon_outlined,
+            //   iconColor: AppColors.cxFFBCFA,
+            //   color: AppColors.cxFFBCFA,
+            //   title: AppLocalizations.of(context).addGuard,
+            //   onTap: () {},
+            // ),
             SizedBox(height: 16.h),
             
             _buildMenuItem(
@@ -1142,19 +1136,19 @@ class _ProfileState extends State<Profile> {
     final firstName = _currentUser?.firstName ?? '';
     final lastName = _currentUser?.lastName ?? '';
     final fullName = '$firstName $lastName'.trim();
-    final displayName = fullName.isNotEmpty ? fullName : 'Foydalanuvchi';
+    final displayName = fullName.isNotEmpty ? fullName : AppLocalizations.of(context).user;
     
     // Map role to Uzbek text
     String getRoleText(String? role) {
       switch (role?.toLowerCase()) {
         case 'customer':
-          return 'Foydalanuvchi';
+          return AppLocalizations.of(context).user;
         case 'admin':
-          return 'Administrator';
+          return AppLocalizations.of(context).administrator;
         case 'manager':
-          return 'Menejer';
+          return AppLocalizations.of(context).manager;
         default:
-          return 'Foydalanuvchi';
+          return AppLocalizations.of(context).user;
       }
     }
     
@@ -1625,7 +1619,7 @@ class _ProfileState extends State<Profile> {
             borderRadius: BorderRadius.circular(20.r),
           ),
           title: Text(
-            'Hisobni o\'chirish',
+            AppLocalizations.of(context).deleteAccount,
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w600,
@@ -1633,7 +1627,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           content: Text(
-            'Hisobingizni o\'chirishni xohlaysizmi? Bu amalni qaytarib bo\'lmaydi.',
+            AppLocalizations.of(context).deleteAccountMessage,
             style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.cxAFB1B1,
@@ -1645,7 +1639,7 @@ class _ProfileState extends State<Profile> {
                 Navigator.pop(context);
               },
               child: Text(
-                'Bekor qilish',
+                AppLocalizations.of(context).cancel,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.cxAFB1B1,
@@ -1655,10 +1649,10 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                // TODO: Implement account deletion logic
+                _handleAccountDeletion();
               },
               child: Text(
-                'O\'chirish',
+                AppLocalizations.of(context).delete,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.cxFF8B92,
@@ -1670,5 +1664,73 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
+  }
+
+  Future<void> _handleAccountDeletion() async {
+    if (_currentUser?.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Foydalanuvchi ma\'lumotlari topilmadi'),
+          backgroundColor: AppColors.cxFF8B92,
+        ),
+      );
+      return;
+    }
+
+    final profileCubit = getIt<ProfileCubit>();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => BlocProvider.value(
+        value: profileCubit,
+        child: BlocConsumer<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            state.when(
+              initial: () {},
+              loading: () {},
+              accountDeleted: () async {
+                Navigator.of(context).pop();
+                
+                final authLocalDataSource = getIt<AuthLocalDataSource>();
+                await authLocalDataSource.clearCache();
+                
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context).deleteAccountSnackbar),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  
+                  context.go(AppRoutes.auth);
+                }
+              },
+              error: (message) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                    backgroundColor: AppColors.cxFF8B92,
+                  ),
+                );
+              },
+            );
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              loading: () => Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.cx6B7280,
+                ),
+              ),
+              orElse: () => const SizedBox.shrink(),
+            );
+          },
+        ),
+      ),
+    );
+
+    profileCubit.deleteAccount(_currentUser!.id!);
   }
 }

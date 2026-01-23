@@ -14,6 +14,12 @@ class UserModel with _$UserModel {
     String? firstName,
     String? lastName,
     String? role,
+    String? dateOfBirth,
+    String? gender,
+    String? status,
+    Map<String, dynamic>? profileInfo,
+    String? lastLoginAt,
+    String? createdAt,
   }) = _UserModel;
   
   const UserModel._();
@@ -34,6 +40,12 @@ class UserModel with _$UserModel {
       firstName: userData['first_name'] as String?,
       lastName: userData['last_name'] as String?,
       role: userData['role'] as String?,
+      dateOfBirth: userData['date_of_birth'] as String?,
+      gender: userData['gender'] as String?,
+      status: userData['status'] as String?,
+      profileInfo: userData['profile_info'] as Map<String, dynamic>?,
+      lastLoginAt: userData['last_login_at'] as String?,
+      createdAt: userData['created_at'] as String?,
     );
   }
 
@@ -47,6 +59,12 @@ class UserModel with _$UserModel {
       'first_name': firstName,
       'last_name': lastName,
       'role': role,
+      'date_of_birth': dateOfBirth,
+      'gender': gender,
+      'status': status,
+      'profile_info': profileInfo,
+      'last_login_at': lastLoginAt,
+      'created_at': createdAt,
     };
   }
 
@@ -61,6 +79,12 @@ class UserModel with _$UserModel {
       firstName: firstName,
       lastName: lastName,
       role: role,
+      dateOfBirth: dateOfBirth,
+      gender: gender,
+      status: status,
+      profileInfo: profileInfo,
+      lastLoginAt: lastLoginAt,
+      createdAt: createdAt,
     );
   }
 
@@ -75,6 +99,12 @@ class UserModel with _$UserModel {
       firstName: entity.firstName,
       lastName: entity.lastName,
       role: entity.role,
+      dateOfBirth: entity.dateOfBirth,
+      gender: entity.gender,
+      status: entity.status,
+      profileInfo: entity.profileInfo,
+      lastLoginAt: entity.lastLoginAt,
+      createdAt: entity.createdAt,
     );
   }
 
@@ -109,4 +139,28 @@ class UserModel with _$UserModel {
   @override
   // TODO: implement role
   String? get role => throw UnimplementedError();
+
+  @override
+  // TODO: implement createdAt
+  String? get createdAt => throw UnimplementedError();
+
+  @override
+  // TODO: implement dateOfBirth
+  String? get dateOfBirth => throw UnimplementedError();
+
+  @override
+  // TODO: implement gender
+  String? get gender => throw UnimplementedError();
+
+  @override
+  // TODO: implement lastLoginAt
+  String? get lastLoginAt => throw UnimplementedError();
+
+  @override
+  // TODO: implement profileInfo
+  Map<String, dynamic>? get profileInfo => throw UnimplementedError();
+
+  @override
+  // TODO: implement status
+  String? get status => throw UnimplementedError();
 }

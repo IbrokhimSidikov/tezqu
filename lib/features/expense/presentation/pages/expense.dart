@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/models/expense_category_model.dart';
 import '../cubit/expense_cubit.dart';
 import '../cubit/expense_state.dart';
@@ -73,7 +74,7 @@ class _ExpenseState extends State<Expense> with TickerProviderStateMixin {
               ),
             ),
           ),
-          title: Text('Chiqimlar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+          title: Text(AppLocalizations.of(context).expenses, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
           actions: [
             Builder(
               builder: (context) {
@@ -281,7 +282,7 @@ class _ExpenseState extends State<Expense> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Chiqimlar ro\'yxati',
+                    AppLocalizations.of(context).expenseType,
                     style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                   ),
 

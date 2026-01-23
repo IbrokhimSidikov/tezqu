@@ -86,6 +86,15 @@ import '../../features/products/data/repositories/product_repository_impl.dart'
 import '../../features/products/domain/repositories/product_repository.dart'
     as _i963;
 import '../../features/products/presentation/cubit/product_cubit.dart' as _i661;
+import '../../features/profile/data/datasources/profile_remote_data_source.dart'
+    as _i847;
+import '../../features/profile/data/repositories/profile_repository_impl.dart'
+    as _i334;
+import '../../features/profile/domain/repositories/profile_repository.dart'
+    as _i894;
+import '../../features/profile/domain/usecases/delete_account_usecase.dart'
+    as _i1056;
+import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
 import '../../features/warehouse/data/repositories/warehouse_repository_impl.dart'
     as _i413;
 import '../../features/warehouse/domain/repositories/warehouse_repository.dart'
@@ -133,14 +142,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i49.PaymentRemoteDataSource>(
       () => _i49.PaymentRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i986.ExpenseService>(
+      () => _i986.ExpenseService(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i287.ProductRequestService>(
       () => _i287.ProductRequestService(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i203.WishlistService>(
       () => _i203.WishlistService(gh<_i667.DioClient>()),
-    );
-    gh.lazySingleton<_i986.ExpenseService>(
-      () => _i986.ExpenseService(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i610.IncomeRemoteDataSource>(
       () => _i610.IncomeRemoteDataSourceImpl(gh<_i667.DioClient>()),
@@ -159,6 +168,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i315.PaymentRepository>(
       () => _i842.PaymentRepositoryImpl(gh<_i49.PaymentRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i847.ProfileRemoteDataSource>(
+      () => _i847.ProfileRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
     gh.lazySingleton<_i645.GetPaymentsUseCase>(
       () => _i645.GetPaymentsUseCase(gh<_i315.PaymentRepository>()),
@@ -193,6 +205,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i782.PaymentCubit>(
       () => _i782.PaymentCubit(gh<_i645.GetPaymentsUseCase>()),
+    );
+    gh.lazySingleton<_i894.ProfileRepository>(
+      () => _i334.ProfileRepositoryImpl(
+        gh<_i847.ProfileRemoteDataSource>(),
+        gh<_i932.NetworkInfo>(),
+      ),
+    );
+    gh.lazySingleton<_i1056.DeleteAccountUseCase>(
+      () => _i1056.DeleteAccountUseCase(gh<_i894.ProfileRepository>()),
     );
     gh.factory<_i968.WishlistCubit>(
       () => _i968.WishlistCubit(gh<_i203.WishlistService>()),
@@ -244,6 +265,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i841.ContractRepository>(
       () => _i141.ContractRepositoryImpl(gh<_i902.ContractRemoteDataSource>()),
+    );
+    gh.factory<_i36.ProfileCubit>(
+      () => _i36.ProfileCubit(gh<_i1056.DeleteAccountUseCase>()),
     );
     gh.factory<_i188.LoginUseCase>(
       () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),

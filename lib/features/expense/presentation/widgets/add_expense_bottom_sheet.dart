@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/dio_client.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../data/models/currency_model.dart';
 import '../../data/models/expense_category_model.dart';
 import '../../data/models/payment_method_model.dart';
@@ -244,7 +245,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Yangi chiqim qo\'shish',
+                    AppLocalizations.of(context).addExpense,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
@@ -263,7 +264,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 20.h),
               Text(
-                'Sarlavha',
+                AppLocalizations.of(context).title,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -273,7 +274,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(
-                  hintText: 'Chiqim Turi',
+                  hintText: AppLocalizations.of(context).expenseType,
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -301,7 +302,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Tavsif',
+                AppLocalizations.of(context).expenseDesc,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -312,7 +313,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 controller: _descriptionController,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText: 'Chiqim uchun tavsif',
+                  hintText: AppLocalizations.of(context).expenseDesc,
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -340,7 +341,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Kategoriya',
+                AppLocalizations.of(context).category,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -386,7 +387,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Kategoriyani tanlang';
+                    return AppLocalizations.of(context).category;
                   }
                   return null;
                 },
@@ -400,7 +401,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Summa',
+                          AppLocalizations.of(context).sum,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
@@ -432,10 +433,10 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Summani kiriting';
+                              return AppLocalizations.of(context).sum;
                             }
                             if (double.tryParse(value) == null) {
-                              return 'Noto\'g\'ri format';
+                              return AppLocalizations.of(context).incorrectFormat;
                             }
                             return null;
                           },
@@ -449,7 +450,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Valyuta',
+                          AppLocalizations.of(context).currency,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w500,
@@ -495,7 +496,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'To\'lov usuli',
+                AppLocalizations.of(context).paymentMethod,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -536,7 +537,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'To\'lovchi shaxs',
+                AppLocalizations.of(context).paymentBy,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -546,7 +547,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               TextFormField(
                 controller: _vendorController,
                 decoration: InputDecoration(
-                  hintText: 'Ism va familiyasi',
+                  hintText: AppLocalizations.of(context).name,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide(color: Colors.grey[300]!),
@@ -566,14 +567,14 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Yetkazib beruvchini kiriting';
+                    return AppLocalizations.of(context).courier;
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16.h),
               Text(
-                'Sana',
+                AppLocalizations.of(context).date,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -605,7 +606,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Chek rasmi (ixtiyoriy)',
+                AppLocalizations.of(context).receipt,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -643,7 +644,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
-                                  'Yuklanmoqda...',
+                                  '${AppLocalizations.of(context).uploading}...',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.sp,
@@ -693,7 +694,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'Chek rasmini yuklash',
+                          AppLocalizations.of(context).uploadReceipt,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.grey[600],
@@ -725,7 +726,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                           ),
                         )
                       : Text(
-                          'Saqlash',
+                          AppLocalizations.of(context).save,
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,

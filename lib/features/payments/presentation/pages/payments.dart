@@ -136,7 +136,7 @@ class PaymentsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Keyingi to\'lovlarim',
+                AppLocalizations.of(context).nextPayments,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w500,
@@ -163,7 +163,7 @@ class PaymentsView extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 32.h),
                         child: Text(
-                          'Keyingi to\'lovlar yo\'q',
+                          AppLocalizations.of(context).noNextPayments,
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.cxAFB1B1,
@@ -187,7 +187,7 @@ class PaymentsView extends StatelessWidget {
 
                   // Payment history section
                   Text(
-                    'To\'lovlarim tarixi',
+                    AppLocalizations.of(context).paymentsHistory,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
@@ -201,7 +201,7 @@ class PaymentsView extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 32.h),
                         child: Text(
-                          'To\'lovlar tarixi yo\'q',
+                          AppLocalizations.of(context).noPaymentsHistory,
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.cxAFB1B1,

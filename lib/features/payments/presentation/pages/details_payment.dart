@@ -4,6 +4,7 @@ import 'package:tezqu/core/shared/app_banner.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DetailsPayment extends StatefulWidget {
   final int contractId;
@@ -38,7 +39,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
             ),
           ),
         ),
-        title: Text('To\'lov tafsilotlari', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+        title: Text(AppLocalizations.of(context).paymentDetails, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
       ),
       body: Padding(
           padding: EdgeInsets.only(
@@ -51,7 +52,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
               SizedBox(height: 22.h),
               // Display contract ID for debugging
               Text(
-                'Shartnoma ID: ${widget.contractId}',
+                '${AppLocalizations.of(context).contractId}: ${widget.contractId}',
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
@@ -62,7 +63,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
               Row(
                 children: [
                   Text(
-                    'Qoldiq summa: ',
+                    '${AppLocalizations.of(context).remainingAmount}: ',
                     style: TextStyle(
                       fontSize: 28.sp,
                       fontWeight: FontWeight.w500,
@@ -122,7 +123,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Shartnoma',
+                                  Text(AppLocalizations.of(context).contract,
                                       style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w500,
@@ -163,7 +164,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Asosiy shart',
+                                Text(AppLocalizations.of(context).contract,
                                     style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w500,
