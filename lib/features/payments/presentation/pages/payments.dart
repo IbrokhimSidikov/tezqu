@@ -132,6 +132,10 @@ class PaymentsView extends StatelessWidget {
       ),
       child: Column(
         children: [
+          if (payments.summary != null) ...[
+            _buildSummaryDashboard(context, payments.summary!),
+            SizedBox(height: 24.h),
+          ],
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -179,6 +183,7 @@ class PaymentsView extends StatelessWidget {
                           context,
                           payment,
                           isPaid: false,
+                          allPayments: payments,
                         ),
                       );
                     }).toList(),
@@ -217,6 +222,7 @@ class PaymentsView extends StatelessWidget {
                           context,
                           payment,
                           isPaid: true,
+                          allPayments: payments,
                         ),
                       );
                     }).toList(),
@@ -229,7 +235,7 @@ class PaymentsView extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentItem(BuildContext context, PaymentEntity payment, {required bool isPaid}) {
+  Widget _buildPaymentItem(BuildContext context, PaymentEntity payment, {required bool isPaid, PaymentsEntity? allPayments}) {
     // Determine icon based on product category
     IconData icon = Icons.shopping_bag;
     if (payment.productCategory != null) {
@@ -255,7 +261,10 @@ class PaymentsView extends StatelessWidget {
         context.pushNamed(
           'detailsPayment',
           queryParameters: {'contractId': payment.contractId.toString()},
-          extra: payment,
+          extra: {
+            'payment': payment,
+            'allPayments': allPayments,
+          },
         );
       },
       borderRadius: BorderRadius.circular(8.r),
@@ -465,6 +474,189 @@ class PaymentsView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSummaryDashboard(BuildContext context, SummaryEntity summary) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColors.cx43C19F, AppColors.cx78D9BF],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.cx43C19F.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'To\'lov xulosasi',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Text(
+                  '${summary.completionPercentage}%',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            children: [
+              Expanded(
+                child: _buildSummaryCard(
+                  icon: Icons.payments_outlined,
+                  label: 'To\'langan',
+                  value: '\$${summary.totalPaid.toStringAsFixed(0)}',
+                  count: '${summary.paidCount} ta',
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: _buildSummaryCard(
+                  icon: Icons.schedule,
+                  label: 'Qolgan',
+                  value: '\$${summary.totalRemaining.toStringAsFixed(0)}',
+                  count: '${summary.remainingCount} ta',
+                  color: Colors.white.withOpacity(0.9),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildStatItem(
+                  icon: Icons.description_outlined,
+                  label: 'Shartnomalar',
+                  value: '${summary.totalContracts}',
+                ),
+                Container(width: 1, height: 30.h, color: Colors.white.withOpacity(0.3)),
+                _buildStatItem(
+                  icon: Icons.receipt_long,
+                  label: 'Jami to\'lovlar',
+                  value: '${summary.totalPayments}',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryCard({
+    required IconData icon,
+    required String label,
+    required String value,
+    required String count,
+    required Color color,
+  }) {
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 24.sp),
+          SizedBox(height: 8.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.white.withOpacity(0.9),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 11.sp,
+              color: Colors.white.withOpacity(0.8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white, size: 20.sp),
+        SizedBox(width: 8.w),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11.sp,
+                color: Colors.white.withOpacity(0.8),
+              ),
+            ),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

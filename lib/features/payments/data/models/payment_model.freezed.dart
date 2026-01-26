@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentsModel {
 
-@JsonKey(name: 'next_payments') List<PaymentModel> get nextPayments;@JsonKey(name: 'paid_payments') List<PaymentModel> get paidPayments;
+@JsonKey(name: 'next_payments') List<PaymentModel> get nextPayments;@JsonKey(name: 'paid_payments') List<PaymentModel> get paidPayments; SummaryModel? get summary;
 /// Create a copy of PaymentsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PaymentsModelCopyWith<PaymentsModel> get copyWith => _$PaymentsModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentsModel&&const DeepCollectionEquality().equals(other.nextPayments, nextPayments)&&const DeepCollectionEquality().equals(other.paidPayments, paidPayments));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentsModel&&const DeepCollectionEquality().equals(other.nextPayments, nextPayments)&&const DeepCollectionEquality().equals(other.paidPayments, paidPayments)&&(identical(other.summary, summary) || other.summary == summary));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(nextPayments),const DeepCollectionEquality().hash(paidPayments));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(nextPayments),const DeepCollectionEquality().hash(paidPayments),summary);
 
 @override
 String toString() {
-  return 'PaymentsModel(nextPayments: $nextPayments, paidPayments: $paidPayments)';
+  return 'PaymentsModel(nextPayments: $nextPayments, paidPayments: $paidPayments, summary: $summary)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $PaymentsModelCopyWith<$Res>  {
   factory $PaymentsModelCopyWith(PaymentsModel value, $Res Function(PaymentsModel) _then) = _$PaymentsModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments
+@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
 });
 
 
-
+$SummaryModelCopyWith<$Res>? get summary;
 
 }
 /// @nodoc
@@ -65,14 +65,27 @@ class _$PaymentsModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentsModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nextPayments = null,Object? paidPayments = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nextPayments = null,Object? paidPayments = null,Object? summary = freezed,}) {
   return _then(_self.copyWith(
 nextPayments: null == nextPayments ? _self.nextPayments : nextPayments // ignore: cast_nullable_to_non_nullable
 as List<PaymentModel>,paidPayments: null == paidPayments ? _self.paidPayments : paidPayments // ignore: cast_nullable_to_non_nullable
-as List<PaymentModel>,
+as List<PaymentModel>,summary: freezed == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
+as SummaryModel?,
   ));
 }
+/// Create a copy of PaymentsModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummaryModelCopyWith<$Res>? get summary {
+    if (_self.summary == null) {
+    return null;
+  }
 
+  return $SummaryModelCopyWith<$Res>(_self.summary!, (value) {
+    return _then(_self.copyWith(summary: value));
+  });
+}
 }
 
 
@@ -154,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentsModel() when $default != null:
-return $default(_that.nextPayments,_that.paidPayments);case _:
+return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
   return orElse();
 
 }
@@ -175,10 +188,10 @@ return $default(_that.nextPayments,_that.paidPayments);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentsModel():
-return $default(_that.nextPayments,_that.paidPayments);case _:
+return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +208,10 @@ return $default(_that.nextPayments,_that.paidPayments);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentsModel() when $default != null:
-return $default(_that.nextPayments,_that.paidPayments);case _:
+return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
   return null;
 
 }
@@ -210,7 +223,7 @@ return $default(_that.nextPayments,_that.paidPayments);case _:
 @JsonSerializable()
 
 class _PaymentsModel extends PaymentsModel {
-  const _PaymentsModel({@JsonKey(name: 'next_payments') final  List<PaymentModel> nextPayments = const [], @JsonKey(name: 'paid_payments') final  List<PaymentModel> paidPayments = const []}): _nextPayments = nextPayments,_paidPayments = paidPayments,super._();
+  const _PaymentsModel({@JsonKey(name: 'next_payments') final  List<PaymentModel> nextPayments = const [], @JsonKey(name: 'paid_payments') final  List<PaymentModel> paidPayments = const [], this.summary}): _nextPayments = nextPayments,_paidPayments = paidPayments,super._();
   factory _PaymentsModel.fromJson(Map<String, dynamic> json) => _$PaymentsModelFromJson(json);
 
  final  List<PaymentModel> _nextPayments;
@@ -227,6 +240,7 @@ class _PaymentsModel extends PaymentsModel {
   return EqualUnmodifiableListView(_paidPayments);
 }
 
+@override final  SummaryModel? summary;
 
 /// Create a copy of PaymentsModel
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentsModel&&const DeepCollectionEquality().equals(other._nextPayments, _nextPayments)&&const DeepCollectionEquality().equals(other._paidPayments, _paidPayments));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentsModel&&const DeepCollectionEquality().equals(other._nextPayments, _nextPayments)&&const DeepCollectionEquality().equals(other._paidPayments, _paidPayments)&&(identical(other.summary, summary) || other.summary == summary));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_nextPayments),const DeepCollectionEquality().hash(_paidPayments));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_nextPayments),const DeepCollectionEquality().hash(_paidPayments),summary);
 
 @override
 String toString() {
-  return 'PaymentsModel(nextPayments: $nextPayments, paidPayments: $paidPayments)';
+  return 'PaymentsModel(nextPayments: $nextPayments, paidPayments: $paidPayments, summary: $summary)';
 }
 
 
@@ -261,11 +275,11 @@ abstract mixin class _$PaymentsModelCopyWith<$Res> implements $PaymentsModelCopy
   factory _$PaymentsModelCopyWith(_PaymentsModel value, $Res Function(_PaymentsModel) _then) = __$PaymentsModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments
+@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
 });
 
 
-
+@override $SummaryModelCopyWith<$Res>? get summary;
 
 }
 /// @nodoc
@@ -278,15 +292,28 @@ class __$PaymentsModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentsModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nextPayments = null,Object? paidPayments = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nextPayments = null,Object? paidPayments = null,Object? summary = freezed,}) {
   return _then(_PaymentsModel(
 nextPayments: null == nextPayments ? _self._nextPayments : nextPayments // ignore: cast_nullable_to_non_nullable
 as List<PaymentModel>,paidPayments: null == paidPayments ? _self._paidPayments : paidPayments // ignore: cast_nullable_to_non_nullable
-as List<PaymentModel>,
+as List<PaymentModel>,summary: freezed == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
+as SummaryModel?,
   ));
 }
 
+/// Create a copy of PaymentsModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummaryModelCopyWith<$Res>? get summary {
+    if (_self.summary == null) {
+    return null;
+  }
 
+  return $SummaryModelCopyWith<$Res>(_self.summary!, (value) {
+    return _then(_self.copyWith(summary: value));
+  });
+}
 }
 
 
@@ -604,7 +631,7 @@ $ContractModelCopyWith<$Res>? get contract {
 /// @nodoc
 mixin _$ContractModel {
 
-@JsonKey(fromJson: _toInt) int get id; ProductModel? get product;@JsonKey(name: 'service_contract_pdf') String? get serviceContractPdf;
+@JsonKey(fromJson: _toInt) int get id;@JsonKey(name: 'product_id') String? get productId; ProductModel? get product;@JsonKey(name: 'service_contract_pdf') String? get serviceContractPdf;
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -617,16 +644,16 @@ $ContractModelCopyWith<ContractModel> get copyWith => _$ContractModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,product,serviceContractPdf);
+int get hashCode => Object.hash(runtimeType,id,productId,product,serviceContractPdf);
 
 @override
 String toString() {
-  return 'ContractModel(id: $id, product: $product, serviceContractPdf: $serviceContractPdf)';
+  return 'ContractModel(id: $id, productId: $productId, product: $product, serviceContractPdf: $serviceContractPdf)';
 }
 
 
@@ -637,7 +664,7 @@ abstract mixin class $ContractModelCopyWith<$Res>  {
   factory $ContractModelCopyWith(ContractModel value, $Res Function(ContractModel) _then) = _$ContractModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
+@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_id') String? productId, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
 });
 
 
@@ -654,10 +681,11 @@ class _$ContractModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = freezed,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
+as int,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String?,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as ProductModel?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceContractPdf : serviceContractPdf // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -756,10 +784,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_id')  String? productId,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContractModel() when $default != null:
-return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
+return $default(_that.id,_that.productId,_that.product,_that.serviceContractPdf);case _:
   return orElse();
 
 }
@@ -777,10 +805,10 @@ return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_id')  String? productId,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)  $default,) {final _that = this;
 switch (_that) {
 case _ContractModel():
-return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
+return $default(_that.id,_that.productId,_that.product,_that.serviceContractPdf);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -797,10 +825,10 @@ return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_id')  String? productId,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,) {final _that = this;
 switch (_that) {
 case _ContractModel() when $default != null:
-return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
+return $default(_that.id,_that.productId,_that.product,_that.serviceContractPdf);case _:
   return null;
 
 }
@@ -812,10 +840,11 @@ return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
 @JsonSerializable()
 
 class _ContractModel extends ContractModel {
-  const _ContractModel({@JsonKey(fromJson: _toInt) required this.id, this.product, @JsonKey(name: 'service_contract_pdf') this.serviceContractPdf}): super._();
+  const _ContractModel({@JsonKey(fromJson: _toInt) required this.id, @JsonKey(name: 'product_id') this.productId, this.product, @JsonKey(name: 'service_contract_pdf') this.serviceContractPdf}): super._();
   factory _ContractModel.fromJson(Map<String, dynamic> json) => _$ContractModelFromJson(json);
 
 @override@JsonKey(fromJson: _toInt) final  int id;
+@override@JsonKey(name: 'product_id') final  String? productId;
 @override final  ProductModel? product;
 @override@JsonKey(name: 'service_contract_pdf') final  String? serviceContractPdf;
 
@@ -832,16 +861,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,product,serviceContractPdf);
+int get hashCode => Object.hash(runtimeType,id,productId,product,serviceContractPdf);
 
 @override
 String toString() {
-  return 'ContractModel(id: $id, product: $product, serviceContractPdf: $serviceContractPdf)';
+  return 'ContractModel(id: $id, productId: $productId, product: $product, serviceContractPdf: $serviceContractPdf)';
 }
 
 
@@ -852,7 +881,7 @@ abstract mixin class _$ContractModelCopyWith<$Res> implements $ContractModelCopy
   factory _$ContractModelCopyWith(_ContractModel value, $Res Function(_ContractModel) _then) = __$ContractModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
+@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_id') String? productId, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
 });
 
 
@@ -869,10 +898,11 @@ class __$ContractModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = freezed,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
   return _then(_ContractModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
+as int,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String?,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
 as ProductModel?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceContractPdf : serviceContractPdf // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -897,7 +927,7 @@ $ProductModelCopyWith<$Res>? get product {
 /// @nodoc
 mixin _$ProductModel {
 
- String get name;@JsonKey(name: 'custom_fields') Map<String, dynamic> get customFields;
+ String? get id; String get name;@JsonKey(name: 'custom_fields') Map<String, dynamic> get customFields;
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -910,16 +940,16 @@ $ProductModelCopyWith<ProductModel> get copyWith => _$ProductModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.customFields, customFields));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.customFields, customFields));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(customFields));
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(customFields));
 
 @override
 String toString() {
-  return 'ProductModel(name: $name, customFields: $customFields)';
+  return 'ProductModel(id: $id, name: $name, customFields: $customFields)';
 }
 
 
@@ -930,7 +960,7 @@ abstract mixin class $ProductModelCopyWith<$Res>  {
   factory $ProductModelCopyWith(ProductModel value, $Res Function(ProductModel) _then) = _$ProductModelCopyWithImpl;
 @useResult
 $Res call({
- String name,@JsonKey(name: 'custom_fields') Map<String, dynamic> customFields
+ String? id, String name,@JsonKey(name: 'custom_fields') Map<String, dynamic> customFields
 });
 
 
@@ -947,9 +977,10 @@ class _$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? customFields = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? customFields = null,}) {
   return _then(_self.copyWith(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,customFields: null == customFields ? _self.customFields : customFields // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,
   ));
@@ -1036,10 +1067,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.name,_that.customFields);case _:
+return $default(_that.id,_that.name,_that.customFields);case _:
   return orElse();
 
 }
@@ -1057,10 +1088,10 @@ return $default(_that.name,_that.customFields);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel():
-return $default(_that.name,_that.customFields);case _:
+return $default(_that.id,_that.name,_that.customFields);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1077,10 +1108,10 @@ return $default(_that.name,_that.customFields);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name, @JsonKey(name: 'custom_fields')  Map<String, dynamic> customFields)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.name,_that.customFields);case _:
+return $default(_that.id,_that.name,_that.customFields);case _:
   return null;
 
 }
@@ -1092,9 +1123,10 @@ return $default(_that.name,_that.customFields);case _:
 @JsonSerializable()
 
 class _ProductModel extends ProductModel {
-  const _ProductModel({this.name = '', @JsonKey(name: 'custom_fields') final  Map<String, dynamic> customFields = const {}}): _customFields = customFields,super._();
+  const _ProductModel({this.id, this.name = '', @JsonKey(name: 'custom_fields') final  Map<String, dynamic> customFields = const {}}): _customFields = customFields,super._();
   factory _ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
+@override final  String? id;
 @override@JsonKey() final  String name;
  final  Map<String, dynamic> _customFields;
 @override@JsonKey(name: 'custom_fields') Map<String, dynamic> get customFields {
@@ -1117,16 +1149,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._customFields, _customFields));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._customFields, _customFields));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(_customFields));
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_customFields));
 
 @override
 String toString() {
-  return 'ProductModel(name: $name, customFields: $customFields)';
+  return 'ProductModel(id: $id, name: $name, customFields: $customFields)';
 }
 
 
@@ -1137,7 +1169,7 @@ abstract mixin class _$ProductModelCopyWith<$Res> implements $ProductModelCopyWi
   factory _$ProductModelCopyWith(_ProductModel value, $Res Function(_ProductModel) _then) = __$ProductModelCopyWithImpl;
 @override @useResult
 $Res call({
- String name,@JsonKey(name: 'custom_fields') Map<String, dynamic> customFields
+ String? id, String name,@JsonKey(name: 'custom_fields') Map<String, dynamic> customFields
 });
 
 
@@ -1154,11 +1186,293 @@ class __$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? customFields = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? customFields = null,}) {
   return _then(_ProductModel(
-name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,customFields: null == customFields ? _self._customFields : customFields // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$SummaryModel {
+
+@JsonKey(name: 'total_contracts') int get totalContracts;@JsonKey(name: 'total_payments') int get totalPayments;@JsonKey(name: 'paid_count') int get paidCount;@JsonKey(name: 'remaining_count') int get remainingCount;@JsonKey(name: 'total_paid') double get totalPaid;@JsonKey(name: 'total_remaining') double get totalRemaining;@JsonKey(name: 'completion_percentage') int get completionPercentage;
+/// Create a copy of SummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SummaryModelCopyWith<SummaryModel> get copyWith => _$SummaryModelCopyWithImpl<SummaryModel>(this as SummaryModel, _$identity);
+
+  /// Serializes this SummaryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummaryModel&&(identical(other.totalContracts, totalContracts) || other.totalContracts == totalContracts)&&(identical(other.totalPayments, totalPayments) || other.totalPayments == totalPayments)&&(identical(other.paidCount, paidCount) || other.paidCount == paidCount)&&(identical(other.remainingCount, remainingCount) || other.remainingCount == remainingCount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.completionPercentage, completionPercentage) || other.completionPercentage == completionPercentage));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,totalContracts,totalPayments,paidCount,remainingCount,totalPaid,totalRemaining,completionPercentage);
+
+@override
+String toString() {
+  return 'SummaryModel(totalContracts: $totalContracts, totalPayments: $totalPayments, paidCount: $paidCount, remainingCount: $remainingCount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, completionPercentage: $completionPercentage)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SummaryModelCopyWith<$Res>  {
+  factory $SummaryModelCopyWith(SummaryModel value, $Res Function(SummaryModel) _then) = _$SummaryModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'total_contracts') int totalContracts,@JsonKey(name: 'total_payments') int totalPayments,@JsonKey(name: 'paid_count') int paidCount,@JsonKey(name: 'remaining_count') int remainingCount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'completion_percentage') int completionPercentage
+});
+
+
+
+
+}
+/// @nodoc
+class _$SummaryModelCopyWithImpl<$Res>
+    implements $SummaryModelCopyWith<$Res> {
+  _$SummaryModelCopyWithImpl(this._self, this._then);
+
+  final SummaryModel _self;
+  final $Res Function(SummaryModel) _then;
+
+/// Create a copy of SummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? totalContracts = null,Object? totalPayments = null,Object? paidCount = null,Object? remainingCount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? completionPercentage = null,}) {
+  return _then(_self.copyWith(
+totalContracts: null == totalContracts ? _self.totalContracts : totalContracts // ignore: cast_nullable_to_non_nullable
+as int,totalPayments: null == totalPayments ? _self.totalPayments : totalPayments // ignore: cast_nullable_to_non_nullable
+as int,paidCount: null == paidCount ? _self.paidCount : paidCount // ignore: cast_nullable_to_non_nullable
+as int,remainingCount: null == remainingCount ? _self.remainingCount : remainingCount // ignore: cast_nullable_to_non_nullable
+as int,totalPaid: null == totalPaid ? _self.totalPaid : totalPaid // ignore: cast_nullable_to_non_nullable
+as double,totalRemaining: null == totalRemaining ? _self.totalRemaining : totalRemaining // ignore: cast_nullable_to_non_nullable
+as double,completionPercentage: null == completionPercentage ? _self.completionPercentage : completionPercentage // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [SummaryModel].
+extension SummaryModelPatterns on SummaryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SummaryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _SummaryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SummaryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _SummaryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SummaryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _SummaryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_contracts')  int totalContracts, @JsonKey(name: 'total_payments')  int totalPayments, @JsonKey(name: 'paid_count')  int paidCount, @JsonKey(name: 'remaining_count')  int remainingCount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'completion_percentage')  int completionPercentage)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _SummaryModel() when $default != null:
+return $default(_that.totalContracts,_that.totalPayments,_that.paidCount,_that.remainingCount,_that.totalPaid,_that.totalRemaining,_that.completionPercentage);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'total_contracts')  int totalContracts, @JsonKey(name: 'total_payments')  int totalPayments, @JsonKey(name: 'paid_count')  int paidCount, @JsonKey(name: 'remaining_count')  int remainingCount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'completion_percentage')  int completionPercentage)  $default,) {final _that = this;
+switch (_that) {
+case _SummaryModel():
+return $default(_that.totalContracts,_that.totalPayments,_that.paidCount,_that.remainingCount,_that.totalPaid,_that.totalRemaining,_that.completionPercentage);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'total_contracts')  int totalContracts, @JsonKey(name: 'total_payments')  int totalPayments, @JsonKey(name: 'paid_count')  int paidCount, @JsonKey(name: 'remaining_count')  int remainingCount, @JsonKey(name: 'total_paid')  double totalPaid, @JsonKey(name: 'total_remaining')  double totalRemaining, @JsonKey(name: 'completion_percentage')  int completionPercentage)?  $default,) {final _that = this;
+switch (_that) {
+case _SummaryModel() when $default != null:
+return $default(_that.totalContracts,_that.totalPayments,_that.paidCount,_that.remainingCount,_that.totalPaid,_that.totalRemaining,_that.completionPercentage);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _SummaryModel extends SummaryModel {
+  const _SummaryModel({@JsonKey(name: 'total_contracts') this.totalContracts = 0, @JsonKey(name: 'total_payments') this.totalPayments = 0, @JsonKey(name: 'paid_count') this.paidCount = 0, @JsonKey(name: 'remaining_count') this.remainingCount = 0, @JsonKey(name: 'total_paid') this.totalPaid = 0.0, @JsonKey(name: 'total_remaining') this.totalRemaining = 0.0, @JsonKey(name: 'completion_percentage') this.completionPercentage = 0}): super._();
+  factory _SummaryModel.fromJson(Map<String, dynamic> json) => _$SummaryModelFromJson(json);
+
+@override@JsonKey(name: 'total_contracts') final  int totalContracts;
+@override@JsonKey(name: 'total_payments') final  int totalPayments;
+@override@JsonKey(name: 'paid_count') final  int paidCount;
+@override@JsonKey(name: 'remaining_count') final  int remainingCount;
+@override@JsonKey(name: 'total_paid') final  double totalPaid;
+@override@JsonKey(name: 'total_remaining') final  double totalRemaining;
+@override@JsonKey(name: 'completion_percentage') final  int completionPercentage;
+
+/// Create a copy of SummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SummaryModelCopyWith<_SummaryModel> get copyWith => __$SummaryModelCopyWithImpl<_SummaryModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$SummaryModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummaryModel&&(identical(other.totalContracts, totalContracts) || other.totalContracts == totalContracts)&&(identical(other.totalPayments, totalPayments) || other.totalPayments == totalPayments)&&(identical(other.paidCount, paidCount) || other.paidCount == paidCount)&&(identical(other.remainingCount, remainingCount) || other.remainingCount == remainingCount)&&(identical(other.totalPaid, totalPaid) || other.totalPaid == totalPaid)&&(identical(other.totalRemaining, totalRemaining) || other.totalRemaining == totalRemaining)&&(identical(other.completionPercentage, completionPercentage) || other.completionPercentage == completionPercentage));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,totalContracts,totalPayments,paidCount,remainingCount,totalPaid,totalRemaining,completionPercentage);
+
+@override
+String toString() {
+  return 'SummaryModel(totalContracts: $totalContracts, totalPayments: $totalPayments, paidCount: $paidCount, remainingCount: $remainingCount, totalPaid: $totalPaid, totalRemaining: $totalRemaining, completionPercentage: $completionPercentage)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SummaryModelCopyWith<$Res> implements $SummaryModelCopyWith<$Res> {
+  factory _$SummaryModelCopyWith(_SummaryModel value, $Res Function(_SummaryModel) _then) = __$SummaryModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'total_contracts') int totalContracts,@JsonKey(name: 'total_payments') int totalPayments,@JsonKey(name: 'paid_count') int paidCount,@JsonKey(name: 'remaining_count') int remainingCount,@JsonKey(name: 'total_paid') double totalPaid,@JsonKey(name: 'total_remaining') double totalRemaining,@JsonKey(name: 'completion_percentage') int completionPercentage
+});
+
+
+
+
+}
+/// @nodoc
+class __$SummaryModelCopyWithImpl<$Res>
+    implements _$SummaryModelCopyWith<$Res> {
+  __$SummaryModelCopyWithImpl(this._self, this._then);
+
+  final _SummaryModel _self;
+  final $Res Function(_SummaryModel) _then;
+
+/// Create a copy of SummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? totalContracts = null,Object? totalPayments = null,Object? paidCount = null,Object? remainingCount = null,Object? totalPaid = null,Object? totalRemaining = null,Object? completionPercentage = null,}) {
+  return _then(_SummaryModel(
+totalContracts: null == totalContracts ? _self.totalContracts : totalContracts // ignore: cast_nullable_to_non_nullable
+as int,totalPayments: null == totalPayments ? _self.totalPayments : totalPayments // ignore: cast_nullable_to_non_nullable
+as int,paidCount: null == paidCount ? _self.paidCount : paidCount // ignore: cast_nullable_to_non_nullable
+as int,remainingCount: null == remainingCount ? _self.remainingCount : remainingCount // ignore: cast_nullable_to_non_nullable
+as int,totalPaid: null == totalPaid ? _self.totalPaid : totalPaid // ignore: cast_nullable_to_non_nullable
+as double,totalRemaining: null == totalRemaining ? _self.totalRemaining : totalRemaining // ignore: cast_nullable_to_non_nullable
+as double,completionPercentage: null == completionPercentage ? _self.completionPercentage : completionPercentage // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

@@ -115,10 +115,11 @@ class AppRoutes {
         name: 'detailsPayment',
         builder: (context, state) {
           final contractId = state.uri.queryParameters['contractId'] ?? '0';
-          final payment = state.extra;
+          final extra = state.extra as Map<String, dynamic>?;
           return DetailsPayment(
             contractId: int.parse(contractId),
-            payment: payment != null ? payment as dynamic : null,
+            payment: extra?['payment'],
+            allPayments: extra?['allPayments'],
           );
         },
       ),

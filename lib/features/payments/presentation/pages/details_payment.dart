@@ -11,8 +11,9 @@ import '../../domain/entities/payment_entity.dart';
 class DetailsPayment extends StatefulWidget {
   final int contractId;
   final PaymentEntity? payment;
+  final PaymentsEntity? allPayments;
   
-  const DetailsPayment({super.key, required this.contractId, this.payment});
+  const DetailsPayment({super.key, required this.contractId, this.payment, this.allPayments});
 
   @override
   State<DetailsPayment> createState() => _DetailsPaymentState();
@@ -84,7 +85,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     ),
                   ),
                   Text(
-                    '\$21,500',
+                    '\$${_calculateRemainingAmount()}',
                     style: TextStyle(
                       fontSize: 28.sp,
                       fontWeight: FontWeight.w600,
@@ -97,10 +98,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
               Expanded(
                 child: Column(
                   children: [
-                    _buildTimelineItem('12.11.2024', '\$550', false, true),
-                    _buildTimelineItem('12.10.2024', '\$550', true, false),
-                    _buildTimelineItem('12.09.2024', '\$550', true, false),
-                    _buildTimelineItem('12.08.2024', '\$550', true, false),
+                    ..._buildPaymentTimeline(),
                     32.verticalSpace,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,48 +117,51 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text('PDF',
                                       style: TextStyle(
-                                        fontSize: 20.sp,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.w500,
                                       )),
+                                  SizedBox(height: 2.h),
                                   Text(AppLocalizations.of(context).contract,
                                       style: TextStyle(
-                                          fontSize: 16.sp,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                           color: widget.payment?.contract?.serviceContractPdf != null 
                                               ? AppColors.cx78D9BF 
                                               : AppColors.cxAFB1B1
                                       )),
-                                  SizedBox(height: 4.h),
+                                  SizedBox(height: 2.h),
                                   Text(
                                       widget.payment?.contract?.serviceContractPdf != null 
                                           ? 'Ko\'rish' 
                                           : 'Mavjud emas',
                                       style: TextStyle(
-                                          fontSize: 14.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
                                           color: widget.payment?.contract?.serviceContractPdf != null 
                                               ? AppColors.cx78D9BF 
                                               : AppColors.cxAFB1B1
                                       )),
                                   const Spacer(),
-                                  Row(
-                                      children: [Container(
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(color: Colors.white, width: 2),
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 20.r,
-                                          backgroundColor: widget.payment?.contract?.serviceContractPdf != null 
-                                              ? AppColors.cxFEC700 
-                                              : AppColors.cxAFB1B1,
-                                          child: const Icon(Icons.file_copy_outlined, color: Colors.black),
-                                        ),
-                                      ),]
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(color: Colors.white, width: 2),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 18.r,
+                                        backgroundColor: widget.payment?.contract?.serviceContractPdf != null 
+                                            ? AppColors.cxFEC700 
+                                            : AppColors.cxAFB1B1,
+                                        child: Icon(Icons.file_copy_outlined, color: Colors.black, size: 18.sp),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -214,18 +215,23 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     );
   }
 
-  Widget _buildTimelineItem(String date, String amount, bool isPaid, bool isFirst) {
+  Widget _buildTimelineItem(String date, String amount, bool isPaid, bool isFirst, bool showBottomLine) {
     return Container(
       height: 60.h,
       child: Row(
         children: [
           Column(
             children: [
-              if (!isFirst)
+              if (!isFirst && isPaid)
                 Container(
                   width: 2.w,
                   height: 20.h,
                   color: AppColors.cx43C19F,
+                ),
+              if (!isFirst && !isPaid)
+                SizedBox(
+                  width: 2.w,
+                  height: 20.h,
                 ),
               Container(
                 width: 26.w,
@@ -246,12 +252,16 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                       )
                     : null,
               ),
-              if (!isFirst)
+              if (showBottomLine)
                 Expanded(
                   child: Container(
                     width: 2.w,
                     color: AppColors.cx43C19F,
                   ),
+                ),
+              if (!showBottomLine)
+                Expanded(
+                  child: SizedBox(width: 2.w),
                 ),
             ],
           ),
@@ -268,7 +278,6 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     color: isPaid ? AppColors.cxBlack : AppColors.cxB0B0B0,
                   ),
                 ),
-                // SizedBox(width: 25.w),
                 Text(
                   amount,
                   style: TextStyle(
@@ -277,13 +286,106 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     color: isPaid ? AppColors.cxBlack : AppColors.cxB0B0B0,
                   ),
                 ),
-
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildPaymentTimeline() {
+    if (widget.allPayments == null || widget.payment == null) {
+      return [
+        _buildTimelineItem('--', '\$0', false, true, false),
+      ];
+    }
+
+    // Get the product ID from the current payment's contract
+    final currentProductId = widget.payment!.contract?.productId;
+    
+    // Filter by product_id from contract to ensure we only show payments for this specific product
+    final paidPayments = widget.allPayments!.paidPayments
+        .where((p) => p.contract?.productId != null && p.contract?.productId == currentProductId)
+        .toList();
+    final nextPayments = widget.allPayments!.nextPayments
+        .where((p) => p.contract?.productId != null && p.contract?.productId == currentProductId)
+        .toList();
+
+    // Sort paid payments by date (oldest to newest for top to bottom)
+    paidPayments.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    // Sort next payments by date (oldest to newest)
+    nextPayments.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+
+    if (paidPayments.isEmpty && nextPayments.isEmpty) {
+      return [
+        _buildTimelineItem('--', '\$0', false, true, false),
+      ];
+    }
+
+    final List<Widget> timelineWidgets = [];
+
+    // Add paid payments (connected)
+    for (int i = 0; i < paidPayments.length; i++) {
+      final payment = paidPayments[i];
+      final isFirst = i == 0;
+      final isLast = i == paidPayments.length - 1;
+      
+      timelineWidgets.add(
+        _buildTimelineItem(
+          _formatDate(payment.dueDate),
+          '\$${payment.amount.toStringAsFixed(2)}',
+          true,
+          isFirst,
+          !isLast, // Show bottom line if not last paid payment
+        ),
+      );
+    }
+
+    // Add next payments (not connected)
+    for (int i = 0; i < nextPayments.length; i++) {
+      final payment = nextPayments[i];
+      final isFirst = i == 0 && paidPayments.isEmpty;
+      
+      timelineWidgets.add(
+        _buildTimelineItem(
+          _formatDate(payment.dueDate),
+          '\$${payment.amount.toStringAsFixed(2)}',
+          false,
+          isFirst,
+          false, // No bottom line for next payments
+        ),
+      );
+    }
+
+    return timelineWidgets;
+  }
+
+  String _formatDate(String dateStr) {
+    try {
+      final date = DateTime.parse(dateStr);
+      return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
+    } catch (e) {
+      return dateStr;
+    }
+  }
+
+  String _calculateRemainingAmount() {
+    if (widget.allPayments == null || widget.payment == null) return '0.00';
+
+    // Get the product ID from the current payment's contract
+    final currentProductId = widget.payment!.contract?.productId;
+    
+    final allContractPayments = [
+      ...widget.allPayments!.paidPayments.where((p) => p.contract?.productId == currentProductId),
+      ...widget.allPayments!.nextPayments.where((p) => p.contract?.productId == currentProductId),
+    ];
+
+    final remaining = allContractPayments
+        .where((p) => p.status.toLowerCase() != 'paid')
+        .fold<double>(0.0, (sum, payment) => sum + payment.amount);
+
+    return remaining.toStringAsFixed(2);
   }
 
   Future<void> _openPdf(String url) async {
