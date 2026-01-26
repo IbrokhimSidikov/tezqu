@@ -90,7 +90,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           content: Text(
-            'Haqiqatan ham ilovadan chiqmoqchimisiz?',
+            AppLocalizations.of(context).logoutConfirm,
             style: TextStyle(
               fontSize: 16.sp,
               color: AppColors.cxAFB1B1,
@@ -100,7 +100,7 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(
-                'Bekor qilish',
+                AppLocalizations.of(context).cancel,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.cxAFB1B1,
@@ -110,7 +110,7 @@ class _ProfileState extends State<Profile> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: Text(
-                'Chiqish',
+                AppLocalizations.of(context).exit,
                 style: TextStyle(
                   fontSize: 16.sp,
                   color: AppColors.cxF42800,
@@ -145,7 +145,7 @@ class _ProfileState extends State<Profile> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik yuz berdi: $e'),
+            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -190,7 +190,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'Do\'stlaringiz bilan ulashing',
+                AppLocalizations.of(context).shareWithFriends,
                 style: TextStyle(
                   fontSize: 14.sp,
                   color: AppColors.cxAFB1B1,
@@ -199,8 +199,8 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 24.h),
               _buildShareOption(
                 icon: Icons.share,
-                title: 'Umumiy ulashish',
-                subtitle: 'Barcha ilovalar orqali ulashing',
+                title: AppLocalizations.of(context).generalShare,
+                subtitle: AppLocalizations.of(context).shareAllApps,
                 color: AppColors.cx78D9BF,
                 onTap: () {
                   Navigator.pop(context);
@@ -212,7 +212,7 @@ class _ProfileState extends State<Profile> {
               _buildShareOption(
                 icon: Icons.phone_android,
                 title: 'Play Store',
-                subtitle: 'Google Play\'da ochish',
+                subtitle: AppLocalizations.of(context).openPlayStore,
                 color: Color(0xFF4CAF50),
                 onTap: () {
                   Navigator.pop(context);
@@ -243,7 +243,7 @@ class _ProfileState extends State<Profile> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik yuz berdi'),
+            content: Text(AppLocalizations.of(context).errorOccurred),
             backgroundColor: Colors.red,
           ),
         );
@@ -264,7 +264,7 @@ class _ProfileState extends State<Profile> {
               children: [
                 Icon(Icons.check_circle, color: AppColors.cxWhite),
                 SizedBox(width: 12.w),
-                Text('Havola nusxalandi!'),
+                Text(AppLocalizations.of(context).linkCopied),
               ],
             ),
             backgroundColor: AppColors.cx78D9BF,
@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik yuz berdi'),
+            content: Text(AppLocalizations.of(context).errorOccurred),
             backgroundColor: Colors.red,
           ),
         );
@@ -295,7 +295,7 @@ class _ProfileState extends State<Profile> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Play Store ochilmoqda...'),
+            content: Text(AppLocalizations.of(context).playStoreOpening),
             duration: Duration(seconds: 1),
           ),
         );
@@ -304,7 +304,7 @@ class _ProfileState extends State<Profile> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik yuz berdi'),
+            content: Text(AppLocalizations.of(context).errorOccurred),
             backgroundColor: Colors.red,
           ),
         );
@@ -393,7 +393,7 @@ class _ProfileState extends State<Profile> {
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                   child: Text(
-                    'TezQu - Biznesingizni boshqarish uchun eng yaxshi ilova. Mahsulotlar, xarajatlar va shartnomalarni oson boshqaring.',
+                    AppLocalizations.of(context).appDescriptionLong,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14.sp,
@@ -405,19 +405,19 @@ class _ProfileState extends State<Profile> {
                 SizedBox(height: 24.h),
                 _buildAboutInfoRow(
                   icon: Icons.developer_mode,
-                  label: 'Ishlab chiqaruvchi',
+                  label: AppLocalizations.of(context).developer,
                   value: 'Codenza Team',
                 ),
                 SizedBox(height: 12.h),
                 _buildAboutInfoRow(
                   icon: Icons.calendar_today,
-                  label: 'Chiqarilgan sana',
+                  label: AppLocalizations.of(context).releaseDate,
                   value: '2025',
                 ),
                 SizedBox(height: 12.h),
                 _buildAboutInfoRow(
                   icon: Icons.security,
-                  label: 'Litsenziya',
+                  label: AppLocalizations.of(context).license,
                   value: 'Proprietary',
                 ),
                 SizedBox(height: 24.h),
@@ -426,7 +426,7 @@ class _ProfileState extends State<Profile> {
                     Expanded(
                       child: _buildAboutActionButton(
                         icon: Icons.privacy_tip_outlined,
-                        label: 'Maxfiylik',
+                        label: AppLocalizations.of(context).privacy,
                         onTap: () {
                           Navigator.pop(context);
                           _showPrivacyPolicy();
@@ -437,7 +437,7 @@ class _ProfileState extends State<Profile> {
                     Expanded(
                       child: _buildAboutActionButton(
                         icon: Icons.description_outlined,
-                        label: 'Shartlar',
+                        label: AppLocalizations.of(context).terms,
                         onTap: () {
                           Navigator.pop(context);
                           _showTermsOfService();
@@ -449,7 +449,7 @@ class _ProfileState extends State<Profile> {
                 SizedBox(height: 12.h),
                 _buildAboutActionButton(
                   icon: Icons.star_border,
-                  label: 'Ilovani baholash',
+                  label: AppLocalizations.of(context).rateApp,
                   onTap: () {
                     Navigator.pop(context);
                     _rateApp();
@@ -457,7 +457,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 SizedBox(height: 24.h),
                 Text(
-                  '© 2025 TezQu. Barcha huquqlar himoyalangan.',
+                  '© 2025 TezQu. ${AppLocalizations.of(context).allRightsReserved}.',
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: AppColors.cxAFB1B1,
@@ -476,7 +476,7 @@ class _ProfileState extends State<Profile> {
   void _showPrivacyPolicy() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Maxfiylik siyosati ochilmoqda...'),
+        content: Text(AppLocalizations.of(context).privacyOpening),
         duration: Duration(seconds: 2),
       ),
     );
@@ -485,7 +485,7 @@ class _ProfileState extends State<Profile> {
   void _showTermsOfService() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Foydalanish shartlari ochilmoqda...'),
+        content: Text(AppLocalizations.of(context).termsOpening),
         duration: Duration(seconds: 2),
       ),
     );
@@ -498,7 +498,7 @@ class _ProfileState extends State<Profile> {
           children: [
             Icon(Icons.star, color: AppColors.cxWhite),
             SizedBox(width: 12.w),
-            Text('Baholash uchun rahmat!'),
+            Text(AppLocalizations.of(context).thankYouRating),
           ],
         ),
         backgroundColor: AppColors.cx78D9BF,
@@ -893,7 +893,7 @@ class _ProfileState extends State<Profile> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        '${AppLocalizations.of(context).workHours}: Dushanba-Juma, 9:00-18:00',
+                        '${AppLocalizations.of(context).workHours}: ${AppLocalizations.of(context).mondayFriday}, 9:00-18:00',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: AppColors.cxAFB1B1,
@@ -945,7 +945,7 @@ class _ProfileState extends State<Profile> {
             children: [
               Icon(Icons.phone, color: AppColors.cxWhite),
               SizedBox(width: 12.w),
-              Text('Telefon ochilmoqda...'),
+              Text(AppLocalizations.of(context).phoneOpening),
             ],
           ),
           backgroundColor: AppColors.cx78D9BF,
@@ -969,7 +969,7 @@ class _ProfileState extends State<Profile> {
             children: [
               Icon(Icons.email, color: AppColors.cxWhite),
               SizedBox(width: 12.w),
-              Text('Email ochilmoqda...'),
+              Text(AppLocalizations.of(context).emailOpening),
             ],
           ),
           backgroundColor: AppColors.cxFEDA84,
@@ -1669,10 +1669,10 @@ class _ProfileState extends State<Profile> {
   Future<void> _handleAccountDeletion() async {
     if (_currentUser?.id == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Foydalanuvchi ma\'lumotlari topilmadi'),
-          backgroundColor: AppColors.cxFF8B92,
-        ),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).userDataNotFound),
+            backgroundColor: AppColors.cxFF8B92,
+          ),
       );
       return;
     }

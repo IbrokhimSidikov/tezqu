@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/contract_entity.dart';
 import '../cubit/contract_cubit.dart';
 import '../cubit/contract_state.dart';
@@ -51,7 +52,7 @@ class ContractsView extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Shartnomalarim',
+          AppLocalizations.of(context).myContracts,
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
         ),
       ),
@@ -68,7 +69,7 @@ class ContractsView extends StatelessWidget {
                   Icon(Icons.error_outline, size: 60.sp, color: Colors.red),
                   SizedBox(height: 16.h),
                   Text(
-                    'Xatolik yuz berdi',
+                    AppLocalizations.of(context).error,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
@@ -91,7 +92,7 @@ class ContractsView extends StatelessWidget {
                     onPressed: () {
                       context.read<ContractCubit>().loadContracts();
                     },
-                    child: const Text('Qayta urinish'),
+                    child: Text(AppLocalizations.of(context).retry),
                   ),
                 ],
               ),
@@ -115,7 +116,7 @@ class ContractsView extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Shartnomalar topilmadi',
+              AppLocalizations.of(context).noContractsFound,
               style: TextStyle(
                 fontSize: 18.sp,
                 color: AppColors.cxAFB1B1,
@@ -276,15 +277,15 @@ class ContractsView extends StatelessWidget {
                   // Contract type
                   if (contract.contractType != null)
                     _buildInfoRow(
-                      'Shartnoma turi:',
-                      _formatContractType(contract.contractType!),
+                      '${AppLocalizations.of(context).contractType}:',
+                      _formatContractType(context, contract.contractType!),
                     ),
                   // Total service fee
                   if (contract.totalServiceFee != null)
                     Padding(
                       padding: EdgeInsets.only(top: 8.h),
                       child: _buildInfoRow(
-                        'Xizmat to\'lovi:',
+                        '${AppLocalizations.of(context).serviceFee}:',
                         '${contract.totalServiceFee} so\'m',
                       ),
                     ),
@@ -293,7 +294,7 @@ class ContractsView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 8.h),
                       child: _buildInfoRow(
-                        'Yig\'uvchi:',
+                        '${AppLocalizations.of(context).collector}:',
                         '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim(),
                       ),
                     ),
@@ -313,7 +314,7 @@ class ContractsView extends StatelessWidget {
                             SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
-                                'Shartnoma PDF',
+                                AppLocalizations.of(context).contractPdf,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.cx78D9BF,
@@ -366,12 +367,12 @@ class ContractsView extends StatelessWidget {
     );
   }
 
-  String _formatContractType(String type) {
+  String _formatContractType(BuildContext context, String type) {
     switch (type.toLowerCase()) {
       case 'two_way':
-        return 'Ikki tomonlama';
+        return AppLocalizations.of(context).twoWay;
       case 'three_way':
-        return 'Uch tomonlama';
+        return AppLocalizations.of(context).threeWay;
       default:
         return type;
     }

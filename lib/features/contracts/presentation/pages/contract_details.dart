@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/contract_entity.dart';
 import '../cubit/contract_cubit.dart';
 
@@ -39,8 +40,8 @@ class _ContractDetailsState extends State<ContractDetails> {
         appBar: AppBar(
           backgroundColor: AppColors.cxWhite,
         ),
-        body: const Center(
-          child: Text('Shartnoma topilmadi'),
+        body: Center(
+          child: Text(AppLocalizations.of(context).contractNotFound),
         ),
       );
     }
@@ -110,7 +111,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                   
                   // Contract Details Section
                   Text(
-                    'Shartnoma asosiy shartlari',
+                    AppLocalizations.of(context).mainContractTerms,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
@@ -121,23 +122,23 @@ class _ContractDetailsState extends State<ContractDetails> {
                   
                   // Sotuvchi (Seller/Collector)
                   if (contract.collectorFirstName != null || contract.collectorLastName != null)
-                    _buildDetailItem('Kollektor', '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
+                    _buildDetailItem(AppLocalizations.of(context).collector, '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
                   
                   // Boshlang'ich to'lov (Initial Payment)
                   if (contract.initialPayment != null)
-                    _buildDetailItem('Boshlang\'ich to\'lov', '${contract.initialPayment} USD'),
+                    _buildDetailItem(AppLocalizations.of(context).initialPayment, '${contract.initialPayment} USD'),
                   
                   // Narx (Price from product)
                   if (contract.productPrice != null)
-                    _buildDetailItem('Narx', '${contract.productPrice} USD'),
+                    _buildDetailItem(AppLocalizations.of(context).price, '${contract.productPrice} USD'),
                   
                   // Mijoz (Customer/User)
                   if (contract.userFirstName != null || contract.userLastName != null)
-                    _buildDetailItem('Mijoz', '${contract.userFirstName ?? ''} ${contract.userLastName ?? ''}'.trim()),
+                    _buildDetailItem(AppLocalizations.of(context).customer, '${contract.userFirstName ?? ''} ${contract.userLastName ?? ''}'.trim()),
                   
                   // Tasdiqlagan admin (Approved by admin)
                   if (contract.approvedByAdminFirstName != null || contract.approvedByAdminLastName != null)
-                    _buildDetailItem('Tasdiqlagan', '${contract.approvedByAdminFirstName ?? ''} ${contract.approvedByAdminLastName ?? ''}'.trim()),
+                    _buildDetailItem(AppLocalizations.of(context).approvedBy, '${contract.approvedByAdminFirstName ?? ''} ${contract.approvedByAdminLastName ?? ''}'.trim()),
                   
                   SizedBox(height: 24.h),
                   
@@ -146,9 +147,9 @@ class _ContractDetailsState extends State<ContractDetails> {
                     children: [
                       Expanded(
                         child: _buildInfoCard(
-                          'Kelishuv',
-                          'Oyiga: ${contract.monthlyPayment ?? "0"} USD',
-                          'Muddat: ${contract.installmentPeriodMonths ?? 0} oy',
+                          AppLocalizations.of(context).agreement,
+                          '${AppLocalizations.of(context).monthly}: ${contract.monthlyPayment ?? "0"} USD',
+                          '${AppLocalizations.of(context).period}: ${contract.installmentPeriodMonths ?? 0} ${AppLocalizations.of(context).months}',
                           AppColors.cxF5F7F9,
                           AppColors.cx78D9BF,
                         ),
@@ -161,8 +162,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                               : null,
                           child: _buildInfoCard(
                             'PDF',
-                            'Shartnoma',
-                            contract.serviceContractPdf != null ? 'Ko\'rish' : 'Mavjud emas',
+                            AppLocalizations.of(context).contract,
+                            contract.serviceContractPdf != null ? AppLocalizations.of(context).view : AppLocalizations.of(context).notAvailable,
                             AppColors.cxF5F7F9,
                             contract.serviceContractPdf != null ? AppColors.cx78D9BF : AppColors.cxAFB1B1,
                           ),
@@ -389,7 +390,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                 disabledForegroundColor: AppColors.cxBlack.withValues(alpha: 0.5),
               ),
               child: Text(
-                'Rad etish',
+                AppLocalizations.of(context).reject,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w500,
@@ -416,7 +417,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                 disabledForegroundColor: AppColors.cxWhite.withValues(alpha: 0.5),
               ),
               child: Text(
-                'Tasdiqlash',
+                AppLocalizations.of(context).approve,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w500,
@@ -443,12 +444,12 @@ class _ContractDetailsState extends State<ContractDetails> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Rad etish'),
-        content: const Text('Shartnomani rad etishni xohlaysizmi?'),
+        title: Text(AppLocalizations.of(context).rejectContract),
+        content: Text(AppLocalizations.of(context).rejectContractConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Bekor qilish'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -474,8 +475,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                 // Show success message
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Shartnoma rad etildi'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context).contractRejected),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -486,15 +487,15 @@ class _ContractDetailsState extends State<ContractDetails> {
                 // Show error message
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Xatolik yuz berdi'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context).error),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Rad etish'),
+            child: Text(AppLocalizations.of(context).reject),
           ),
         ],
       ),
@@ -508,12 +509,12 @@ class _ContractDetailsState extends State<ContractDetails> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Tasdiqlash'),
-        content: const Text('Shartnomani tasdiqlashni xohlaysizmi?'),
+        title: Text(AppLocalizations.of(context).approveContract),
+        content: Text(AppLocalizations.of(context).approveContractConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Bekor qilish'),
+            child: Text(AppLocalizations.of(context).cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -539,8 +540,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                 // Show success message
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Shartnoma tasdiqlandi'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context).contractApproved),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -551,15 +552,15 @@ class _ContractDetailsState extends State<ContractDetails> {
                 // Show error message
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Xatolik yuz berdi'),
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context).error),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Tasdiqlash'),
+            child: Text(AppLocalizations.of(context).approve),
           ),
         ],
       ),

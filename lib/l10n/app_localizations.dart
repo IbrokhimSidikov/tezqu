@@ -20,6 +20,42 @@ class AppLocalizations {
       'warehouse': 'Warehouse',
       'dashboard': 'Dashboard',
       'notification': 'Notification',
+      
+      // Contracts
+      'myContracts': 'My Contracts',
+      'noContractsFound': 'No contracts found',
+      'contractType': 'Contract type',
+      'serviceFee': 'Service fee',
+      'collector': 'Collector',
+      'contractPdf': 'Contract PDF',
+      'twoWay': 'Two-way',
+      'threeWay': 'Three-way',
+      'contractNotFound': 'Contract not found',
+      'mainContractTerms': 'Main contract terms',
+      'initialPayment': 'Initial payment',
+      'customer': 'Customer',
+      'approvedBy': 'Approved by',
+      'agreement': 'Agreement',
+      'monthly': 'Monthly',
+      'period': 'Period',
+      'months': 'months',
+      'view': 'View',
+      'notAvailable': 'Not available',
+      'reject': 'Reject',
+      'approve': 'Approve',
+      'rejectContract': 'Reject contract',
+      'rejectContractConfirm': 'Do you want to reject the contract?',
+      'approveContract': 'Approve contract',
+      'approveContractConfirm': 'Do you want to approve the contract?',
+      'contractRejected': 'Contract rejected',
+      'contractApproved': 'Contract approved',
+      
+      // Warehouse
+      'categories': 'Categories',
+      'search': 'Search',
+      'searching': 'Searching...',
+      'resultsFound': 'results found',
+      'cancelSearch': 'Cancel',
 
       // Profile
       'myProfile': 'My Profile',
@@ -71,6 +107,10 @@ class AppLocalizations {
       'noNextPayments':'No next payments',
       'paymentsHistory':'Payments history',
       'noPaymentsHistory':'No Payments history',
+      'paymentSummary':'Payment Summary',
+      'paidAmount':'Paid',
+      'remainingPayments':'Remaining',
+      'items':'items',
 
       'paymentDetails':'Payment details',
       'contractId':'Contract ID',
@@ -158,6 +198,29 @@ class AppLocalizations {
       'courier':'Courier',
       'uploading':'Uploading',
       'uploadReceipt':'Upload Receipt',
+      
+      // Profile page additional
+      'logoutConfirm':'Are you sure you want to logout?',
+      'exit':'Exit',
+      'shareWithFriends':'Share with friends',
+      'generalShare':'General share',
+      'shareAllApps':'Share via all apps',
+      'openPlayStore':'Open in Play Store',
+      'playStoreOpening':'Opening Play Store...',
+      'linkCopied':'Link copied!',
+      'errorOccurred':'An error occurred',
+      'appDescriptionLong':'TezQu - The best app for managing your business. Easily manage products, expenses and contracts.',
+      'developer':'Developer',
+      'releaseDate':'Release date',
+      'rateApp':'Rate the app',
+      'allRightsReserved':'All rights reserved',
+      'privacyOpening':'Opening privacy policy...',
+      'termsOpening':'Opening terms of service...',
+      'thankYouRating':'Thank you for rating!',
+      'mondayFriday':'Monday-Friday',
+      'phoneOpening':'Opening phone...',
+      'emailOpening':'Opening email...',
+      'userDataNotFound':'User data not found',
 
     },
     'uz': {
@@ -170,6 +233,42 @@ class AppLocalizations {
       'warehouse': 'Ombor',
       'dashboard': 'Boshqaruv paneli',
       'notification': 'Bildirishnomalar',
+      
+      // Contracts
+      'myContracts': 'Shartnomalarim',
+      'noContractsFound': 'Shartnomalar topilmadi',
+      'contractType': 'Shartnoma turi',
+      'serviceFee': 'Xizmat to‘lovi',
+      'collector': 'Yig‘uvchi',
+      'contractPdf': 'Shartnoma PDF',
+      'twoWay': 'Ikki tomonlama',
+      'threeWay': 'Uch tomonlama',
+      'contractNotFound': 'Shartnoma topilmadi',
+      'mainContractTerms': 'Shartnoma asosiy shartlari',
+      'initialPayment': 'Boshlang‘ich to‘lov',
+      'customer': 'Mijoz',
+      'approvedBy': 'Tasdiqlangan',
+      'agreement': 'Kelishuv',
+      'monthly': 'Oyiga',
+      'period': 'Muddat',
+      'months': 'oy',
+      'view': 'Ko‘rish',
+      'notAvailable': 'Mavjud emas',
+      'reject': 'Rad etish',
+      'approve': 'Tasdiqlash',
+      'rejectContract': 'Rad etish',
+      'rejectContractConfirm': 'Shartnomani rad etishni xohlaysizmi?',
+      'approveContract': 'Tasdiqlash',
+      'approveContractConfirm': 'Shartnomani tasdiqlashni xohlaysizmi?',
+      'contractRejected': 'Shartnoma rad etildi',
+      'contractApproved': 'Shartnoma tasdiqlandi',
+      
+      // Warehouse
+      'categories': 'Toifalar',
+      'search': 'Qidirish',
+      'searching': 'Qidirish...',
+      'resultsFound': 'ta natija topildi',
+      'cancelSearch': 'Bekor qilish',
 
        // Profile
       'myProfile': 'Mening profilim',
@@ -220,8 +319,12 @@ class AppLocalizations {
       "noNextPayments": "Keyingi to‘lovlar yo‘q",
       "paymentsHistory": "To‘lovlar tarixi",
       'noPaymentsHistory':'To\'lovlar tarixi yo\'q',
+      "paymentSummary": "To'lov xulosasi",
+      "paidAmount": "To'langan",
+      "remainingPayments": "Qolgan",
+      "items": "ta",
 
-      "paymentDetails": "To‘lov tafsilotlari",
+      "paymentDetails": "To'lov tafsilotlari",
       "contractId": "Shartnoma ID",
       "remainingAmount": "Qolgan summa",
       "contract": "Shartnoma",
@@ -301,7 +404,30 @@ class AppLocalizations {
       "incorrectFormat": "Noto'g'ri format",
       "courier": "Kuryer",
       "uploading": "Yuklanmoqda",
-      "uploadReceipt": "Chek yuklash"
+      "uploadReceipt": "Chek yuklash",
+      
+      // Profile page additional
+      "logoutConfirm": "Haqiqatan ham ilovadan chiqmoqchimisiz?",
+      "exit": "Chiqish",
+      "shareWithFriends": "Do'stlaringiz bilan ulashing",
+      "generalShare": "Umumiy ulashish",
+      "shareAllApps": "Barcha ilovalar orqali ulashing",
+      "openPlayStore": "Google Play'da ochish",
+      "playStoreOpening": "Play Store ochilmoqda...",
+      "linkCopied": "Havola nusxalandi!",
+      "errorOccurred": "Xatolik yuz berdi",
+      "appDescriptionLong": "TezQu - Biznesingizni boshqarish uchun eng yaxshi ilova. Mahsulotlar, xarajatlar va shartnomalarni oson boshqaring.",
+      "developer": "Ishlab chiqaruvchi",
+      "releaseDate": "Chiqarilgan sana",
+      "rateApp": "Ilovani baholash",
+      "allRightsReserved": "Barcha huquqlar himoyalangan",
+      "privacyOpening": "Maxfiylik siyosati ochilmoqda...",
+      "termsOpening": "Foydalanish shartlari ochilmoqda...",
+      "thankYouRating": "Baholash uchun rahmat!",
+      "mondayFriday": "Dushanba-Juma",
+      "phoneOpening": "Telefon ochilmoqda...",
+      "emailOpening": "Email ochilmoqda...",
+      "userDataNotFound": "Foydalanuvchi ma'lumotlari topilmadi",
 
     },
     'ru': {
@@ -311,9 +437,45 @@ class AppLocalizations {
       'products': 'Товары',
       'income': 'Доход',
       'expenses': 'Расходы',
-      'warehouse': 'Склад',
+      "warehouse": "Склад",
       'dashboard': 'Панель управления',
       'notification': 'Уведомления',
+      
+      // Contracts
+      "myContracts": "Мои договоры",
+      "noContractsFound": "Договоры не найдены",
+      "contractType": "Тип договора",
+      "serviceFee": "Плата за услугу",
+      "collector": "Сборщик",
+      "contractPdf": "PDF договора",
+      "twoWay": "Двусторонний",
+      "threeWay": "Трёхсторонний",
+      "contractNotFound": "Договор не найден",
+      "mainContractTerms": "Основные условия договора",
+      "initialPayment": "Первоначальный взнос",
+      "customer": "Клиент",
+      "approvedBy": "Утверждено",
+      "agreement": "Соглашение",
+      "monthly": "Ежемесячно",
+      "period": "Срок",
+      "months": "мес",
+      "view": "Просмотр",
+      "notAvailable": "Недоступно",
+      "reject": "Отклонить",
+      "approve": "Утвердить",
+      "rejectContract": "Отклонить",
+      "rejectContractConfirm": "Вы хотите отклонить договор?",
+      "approveContract": "Утвердить",
+      "approveContractConfirm": "Вы хотите утвердить договор?",
+      "contractRejected": "Договор отклонён",
+      "contractApproved": "Договор утверждён",
+      
+      // Warehouse
+      "categories": "Категории",
+      "search": "Поиск",
+      "searching": "Поиск...",
+      "resultsFound": "результатов найдено",
+      "cancelSearch": "Отмена",
 
        // Profile
       'myProfile': 'Мой профиль',
@@ -364,6 +526,10 @@ class AppLocalizations {
       "noNextPayments": "Нет предстоящих платежей",
       "paymentsHistory": "История платежей",
       'noPaymentsHistory':'Нет История платежей',
+      "paymentSummary": "Сводка платежей",
+      "paidAmount": "Оплачено",
+      "remainingPayments": "Осталось",
+      "items": "шт",
 
       "paymentDetails": "Детали платежа",
       "contractId": "ID договора",
@@ -445,7 +611,30 @@ class AppLocalizations {
       "incorrectFormat": "Неверный формат",
       "courier": "Курьер",
       "uploading": "Загрузка",
-      "uploadReceipt": "Загрузить чек"
+      "uploadReceipt": "Загрузить чек",
+      
+      // Profile page additional
+      "logoutConfirm": "Вы действительно хотите выйти из приложения?",
+      "exit": "Выйти",
+      "shareWithFriends": "Поделиться с друзьями",
+      "generalShare": "Общий доступ",
+      "shareAllApps": "Поделиться через все приложения",
+      "openPlayStore": "Открыть в Google Play",
+      "playStoreOpening": "Открывается Play Store...",
+      "linkCopied": "Ссылка скопирована!",
+      "errorOccurred": "Произошла ошибка",
+      "appDescriptionLong": "TezQu - Лучшее приложение для управления бизнесом. Легко управляйте продуктами, расходами и договорами.",
+      "developer": "Разработчик",
+      "releaseDate": "Дата выпуска",
+      "rateApp": "Оценить приложение",
+      "allRightsReserved": "Все права защищены",
+      "privacyOpening": "Открывается политика конфиденциальности...",
+      "termsOpening": "Открываются условия использования...",
+      "thankYouRating": "Спасибо за оценку!",
+      "mondayFriday": "Понедельник-Пятница",
+      "phoneOpening": "Открывается телефон...",
+      "emailOpening": "Открывается email...",
+      "userDataNotFound": "Данные пользователя не найдены",
 
     },
   };
@@ -513,6 +702,10 @@ class AppLocalizations {
   String get noNextPayments => translate('noNextPayments');
   String get paymentsHistory => translate('paymentsHistory');
   String get noPaymentsHistory => translate('noPaymentsHistory');
+  String get paymentSummary => translate('paymentSummary');
+  String get paidAmount => translate('paidAmount');
+  String get remainingPayments => translate('remainingPayments');
+  String get items => translate('items');
 
   String get paymentDetails => translate('paymentDetails');
   String get contractId => translate('contractId');
@@ -579,6 +772,40 @@ class AppLocalizations {
 
   String get favourites => translate('favourites');
 
+  // Contracts getters
+  String get myContracts => translate('myContracts');
+  String get noContractsFound => translate('noContractsFound');
+  String get contractType => translate('contractType');
+  String get serviceFee => translate('serviceFee');
+  String get contractPdf => translate('contractPdf');
+  String get twoWay => translate('twoWay');
+  String get threeWay => translate('threeWay');
+  String get contractNotFound => translate('contractNotFound');
+  String get mainContractTerms => translate('mainContractTerms');
+  String get initialPayment => translate('initialPayment');
+  String get approvedBy => translate('approvedBy');
+  String get agreement => translate('agreement');
+  String get monthly => translate('monthly');
+  String get period => translate('period');
+  String get months => translate('months');
+  String get view => translate('view');
+  String get notAvailable => translate('notAvailable');
+  String get reject => translate('reject');
+  String get approve => translate('approve');
+  String get rejectContract => translate('rejectContract');
+  String get rejectContractConfirm => translate('rejectContractConfirm');
+  String get approveContract => translate('approveContract');
+  String get approveContractConfirm => translate('approveContractConfirm');
+  String get contractRejected => translate('contractRejected');
+  String get contractApproved => translate('contractApproved');
+
+  // Warehouse getters
+  String get categories => translate('categories');
+  String get search => translate('search');
+  String get searching => translate('searching');
+  String get resultsFound => translate('resultsFound');
+  String get cancelSearch => translate('cancelSearch');
+
   // Additional getters
   String get collector => translate('collector');
   String get customer => translate('customer');
@@ -595,5 +822,28 @@ class AppLocalizations {
   String get courier => translate('courier');
   String get uploading => translate('uploading');
   String get uploadReceipt => translate('uploadReceipt');
+
+  // Profile page getters
+  String get logoutConfirm => translate('logoutConfirm');
+  String get exit => translate('exit');
+  String get shareWithFriends => translate('shareWithFriends');
+  String get generalShare => translate('generalShare');
+  String get shareAllApps => translate('shareAllApps');
+  String get openPlayStore => translate('openPlayStore');
+  String get playStoreOpening => translate('playStoreOpening');
+  String get linkCopied => translate('linkCopied');
+  String get errorOccurred => translate('errorOccurred');
+  String get appDescriptionLong => translate('appDescriptionLong');
+  String get developer => translate('developer');
+  String get releaseDate => translate('releaseDate');
+  String get rateApp => translate('rateApp');
+  String get allRightsReserved => translate('allRightsReserved');
+  String get privacyOpening => translate('privacyOpening');
+  String get termsOpening => translate('termsOpening');
+  String get thankYouRating => translate('thankYouRating');
+  String get mondayFriday => translate('mondayFriday');
+  String get phoneOpening => translate('phoneOpening');
+  String get emailOpening => translate('emailOpening');
+  String get userDataNotFound => translate('userDataNotFound');
 
 }

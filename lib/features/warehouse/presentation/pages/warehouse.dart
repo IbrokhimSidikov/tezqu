@@ -10,6 +10,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/skeleton_loader.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../products/data/models/product_model.dart';
 import '../../../products/presentation/pages/details.dart';
 import '../cubit/warehouse_cubit.dart';
@@ -224,7 +225,7 @@ class _WarehouseState extends State<Warehouse> {
                                 controller: _searchController,
                                 focusNode: _searchFocusNode,
                                 decoration: InputDecoration(
-                                  hintText: 'Qidirish...',
+                                  hintText: AppLocalizations.of(context).searching,
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(
                                     fontSize: 16.sp,
@@ -250,7 +251,7 @@ class _WarehouseState extends State<Warehouse> {
                             GestureDetector(
                               onTap: _toggleSearch,
                               child: Text(
-                                'Bekor qilish',
+                                AppLocalizations.of(context).cancelSearch,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.cxBlack,
@@ -264,7 +265,7 @@ class _WarehouseState extends State<Warehouse> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Toifalar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
+                          Text(AppLocalizations.of(context).categories, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
                           GestureDetector(
                             onTap: _toggleSearch,
                             child: Container(
@@ -284,7 +285,7 @@ class _WarehouseState extends State<Warehouse> {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 8.h),
                       child: Text(
-                        '${state.products.length} ta natija topildi',
+                        '${state.products.length} ${AppLocalizations.of(context).resultsFound}',
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: AppColors.cx6B7280,

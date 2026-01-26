@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -481,95 +482,51 @@ class PaymentsView extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppColors.cx43C19F, AppColors.cx78D9BF],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20.r),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.cx43C19F.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 6),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'To\'lov xulosasi',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  '${summary.completionPercentage}%',
+          // Pie Chart
+          SizedBox(
+            width: 100.w,
+            height: 100.h,
+            child: _buildPieChart(summary),
+          ),
+          SizedBox(width: 16.w),
+          // Stats
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context).paymentSummary,
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.cxBlack,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              Expanded(
-                child: _buildSummaryCard(
-                  icon: Icons.payments_outlined,
-                  label: 'To\'langan',
+                SizedBox(height: 12.h),
+                _buildCompactStat(
+                  color: AppColors.cx43C19F,
+                  label: AppLocalizations.of(context).paidAmount,
                   value: '\$${summary.totalPaid.toStringAsFixed(0)}',
-                  count: '${summary.paidCount} ta',
-                  color: Colors.white,
+                  count: '${summary.paidCount} ${AppLocalizations.of(context).items}',
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: _buildSummaryCard(
-                  icon: Icons.schedule,
-                  label: 'Qolgan',
+                SizedBox(height: 8.h),
+                _buildCompactStat(
+                  color: AppColors.cxFEC700,
+                  label: AppLocalizations.of(context).remainingPayments,
                   value: '\$${summary.totalRemaining.toStringAsFixed(0)}',
-                  count: '${summary.remainingCount} ta',
-                  color: Colors.white.withOpacity(0.9),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12.h),
-          Container(
-            padding: EdgeInsets.all(12.w),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildStatItem(
-                  icon: Icons.description_outlined,
-                  label: 'Shartnomalar',
-                  value: '${summary.totalContracts}',
-                ),
-                Container(width: 1, height: 30.h, color: Colors.white.withOpacity(0.3)),
-                _buildStatItem(
-                  icon: Icons.receipt_long,
-                  label: 'Jami to\'lovlar',
-                  value: '${summary.totalPayments}',
+                  count: '${summary.remainingCount} ${AppLocalizations.of(context).items}',
                 ),
               ],
             ),
@@ -579,82 +536,84 @@ class PaymentsView extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryCard({
-    required IconData icon,
-    required String label,
-    required String value,
-    required String count,
-    required Color color,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: color, size: 24.sp),
-          SizedBox(height: 8.h),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.white.withOpacity(0.9),
-              fontWeight: FontWeight.w400,
+  Widget _buildPieChart(SummaryEntity summary) {
+    return PieChart(
+      PieChartData(
+        sectionsSpace: 0,
+        centerSpaceRadius: 30.r,
+        sections: [
+          PieChartSectionData(
+            color: AppColors.cx43C19F,
+            value: summary.totalPaid,
+            title: '${summary.completionPercentage}%',
+            radius: 35.r,
+            titleStyle: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          SizedBox(height: 4.h),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w700,
-              color: color,
-            ),
-          ),
-          Text(
-            count,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: Colors.white.withOpacity(0.8),
-            ),
+          PieChartSectionData(
+            color: AppColors.cxFEC700,
+            value: summary.totalRemaining,
+            title: '',
+            radius: 35.r,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem({
-    required IconData icon,
+  Widget _buildCompactStat({
+    required Color color,
     required String label,
     required String value,
+    required String count,
   }) {
     return Row(
       children: [
-        Icon(icon, color: Colors.white, size: 20.sp),
+        Container(
+          width: 12.w,
+          height: 12.h,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
         SizedBox(width: 8.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11.sp,
-                color: Colors.white.withOpacity(0.8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: AppColors.cxAFB1B1,
+                ),
               ),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+              Row(
+                children: [
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.cxBlack,
+                    ),
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    count,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: AppColors.cxAFB1B1,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
