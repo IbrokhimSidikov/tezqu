@@ -53,14 +53,16 @@ class PaymentEntity extends Equatable {
 class ContractEntity extends Equatable {
   final int id;
   final ProductEntity? product;
+  final String? serviceContractPdf;
 
   const ContractEntity({
     required this.id,
     this.product,
+    this.serviceContractPdf,
   });
 
   @override
-  List<Object?> get props => [id, product];
+  List<Object?> get props => [id, product, serviceContractPdf];
 }
 
 class ProductEntity extends Equatable {

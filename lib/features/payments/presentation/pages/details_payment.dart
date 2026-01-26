@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezqu/core/shared/app_banner.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../domain/entities/payment_entity.dart';
 
 class DetailsPayment extends StatefulWidget {
   final int contractId;
+  final PaymentEntity? payment;
   
-  const DetailsPayment({super.key, required this.contractId});
+  const DetailsPayment({super.key, required this.contractId, this.payment});
 
   @override
   State<DetailsPayment> createState() => _DetailsPaymentState();
@@ -51,6 +54,16 @@ class _DetailsPaymentState extends State<DetailsPayment> {
               AppBanner(image: AppImages.reklama),
               SizedBox(height: 22.h),
               // Display contract ID for debugging
+              if (widget.payment != null)
+                Text(
+                  widget.payment!.productName,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.cxBlack,
+                  ),
+                ),
+              SizedBox(height: 4.h),
               Text(
                 '${AppLocalizations.of(context).contractId}: ${widget.contractId}',
                 style: TextStyle(
@@ -93,25 +106,9 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context){
-                                    return Container(
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.cxWhite,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(25.r),
-                                          topRight: Radius.circular(25.r),
-                                        )
-                                      ),
-                                      child: Padding(padding: EdgeInsets.only(top: 20, left: 20, right: 20)),
-                                    );
-                                  }
-                              );
-                            },
+                            onTap: widget.payment?.contract?.serviceContractPdf != null
+                                ? () => _openPdf(widget.payment!.contract!.serviceContractPdf!)
+                                : null,
                             child: Container(
                               width: 172.w,
                               height: 126.h,
@@ -123,16 +120,30 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(AppLocalizations.of(context).contract,
+                                  Text('PDF',
                                       style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w500,
                                       )),
-                                  Text('11.07.2026',
+                                  Text(AppLocalizations.of(context).contract,
                                       style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: AppColors.cxAFB1B1
+                                          color: widget.payment?.contract?.serviceContractPdf != null 
+                                              ? AppColors.cx78D9BF 
+                                              : AppColors.cxAFB1B1
+                                      )),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                      widget.payment?.contract?.serviceContractPdf != null 
+                                          ? 'Ko\'rish' 
+                                          : 'Mavjud emas',
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: widget.payment?.contract?.serviceContractPdf != null 
+                                              ? AppColors.cx78D9BF 
+                                              : AppColors.cxAFB1B1
                                       )),
                                   const Spacer(),
                                   Row(
@@ -144,7 +155,9 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                                         ),
                                         child: CircleAvatar(
                                           radius: 20.r,
-                                          backgroundColor: AppColors.cxFEC700,
+                                          backgroundColor: widget.payment?.contract?.serviceContractPdf != null 
+                                              ? AppColors.cxFEC700 
+                                              : AppColors.cxAFB1B1,
                                           child: const Icon(Icons.file_copy_outlined, color: Colors.black),
                                         ),
                                       ),]
@@ -271,5 +284,12 @@ class _DetailsPaymentState extends State<DetailsPayment> {
         ],
       ),
     );
+  }
+
+  Future<void> _openPdf(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 }

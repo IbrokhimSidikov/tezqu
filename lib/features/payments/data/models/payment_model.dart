@@ -141,6 +141,7 @@ class ContractModel with _$ContractModel {
   const factory ContractModel({
     @JsonKey(fromJson: _toInt) required int id,
     ProductModel? product,
+    @JsonKey(name: 'service_contract_pdf') String? serviceContractPdf,
   }) = _ContractModel;
 
   const ContractModel._();
@@ -152,6 +153,7 @@ class ContractModel with _$ContractModel {
     return ContractEntity(
       id: id,
       product: product?.toEntity(),
+      serviceContractPdf: serviceContractPdf,
     );
   }
 
@@ -168,6 +170,10 @@ class ContractModel with _$ContractModel {
     // TODO: implement toJson
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement serviceContractPdf
+  String? get serviceContractPdf => throw UnimplementedError();
 }
 
 @freezed

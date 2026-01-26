@@ -60,10 +60,15 @@ _ContractModel _$ContractModelFromJson(Map<String, dynamic> json) =>
       product: json['product'] == null
           ? null
           : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
+      serviceContractPdf: json['service_contract_pdf'] as String?,
     );
 
 Map<String, dynamic> _$ContractModelToJson(_ContractModel instance) =>
-    <String, dynamic>{'id': instance.id, 'product': instance.product};
+    <String, dynamic>{
+      'id': instance.id,
+      'product': instance.product,
+      'service_contract_pdf': instance.serviceContractPdf,
+    };
 
 _ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
     _ProductModel(

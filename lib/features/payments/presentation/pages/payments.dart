@@ -255,6 +255,7 @@ class PaymentsView extends StatelessWidget {
         context.pushNamed(
           'detailsPayment',
           queryParameters: {'contractId': payment.contractId.toString()},
+          extra: payment,
         );
       },
       borderRadius: BorderRadius.circular(8.r),

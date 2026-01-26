@@ -604,7 +604,7 @@ $ContractModelCopyWith<$Res>? get contract {
 /// @nodoc
 mixin _$ContractModel {
 
-@JsonKey(fromJson: _toInt) int get id; ProductModel? get product;
+@JsonKey(fromJson: _toInt) int get id; ProductModel? get product;@JsonKey(name: 'service_contract_pdf') String? get serviceContractPdf;
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -617,16 +617,16 @@ $ContractModelCopyWith<ContractModel> get copyWith => _$ContractModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,product);
+int get hashCode => Object.hash(runtimeType,id,product,serviceContractPdf);
 
 @override
 String toString() {
-  return 'ContractModel(id: $id, product: $product)';
+  return 'ContractModel(id: $id, product: $product, serviceContractPdf: $serviceContractPdf)';
 }
 
 
@@ -637,7 +637,7 @@ abstract mixin class $ContractModelCopyWith<$Res>  {
   factory $ContractModelCopyWith(ContractModel value, $Res Function(ContractModel) _then) = _$ContractModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id, ProductModel? product
+@JsonKey(fromJson: _toInt) int id, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
 });
 
 
@@ -654,11 +654,12 @@ class _$ContractModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? product = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel?,
+as ProductModel?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceContractPdf : serviceContractPdf // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of ContractModel
@@ -755,10 +756,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ContractModel() when $default != null:
-return $default(_that.id,_that.product);case _:
+return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
   return orElse();
 
 }
@@ -776,10 +777,10 @@ return $default(_that.id,_that.product);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)  $default,) {final _that = this;
 switch (_that) {
 case _ContractModel():
-return $default(_that.id,_that.product);case _:
+return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -796,10 +797,10 @@ return $default(_that.id,_that.product);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id,  ProductModel? product, @JsonKey(name: 'service_contract_pdf')  String? serviceContractPdf)?  $default,) {final _that = this;
 switch (_that) {
 case _ContractModel() when $default != null:
-return $default(_that.id,_that.product);case _:
+return $default(_that.id,_that.product,_that.serviceContractPdf);case _:
   return null;
 
 }
@@ -811,11 +812,12 @@ return $default(_that.id,_that.product);case _:
 @JsonSerializable()
 
 class _ContractModel extends ContractModel {
-  const _ContractModel({@JsonKey(fromJson: _toInt) required this.id, this.product}): super._();
+  const _ContractModel({@JsonKey(fromJson: _toInt) required this.id, this.product, @JsonKey(name: 'service_contract_pdf') this.serviceContractPdf}): super._();
   factory _ContractModel.fromJson(Map<String, dynamic> json) => _$ContractModelFromJson(json);
 
 @override@JsonKey(fromJson: _toInt) final  int id;
 @override final  ProductModel? product;
+@override@JsonKey(name: 'service_contract_pdf') final  String? serviceContractPdf;
 
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
@@ -830,16 +832,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ContractModel&&(identical(other.id, id) || other.id == id)&&(identical(other.product, product) || other.product == product)&&(identical(other.serviceContractPdf, serviceContractPdf) || other.serviceContractPdf == serviceContractPdf));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,product);
+int get hashCode => Object.hash(runtimeType,id,product,serviceContractPdf);
 
 @override
 String toString() {
-  return 'ContractModel(id: $id, product: $product)';
+  return 'ContractModel(id: $id, product: $product, serviceContractPdf: $serviceContractPdf)';
 }
 
 
@@ -850,7 +852,7 @@ abstract mixin class _$ContractModelCopyWith<$Res> implements $ContractModelCopy
   factory _$ContractModelCopyWith(_ContractModel value, $Res Function(_ContractModel) _then) = __$ContractModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id, ProductModel? product
+@JsonKey(fromJson: _toInt) int id, ProductModel? product,@JsonKey(name: 'service_contract_pdf') String? serviceContractPdf
 });
 
 
@@ -867,11 +869,12 @@ class __$ContractModelCopyWithImpl<$Res>
 
 /// Create a copy of ContractModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? product = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? product = freezed,Object? serviceContractPdf = freezed,}) {
   return _then(_ContractModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,product: freezed == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
-as ProductModel?,
+as ProductModel?,serviceContractPdf: freezed == serviceContractPdf ? _self.serviceContractPdf : serviceContractPdf // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
