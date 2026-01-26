@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../error/exceptions.dart';
+import '../events/auth_event_bus.dart';
 
 @lazySingleton
 class DioClient {
@@ -47,9 +48,13 @@ class DioClient {
         },
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
-            // Token expired or invalid - clear token
             await _prefs.remove('auth_token');
-            // You can navigate to login here if needed
+            await _prefs.remove('CACHED_USER');
+            await _prefs.setBool('IS_LOGGED_IN', false);
+            AuthEventBus().emitUnauthorized();
+            if (kDebugMode) {
+              print('🚪 401 Unauthorized - Auto logout triggered');
+            }
           }
           return handler.next(error);
         },

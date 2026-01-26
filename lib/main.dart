@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/di/di.dart';
+import 'core/events/auth_event_bus.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/services/firebase_messaging_service.dart';
 import 'core/services/version_service.dart';
@@ -54,14 +56,32 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   late final VersionService _versionService;
   final _navigatorKey = GlobalKey<NavigatorState>();
   final _localeProvider = LocaleProvider();
+  StreamSubscription<void>? _unauthorizedSubscription;
 
   @override
   void initState() {
     super.initState();
     _initializeApp();
+    _setupUnauthorizedListener();
     WidgetsBinding.instance.addObserver(this);
     FirebaseMessagingService().setRouter(AppRoutes.router);
     FirebaseMessagingService().setNotificationCubit(_notificationCubit);
+  }
+
+  void _setupUnauthorizedListener() {
+    _unauthorizedSubscription = AuthEventBus().onUnauthorized.listen((_) {
+      final context = AppRoutes.navigatorKey.currentContext;
+      if (context != null && mounted) {
+        AppRoutes.router.go(AppRoutes.login);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sessiya tugadi. Iltimos, qaytadan kiring.'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    });
   }
 
   Future<void> _initializeApp() async {
@@ -72,6 +92,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _unauthorizedSubscription?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     _notificationCubit.close();
     super.dispose();
