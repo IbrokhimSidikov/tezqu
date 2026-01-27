@@ -13,6 +13,7 @@ class AppLocalizations {
     'en': {
       'totalPayments': 'Total Payments',
       'nextPayment': 'Next Payment',
+      'netProfit': 'Net Profit This Month',
       'myPayments': 'My Payments',
       'products': 'Products',
       'income': 'Income',
@@ -282,6 +283,7 @@ class AppLocalizations {
     'uz': {
       'totalPayments': 'Jami to‘lovlar',
       'nextPayment': 'Keyingi to‘lov',
+      'netProfit': 'Bu oydagi sof foyda',
       'myPayments': 'Mening to‘lovlarim',
       'products': 'Mahsulotlar',
       'income': 'Daromad',
@@ -545,6 +547,7 @@ class AppLocalizations {
     'ru': {
       'totalPayments': 'Всего платежей',
       'nextPayment': 'Следующий платеж',
+      'netProfit': 'Чистая прибыль за месяц',
       'myPayments': 'Мои платежи',
       'products': 'Товары',
       'income': 'Доход',
@@ -813,6 +816,7 @@ class AppLocalizations {
 
   // Convenience getters
   String get totalPayments => translate('totalPayments');
+  String get netProfit => translate('netProfit');
   String get nextPayment => translate('nextPayment');
   String get myPayments => translate('myPayments');
   String get products => translate('products');
