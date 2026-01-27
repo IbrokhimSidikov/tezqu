@@ -10,6 +10,7 @@ import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_textfield.dart';
@@ -61,7 +62,7 @@ class _AuthPageState extends State<AuthPage> {
         
         if (dateOfBirth == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tug\'ulgan sanani to\'g\'ri formatda kiriting (DD.MM.YYYY)')),
+            SnackBar(content: Text(AppLocalizations.of(context).enterDateCorrectFormat)),
           );
           return;
         }
@@ -118,7 +119,7 @@ class _AuthPageState extends State<AuthPage> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message ?? 'Muvaffaqiyatli')),
+              SnackBar(content: Text(state.message ?? AppLocalizations.of(context).success)),
             );
             // Pass phone number to OTP page
             final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
@@ -167,7 +168,7 @@ class _AuthPageState extends State<AuthPage> {
 
                       Center(
                         child: Text(
-                          'Ro\'yxatdan o\'tish',
+                          AppLocalizations.of(context).register,
                           style: TextStyle(fontSize: 36.sp, fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -175,7 +176,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Ism *', style: TextStyle(
+                          '${AppLocalizations.of(context).firstName} *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -185,10 +186,10 @@ class _AuthPageState extends State<AuthPage> {
                       AppTextField(
                         controller: _firstNameController,
                         obscureText: false,
-                        hint: 'Ismingizni kiriting',
+                        hint: AppLocalizations.of(context).enterFirstName,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Ismingizni kiriting';
+                            return AppLocalizations.of(context).enterFirstName;
                           }
                           return null;
                         },
@@ -196,7 +197,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Familiya *', style: TextStyle(
+                          '${AppLocalizations.of(context).lastName} *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -206,10 +207,10 @@ class _AuthPageState extends State<AuthPage> {
                       AppTextField(
                         controller: _lastNameController,
                         obscureText: false,
-                        hint: 'Familiyangizni kiriting',
+                        hint: AppLocalizations.of(context).enterLastName,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Familiyangizni kiriting';
+                            return AppLocalizations.of(context).enterLastName;
                           }
                           return null;
                         },
@@ -222,7 +223,7 @@ class _AuthPageState extends State<AuthPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Tug\'ulgan sana', style: TextStyle(
+                                  AppLocalizations.of(context).dateOfBirth, style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                   ),
@@ -258,7 +259,7 @@ class _AuthPageState extends State<AuthPage> {
                                     if (value != null && value.isNotEmpty) {
                                       final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
                                       if (digitsOnly.length < 8) {
-                                        return 'To\'liq sanani kiriting';
+                                        return AppLocalizations.of(context).enterFullDate;
                                       }
                                     }
                                     return null;
@@ -274,7 +275,7 @@ class _AuthPageState extends State<AuthPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Jinsi ', style: TextStyle(
+                                  AppLocalizations.of(context).gender, style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -287,11 +288,11 @@ class _AuthPageState extends State<AuthPage> {
                                   dropdownColor: AppColors.cxWhite,
                                   value: _selectedGender,
                                   decoration: inputDecoration,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
-                                        value: "male", child: Text("Erkak")),
+                                        value: "male", child: Text(AppLocalizations.of(context).male)),
                                     DropdownMenuItem(
-                                        value: "female", child: Text("Ayol")),
+                                        value: "female", child: Text(AppLocalizations.of(context).female)),
                                   ],
                                   onChanged: (value) {
                                     setState(() {
@@ -307,7 +308,7 @@ class _AuthPageState extends State<AuthPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Telefon nomer *', style: TextStyle(
+                          '${AppLocalizations.of(context).phoneNumber} *', style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
@@ -322,11 +323,11 @@ class _AuthPageState extends State<AuthPage> {
                         inputFormatters: [PhoneInputFormatter()],
                         validator: (value) {
                           if (value == null || value.isEmpty || value == '+998 ') {
-                            return 'Telefon raqamni kiriting';
+                            return AppLocalizations.of(context).enterPhoneNumber;
                           }
                           final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
                           if (digits.length < 12) { // 998 + 9 digits
-                            return 'Telefon raqam kamida 9 ta raqamdan iborat bo\'lishi kerak';
+                            return AppLocalizations.of(context).phoneNumberRequired;
                           }
                           return null;
                         },
@@ -343,7 +344,7 @@ class _AuthPageState extends State<AuthPage> {
                                 onTap: (){
                                   context.go(AppRoutes.login);
                                 },
-                                child: Text('Login page ga o\'tish', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: AppColors.cx6B7280, decoration: TextDecoration.underline),),
+                                child: Text(AppLocalizations.of(context).goToLogin, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500, color: AppColors.cx6B7280, decoration: TextDecoration.underline),),
                               ),
                             ],
 
@@ -353,7 +354,7 @@ class _AuthPageState extends State<AuthPage> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 20.h),
                         child: ButtonWidget(
-                          text: isLoading ? 'Yuklanmoqda...' : 'Keyingisiga o\'tish',
+                          text: isLoading ? AppLocalizations.of(context).loading : AppLocalizations.of(context).next,
                           onPressed: isLoading ? null : () => _handleRegister(context),
                         ),
                       ),

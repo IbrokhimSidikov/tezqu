@@ -10,6 +10,7 @@ import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:tezqu/core/shared/button_widget.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/di/injection.dart';
@@ -119,14 +120,14 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 36.h,),
                             Center(
                               child: TextWidget(
-                                text: 'Xush kelibsiz',
+                                text: AppLocalizations.of(context).welcome,
                               ),
                             ),
                             SizedBox(height: 32.h,),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Telefon nomer', style: TextStyle(
+                                AppLocalizations.of(context).phoneNumber, style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -140,11 +141,11 @@ class _LoginPageState extends State<LoginPage> {
                               inputFormatters: [PhoneInputFormatter()],
                               validator: (value) {
                                 if (value == null || value.isEmpty || value == '+998 ') {
-                                  return 'Telefon raqamni kiriting';
+                                  return AppLocalizations.of(context).enterPhoneNumber;
                                 }
                                 final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
                                 if (digits.length < 12) { // 998 + 9 digits
-                                  return 'Telefon raqam kamida 9 ta raqamdan iborat bo\'lishi kerak';
+                                  return AppLocalizations.of(context).phoneNumberRequired;
                                 }
                                 return null;
                               },
@@ -161,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Sms kodni kiriting', style: TextStyle(
+                                  AppLocalizations.of(context).enterSmsCode, style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -171,9 +172,16 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: _codeController,
                                 obscureText: true,
                                 keyboardType: TextInputType.number,
+                                autofillHints: const [AutofillHints.oneTimeCode],
+                                maxLength: 4,
+                                onChanged: (value) {
+                                  if (value.length == 4) {
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                },
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Kodni kiriting';
+                                    return AppLocalizations.of(context).enterCode;
                                   }
                                   return null;
                                 },
@@ -190,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                                   child: Text(
-                                    "Kodni qayta olish", 
+                                    AppLocalizations.of(context).resendCode, 
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500, 
                                       color: AppColors.cx43C19F, 
@@ -211,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                                 child: Text(
-                                  "Ro'yxatdan o'tish", 
+                                  AppLocalizations.of(context).register, 
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500, 
                                     color: AppColors.cx43C19F,
@@ -232,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                         return Padding(
                           padding: EdgeInsets.only(bottom: 20.h),
                           child: ButtonWidget(
-                            text: _isCodeSent ? 'Dasturga kirish' : 'Kodni olish',
+                            text: _isCodeSent ? AppLocalizations.of(context).login : AppLocalizations.of(context).getCode,
                             isLoading: isLoading,
                             onPressed: isLoading
                                 ? null

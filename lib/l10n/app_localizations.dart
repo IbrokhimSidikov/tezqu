@@ -221,6 +221,62 @@ class AppLocalizations {
       'phoneOpening':'Opening phone...',
       'emailOpening':'Opening email...',
       'userDataNotFound':'User data not found',
+      'productName':'Product Name',
+      'productYear':'Product Year',
+      'productPrice':'Product Price',
+      'productStatus':'Product Status',
+      'productDetails':'Product Details',
+      'productImages':'Product Images',
+
+      // Login & Auth
+      'welcome':'Welcome',
+      'phoneNumber':'Phone number',
+      'enterPhoneNumber':'Enter phone number',
+      'phoneNumberRequired':'Phone number must be at least 9 digits',
+      'enterSmsCode':'Enter SMS code',
+      'enterCode':'Enter code',
+      'resendCode':'Resend code',
+      'register':'Register',
+      'getCode':'Get code',
+      'login':'Login',
+      'firstName':'First name',
+      'lastName':'Last name',
+      'enterFirstName':'Enter your first name',
+      'enterLastName':'Enter your last name',
+      'dateOfBirth':'Date of birth',
+      'gender':'Gender',
+      'male':'Male',
+      'female':'Female',
+      'next':'Next',
+      'loading':'Loading...',
+      'goToLogin':'Go to login page',
+      'enterFullDate':'Enter full date',
+      'enterDateCorrectFormat':'Enter date in correct format (DD.MM.YYYY)',
+      'success':'Success',
+      'searching':'Searching...',
+      'cancelSearch':'Cancel',
+      'errorOccurred':'An error occurred',
+      'retry':'Retry',
+      'nothingFound':'Nothing found',
+      'favouritesEmpty':'Favourites list is empty',
+      'searchOtherWord':'Try searching with another word',
+      'addToFavourites':'Add products to favourites',
+      'resultsFound':'results found',
+      'sold':'Sold',
+      'available':'Available',
+      'productAbout':'About product',
+      'cashPrice':'Cash',
+      'installment':'Installment',
+      'installmentPeriod':'12-24 months\nby agreement',
+      'placeOrder':'Place order',
+      'toPurchase':'To purchase',
+      'sendRequest':'Send request',
+      'contactMe':'Contact me',
+      'callMyself':'I will call',
+      'callCenter':'Call center',
+      'requestReceived':'Request received',
+      'requestReceivedMessage':'Our staff will contact you soon',
+      'cannotOpenPhone':'Cannot open phone app',
 
     },
     'uz': {
@@ -429,6 +485,62 @@ class AppLocalizations {
       "emailOpening": "Email ochilmoqda...",
       "userDataNotFound": "Foydalanuvchi ma'lumotlari topilmadi",
 
+      // Login & Auth
+      "welcome": "Xush kelibsiz",
+      "phoneNumber": "Telefon nomer",
+      "enterPhoneNumber": "Telefon raqamni kiriting",
+      "phoneNumberRequired": "Telefon raqam kamida 9 ta raqamdan iborat bo'lishi kerak",
+      "enterSmsCode": "Sms kodni kiriting",
+      "enterCode": "Kodni kiriting",
+      "resendCode": "Kodni qayta olish",
+      "register": "Ro'yxatdan o'tish",
+      "getCode": "Kodni olish",
+      "login": "Dasturga kirish",
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "enterFirstName": "Ismingizni kiriting",
+      "enterLastName": "Familiyangizni kiriting",
+      "dateOfBirth": "Tug'ulgan sana",
+      "gender": "Jinsi",
+      "male": "Erkak",
+      "female": "Ayol",
+      "next": "Keyingisiga o'tish",
+      "loading": "Yuklanmoqda...",
+      "goToLogin": "Login page ga o'tish",
+      "enterFullDate": "To'liq sanani kiriting",
+      "enterDateCorrectFormat": "Tug'ulgan sanani to'g'ri formatda kiriting (DD.MM.YYYY)",
+      "success": "Muvaffaqiyatli",
+      "searching": "Qidirish...",
+      "cancelSearch": "Bekor qilish",
+      "errorOccurred": "Xatolik yuz berdi",
+      "retry": "Qayta urinish",
+      "nothingFound": "Hech narsa topilmadi",
+      "favouritesEmpty": "Sevimlilar ro'yxati bo'sh",
+      "searchOtherWord": "Boshqa so'z bilan qidiring",
+      "addToFavourites": "Mahsulotlarni sevimlilar ro'yxatiga qo'shing",
+      "resultsFound": "ta natija topildi",
+      "sold": "Sotildi",
+      "available": "Mavjud",
+      "productAbout": "Mahsulot haqida qisqacha",
+      "cashPrice": "Naqdga",
+      "installment": "Bo'lib to'lash",
+      "installmentPeriod": "12-24 oy gacha\nkelishuv asosida",
+      "placeOrder": "Buyurtma berish",
+      "toPurchase": "Harid qilish uchun",
+      "sendRequest": "Ariza yuborish",
+      "contactMe": "Men bilan bog'laning",
+      "callMyself": "O'zim bog'lanaman",
+      "callCenter": "Aloqa markazi",
+      "requestReceived": "Ariza qabul qilindi",
+      "requestReceivedMessage": "Yaqin vaqt ichida bizning xodimlarimiz\nsiz bo'lan bog'lanishadi",
+      "cannotOpenPhone": "Telefon ilovasini ochib bo'lmadi",
+      "productName": "Mahsulot nomi",
+      "productYear": "Mahsulot yili",
+      "productPrice": "Mahsulot narxi",
+      "productStatus": "Mahsulot holati",
+      "productDetails": "Mahsulot tafsilotlari",
+      "productImages": "Mahsulot rasmlari"
+
     },
     'ru': {
       'totalPayments': 'Всего платежей',
@@ -635,6 +747,62 @@ class AppLocalizations {
       "phoneOpening": "Открывается телефон...",
       "emailOpening": "Открывается email...",
       "userDataNotFound": "Данные пользователя не найдены",
+
+      // Login & Auth
+      "welcome": "Добро пожаловать",
+      "phoneNumber": "Номер телефона",
+      "enterPhoneNumber": "Введите номер телефона",
+      "phoneNumberRequired": "Номер телефона должен содержать не менее 9 цифр",
+      "enterSmsCode": "Введите SMS код",
+      "enterCode": "Введите код",
+      "resendCode": "Отправить код повторно",
+      "register": "Регистрация",
+      "getCode": "Получить код",
+      "login": "Войти",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "enterFirstName": "Введите ваше имя",
+      "enterLastName": "Введите вашу фамилию",
+      "dateOfBirth": "Дата рождения",
+      "gender": "Пол",
+      "male": "Мужской",
+      "female": "Женский",
+      "next": "Далее",
+      "loading": "Загрузка...",
+      "goToLogin": "Перейти на страницу входа",
+      "enterFullDate": "Введите полную дату",
+      "enterDateCorrectFormat": "Введите дату в правильном формате (DD.MM.YYYY)",
+      "success": "Успешно",
+      "searching": "Поиск...",
+      "cancelSearch": "Отмена",
+      "errorOccurred": "Произошла ошибка",
+      "retry": "Повторить",
+      "nothingFound": "Ничего не найдено",
+      "favouritesEmpty": "Список избранного пуст",
+      "searchOtherWord": "Попробуйте другое слово",
+      "addToFavourites": "Добавьте товары в избранное",
+      "resultsFound": "результатов найдено",
+      "sold": "Продано",
+      "available": "Доступно",
+      "productAbout": "О товаре",
+      "cashPrice": "Наличными",
+      "installment": "В рассрочку",
+      "installmentPeriod": "12-24 месяца\nпо договоренности",
+      "placeOrder": "Оформить заказ",
+      "toPurchase": "Для покупки",
+      "sendRequest": "Отправить заявку",
+      "contactMe": "Свяжитесь со мной",
+      "callMyself": "Я позвоню сам",
+      "callCenter": "Колл-центр",
+      "requestReceived": "Заявка принята",
+      "requestReceivedMessage": "Наши сотрудники свяжутся с вами\nв ближайшее время",
+      "cannotOpenPhone": "Не удалось открыть телефон",
+      "productName": "Название продукта",
+      "productYear": "Год продукта",
+      "productPrice": "Цена продукта",
+      "productStatus": "Статус продукта",
+      "productDetails": "Детали продукта",
+      "productImages": "Изображения продукта",
 
     },
   };
@@ -845,5 +1013,51 @@ class AppLocalizations {
   String get phoneOpening => translate('phoneOpening');
   String get emailOpening => translate('emailOpening');
   String get userDataNotFound => translate('userDataNotFound');
+
+  // Login & Auth getters
+  String get welcome => translate('welcome');
+  String get phoneNumber => translate('phoneNumber');
+  String get enterPhoneNumber => translate('enterPhoneNumber');
+  String get phoneNumberRequired => translate('phoneNumberRequired');
+  String get enterSmsCode => translate('enterSmsCode');
+  String get enterCode => translate('enterCode');
+  String get resendCode => translate('resendCode');
+  String get register => translate('register');
+  String get getCode => translate('getCode');
+  String get login => translate('login');
+  String get firstName => translate('firstName');
+  String get lastName => translate('lastName');
+  String get enterFirstName => translate('enterFirstName');
+  String get enterLastName => translate('enterLastName');
+  String get dateOfBirth => translate('dateOfBirth');
+  String get gender => translate('gender');
+  String get male => translate('male');
+  String get female => translate('female');
+  String get next => translate('next');
+  String get loading => translate('loading');
+  String get goToLogin => translate('goToLogin');
+  String get enterFullDate => translate('enterFullDate');
+  String get enterDateCorrectFormat => translate('enterDateCorrectFormat');
+  String get success => translate('success');
+  String get nothingFound => translate('nothingFound');
+  String get favouritesEmpty => translate('favouritesEmpty');
+  String get searchOtherWord => translate('searchOtherWord');
+  String get addToFavourites => translate('addToFavourites');
+  String get sold => translate('sold');
+  String get available => translate('available');
+  String get productAbout => translate('productAbout');
+  String get cashPrice => translate('cashPrice');
+  String get installment => translate('installment');
+  String get installmentPeriod => translate('installmentPeriod');
+  String get toPurchase => translate('toPurchase');
+  String get callMyself => translate('callMyself');
+  String get requestReceivedMessage => translate('requestReceivedMessage');
+  String get cannotOpenPhone => translate('cannotOpenPhone');
+  String get productName => translate('productName');
+  String get productYear => translate('productYear');
+  String get productPrice => translate('productPrice');
+  String get productStatus => translate('productStatus');
+  String get productDetails => translate('productDetails');
+  String get productImages => translate('productImages');
 
 }

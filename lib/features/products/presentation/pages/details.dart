@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/services/wishlist_service.dart';
 import '../../../../core/services/product_request_service.dart';
 import '../../data/models/product_model.dart';
@@ -93,7 +94,7 @@ class _DetailsState extends State<Details> {
         Navigator.of(context).pop(); // Close the purchase dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik yuz berdi: ${e.toString()}'),
+            content: Text('${AppLocalizations.of(context).errorOccurred}: ${e.toString()}'),
             duration: Duration(seconds: 3),
             backgroundColor: Colors.red,
           ),
@@ -110,8 +111,8 @@ class _DetailsState extends State<Details> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Telefon ilovasini ochib bo\'lmadi'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).cannotOpenPhone),
               duration: Duration(seconds: 2),
               backgroundColor: Colors.red,
             ),
@@ -122,7 +123,7 @@ class _DetailsState extends State<Details> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Xatolik: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context).errorOccurred),
             duration: Duration(seconds: 2),
             backgroundColor: Colors.red,
           ),
@@ -203,7 +204,7 @@ class _DetailsState extends State<Details> {
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Xatolik yuz berdi'),
+                                  content: Text(AppLocalizations.of(context).errorOccurred),
                                   duration: Duration(seconds: 2),
                                   backgroundColor: Colors.red,
                                 ),
@@ -287,7 +288,7 @@ class _DetailsState extends State<Details> {
                 children: [
                   // Product Name
                   Text(
-                    product?.name ?? "Product Name",
+                    product?.name ?? AppLocalizations.of(context).productName,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w700,
@@ -307,7 +308,7 @@ class _DetailsState extends State<Details> {
                   SizedBox(height: 20.h),
                   // Product Details Section
                   Text(
-                    "Mahsulot haqida qisqacha",
+                    AppLocalizations.of(context).productAbout,
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w700,
@@ -369,7 +370,7 @@ class _DetailsState extends State<Details> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Naqdga",
+                                AppLocalizations.of(context).cashPrice,
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
@@ -402,7 +403,7 @@ class _DetailsState extends State<Details> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Bo'lib to'lash",
+                                AppLocalizations.of(context).installment,
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
@@ -411,7 +412,7 @@ class _DetailsState extends State<Details> {
                               ),
                               SizedBox(height: 8.h),
                               Text(
-                                "12-24 oy gacha\nkelishuv asosida",
+                                AppLocalizations.of(context).installmentPeriod,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   color: AppColors.cx6B7280,
@@ -443,7 +444,7 @@ class _DetailsState extends State<Details> {
             ),
             child: SafeArea(
               child: ButtonWidgetIconless(
-                text: 'Buyurtma berish',
+                text: AppLocalizations.of(context).placeOrder,
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -464,7 +465,7 @@ class _DetailsState extends State<Details> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Harid qilish uchun",
+                                    AppLocalizations.of(context).toPurchase,
                                     style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
@@ -498,7 +499,7 @@ class _DetailsState extends State<Details> {
                                                     ),
                                                   )
                                                 : Text(
-                                                    "Ariza yuborish",
+                                                    AppLocalizations.of(context).sendRequest,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontSize: 20.sp,
@@ -507,7 +508,7 @@ class _DetailsState extends State<Details> {
                                                   ),
                                             SizedBox(height: 6.h),
                                             Text(
-                                              "Men bilan bog’laning",
+                                              AppLocalizations.of(context).contactMe,
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500
@@ -533,7 +534,7 @@ class _DetailsState extends State<Details> {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "O'zim bog'lanaman",
+                                              AppLocalizations.of(context).callMyself,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 20.sp,
@@ -542,7 +543,7 @@ class _DetailsState extends State<Details> {
                                             ),
                                             SizedBox(height: 6.h),
                                             Text(
-                                              "Aloqa markazi",
+                                              AppLocalizations.of(context).callCenter,
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w500
@@ -596,7 +597,7 @@ void _showSuccessDialog(BuildContext context) {
                  alignment: Alignment.center,
                   children: [
                     Text(
-                      "Ariza qabul qilindi",
+                      AppLocalizations.of(context).requestReceived,
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
@@ -632,7 +633,7 @@ void _showSuccessDialog(BuildContext context) {
                 ),
                 SizedBox(height: 10.h),
                 Text(
-                  "Yaqin vaqt ichida bizning xodimlarimiz\nsiz bo’lan bog’lanishadi",
+                  AppLocalizations.of(context).requestReceivedMessage,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                 ),

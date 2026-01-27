@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../products/data/models/product_model.dart';
 import '../cubit/wishlist_cubit.dart';
@@ -78,7 +79,7 @@ class _FavouritesState extends State<Favourites> {
               ),
             ),
           ),
-          title: Text('Sevimlilar', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+          title: Text(AppLocalizations.of(context).favourites, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
           actions: [
             if (!_isSearching)
               Padding(
@@ -118,7 +119,7 @@ class _FavouritesState extends State<Favourites> {
                           controller: _searchController,
                           focusNode: _searchFocusNode,
                           decoration: InputDecoration(
-                            hintText: 'Qidirish...',
+                            hintText: AppLocalizations.of(context).searching,
                             border: InputBorder.none,
                             hintStyle: TextStyle(
                               fontSize: 16.sp,
@@ -143,7 +144,7 @@ class _FavouritesState extends State<Favourites> {
                       GestureDetector(
                         onTap: _toggleSearch,
                         child: Text(
-                          'Bekor qilish',
+                          AppLocalizations.of(context).cancelSearch,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.cxBlack,
@@ -184,7 +185,7 @@ class _FavouritesState extends State<Favourites> {
                   Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
                   SizedBox(height: 16.h),
                   Text(
-                    'Xatolik yuz berdi',
+                    AppLocalizations.of(context).errorOccurred,
                     style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: 8.h),
@@ -196,7 +197,7 @@ class _FavouritesState extends State<Favourites> {
                   SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: () => context.read<WishlistCubit>().loadWishlist(),
-                    child: Text('Qayta urinish'),
+                    child: Text(AppLocalizations.of(context).retry),
                   ),
                 ],
               ),
@@ -217,15 +218,15 @@ class _FavouritesState extends State<Favourites> {
                     SizedBox(height: 16.h),
                     Text(
                       state.searchQuery != null
-                          ? 'Hech narsa topilmadi'
-                          : 'Sevimlilar ro\'yxati bo\'sh',
+                          ? AppLocalizations.of(context).nothingFound
+                          : AppLocalizations.of(context).favouritesEmpty,
                       style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       state.searchQuery != null
-                          ? 'Boshqa so\'z bilan qidiring'
-                          : 'Mahsulotlarni sevimlilar ro\'yxatiga qo\'shing',
+                          ? AppLocalizations.of(context).searchOtherWord
+                          : AppLocalizations.of(context).addToFavourites,
                       style: TextStyle(fontSize: 14.sp, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
@@ -243,7 +244,7 @@ class _FavouritesState extends State<Favourites> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 12.h),
                       child: Text(
-                        '${state.products.length} ta natija topildi',
+                        '${state.products.length} ${AppLocalizations.of(context).resultsFound}',
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: AppColors.cxBlack.withOpacity(0.6),
@@ -287,10 +288,10 @@ class _FavouritesState extends State<Favourites> {
     
     if (product.status.toLowerCase() == 'sold' || product.status.toLowerCase() == 'sotildi') {
       statusColor = Colors.red;
-      statusText = 'Sotildi';
+      statusText = AppLocalizations.of(context).sold;
     } else if (product.status.toLowerCase() == 'available' || product.status.toLowerCase() == 'mavjud') {
       statusColor = AppColors.cx43C19F;
-      statusText = 'Mavjud';
+      statusText = AppLocalizations.of(context).available;
     }
 
     return GestureDetector(
