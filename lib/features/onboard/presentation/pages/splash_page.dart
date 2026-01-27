@@ -15,13 +15,24 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   bool _updateCheckDone = false;
+  late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1400),
+      vsync: this,
+    )..repeat();
     _checkVersionAndProceed();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _checkVersionAndProceed() async {
@@ -59,10 +70,46 @@ class _SplashPageState extends State<SplashPage> {
       child: Scaffold(
         backgroundColor: AppColors.cx43C19F,
         body: Center(
-          child: SvgPicture.asset(
-            AppImages.logoOnboard,
-            height: 100,
-            width: 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                AppImages.logoOnboard,
+                height: 100,
+                width: 150,
+              ),
+              const SizedBox(height: 40),
+              AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(3, (index) {
+                      final delay = index * 0.2;
+                      final value = (_animationController.value - delay) % 1.0;
+                      final scale = value < 0.5
+                          ? 1.0 + (value * 2) * 0.5
+                          : 1.5 - ((value - 0.5) * 2) * 0.5;
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Transform.scale(
+                          scale: scale,
+                          child: Container(
+                            width: 12,
+                            height: 12,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

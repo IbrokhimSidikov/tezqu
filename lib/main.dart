@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezqu/core/constants/app_colors.dart';
 import 'package:tezqu/core/router/app_routes.dart';
@@ -10,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'core/di/di.dart';
 import 'core/events/auth_event_bus.dart';
@@ -17,6 +17,7 @@ import 'core/providers/locale_provider.dart';
 import 'core/services/firebase_messaging_service.dart';
 import 'core/services/version_service.dart';
 import 'core/widgets/force_update_dialog.dart';
+import 'features/onboard/presentation/pages/splash_page.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/app_localizations_delegate.dart';
 import 'features/notification/presentation/cubit/notification_cubit.dart';
@@ -29,13 +30,12 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
   await Firebase.initializeApp();
   
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  
-  await dotenv.load(fileName: ".env");
   
   await configureDependencies();
   
@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _navigatorKey = GlobalKey<NavigatorState>();
   final _localeProvider = LocaleProvider();
   StreamSubscription<void>? _unauthorizedSubscription;
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -85,9 +86,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _initializeApp() async {
-    await _initializeVersionService();
-    await _checkForUpdates();
     await _localeProvider.initialize();
+    await _initializeVersionService();
+    
+    FlutterNativeSplash.remove();
+    
+    if (mounted) {
+      setState(() {
+        _isInitialized = true;
+      });
+    }
+    
+    _checkForUpdates();
   }
 
   @override
@@ -110,8 +120,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _checkForUpdates() async {
-    // Wait a bit to ensure the app UI is fully loaded
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     try {
       final updateStatus = await _versionService.checkForUpdate();
@@ -147,6 +156,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return const SplashPage();
+    }
+
     return ScreenUtilInit(
         designSize: const Size(393, 852),
         minTextAdapt: true,
