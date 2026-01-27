@@ -20,8 +20,8 @@ class VersionService {
       'latest_version': '2.0.0',
       'force_update_enabled': true,
       'update_message': 'A new version is available. Please update to continue.',
-      'android_store_url': 'https://play.google.com/store/apps/details?id=com.sieves.v1.sieves_mob',
-      'ios_store_url': 'https://apps.apple.com/app/sieves/id6753124737',
+      'android_store_url': 'https://play.google.com/store/apps/details?id=com.tezqu.v1',
+      'ios_store_url': 'https://apps.apple.com/us/app/tezqu/id6757701566',
     });
 
     // Fetch and activate from Firebase Console
