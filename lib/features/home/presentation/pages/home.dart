@@ -162,7 +162,9 @@ class _HomePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: AppColors.cxWhite,
         appBar: AppBar(
           backgroundColor: AppColors.cxWhite,
@@ -234,36 +236,18 @@ class _HomePageContent extends StatelessWidget {
             }
 
             final dashboard = state is DashboardLoaded ? state.dashboard : null;
+            final totalContractAmount = dashboard?.data.totalContractAmount ?? 0;
+            final totalPaid = dashboard?.data.totalPaid ?? 0;
+            final totalRemaining = dashboard?.data.totalRemaining ?? 0;
+            final nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
+            final activeContracts = dashboard?.data.activeContracts ?? 0;
             
             // Get user role from dashboard
             final userRole = UserRole.fromString(dashboard?.role);
-            
-            // Get appropriate values based on role
-            final double displayAmount;
-            final double totalPaid;
-            final double totalRemaining;
-            final double nextPaymentAmount;
-            final int activeContracts;
-            
-            if (userRole == UserRole.admin) {
-              // For admin, show net profit
-              displayAmount = dashboard?.data.netProfitThisMonth ?? 0;
-              totalPaid = dashboard?.data.totalIncomeThisMonth ?? 0;
-              totalRemaining = dashboard?.data.totalExpensesThisMonth ?? 0;
-              nextPaymentAmount = dashboard?.data.totalPaymentsThisMonth ?? 0;
-              activeContracts = dashboard?.data.activeContractsCount ?? 0;
-            } else {
-              // For customer, show total contract amount
-              displayAmount = dashboard?.data.totalContractAmount ?? 0;
-              totalPaid = dashboard?.data.totalPaid ?? 0;
-              totalRemaining = dashboard?.data.totalRemaining ?? 0;
-              nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
-              activeContracts = dashboard?.data.activeContracts ?? 0;
-            }
 
             // Calculate progress percentage
-            final progressPercentage = displayAmount > 0 
-                ? totalPaid / displayAmount 
+            final progressPercentage = totalContractAmount > 0 
+                ? totalPaid / totalContractAmount 
                 : 0.0;
 
             return Padding(
@@ -276,26 +260,15 @@ class _HomePageContent extends StatelessWidget {
                       children: [
                         Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
                         SizedBox(width: 10.w),
-                        Text(
-                          userRole == UserRole.admin 
-                            ? AppLocalizations.of(context).netProfit 
-                            : AppLocalizations.of(context).totalPayments, 
-                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
-                        ),
+                        Text(AppLocalizations.of(context).totalPayments, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
                       ],
                     ),
                     SizedBox(height: 0),
                     Row(
                       children: [
                         Text(
-                          _formatCurrency(displayAmount),
-                          style: TextStyle(
-                            fontSize: 53.sp, 
-                            fontWeight: FontWeight.bold,
-                            color: userRole == UserRole.admin && displayAmount < 0 
-                              ? Colors.red 
-                              : AppColors.cxBlack,
-                          )
+                          _formatCurrency(totalContractAmount),
+                          style: TextStyle(fontSize: 53.sp, fontWeight: FontWeight.bold)
                         ),
                       ],
                     ),
@@ -377,7 +350,9 @@ class _HomePageContent extends StatelessWidget {
           ),
         );
           },
-        ));
+        ),
+      ),
+    );
   }
 }
 

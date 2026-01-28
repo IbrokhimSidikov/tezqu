@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           } else if (state is AuthSuccess) {
-            context.push(AppRoutes.home);
+            context.go(AppRoutes.home);
           }
         },
         child: Scaffold(

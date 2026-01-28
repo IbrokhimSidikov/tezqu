@@ -45,42 +45,24 @@ class DashboardModel with _$DashboardModel {
 @freezed
 class DashboardDataModel with _$DashboardDataModel {
   const factory DashboardDataModel({
-    // Customer fields
     @JsonKey(name: 'total_contract_amount') @Default(0.0) double totalContractAmount,
     @JsonKey(name: 'total_paid') @Default(0.0) double totalPaid,
     @JsonKey(name: 'total_remaining') @Default(0.0) double totalRemaining,
     @JsonKey(name: 'next_payment_amount') @Default(0.0) double nextPaymentAmount,
     @JsonKey(name: 'next_payment_date') @Default('') String nextPaymentDate,
     @JsonKey(name: 'active_contracts') @Default(0) int activeContracts,
-    // Admin fields
-    @JsonKey(name: 'total_payments_this_month') @Default(0.0) double totalPaymentsThisMonth,
-    @JsonKey(name: 'total_income_this_month') @Default(0.0) double totalIncomeThisMonth,
-    @JsonKey(name: 'total_expenses_this_month') @Default(0.0) double totalExpensesThisMonth,
-    @JsonKey(name: 'total_products_qty') @Default(0) int totalProductsQty,
-    @JsonKey(name: 'net_profit_this_month') @Default(0.0) double netProfitThisMonth,
-    @JsonKey(name: 'active_contracts_count') @Default(0) int activeContractsCount,
-    @JsonKey(name: 'pending_payments_count') @Default(0) int pendingPaymentsCount,
   }) = _DashboardDataModel;
 
   const DashboardDataModel._();
 
   factory DashboardDataModel.fromJson(Map<String, dynamic> json) {
     return DashboardDataModel(
-      // Customer fields
       totalContractAmount: (json['total_contract_amount'] as num?)?.toDouble() ?? 0.0,
       totalPaid: (json['total_paid'] as num?)?.toDouble() ?? 0.0,
       totalRemaining: (json['total_remaining'] as num?)?.toDouble() ?? 0.0,
       nextPaymentAmount: (json['next_payment_amount'] as num?)?.toDouble() ?? 0.0,
       nextPaymentDate: json['next_payment_date'] as String? ?? '',
       activeContracts: (json['active_contracts'] as num?)?.toInt() ?? 0,
-      // Admin fields
-      totalPaymentsThisMonth: (json['total_payments_this_month'] as num?)?.toDouble() ?? 0.0,
-      totalIncomeThisMonth: (json['total_income_this_month'] as num?)?.toDouble() ?? 0.0,
-      totalExpensesThisMonth: (json['total_expenses_this_month'] as num?)?.toDouble() ?? 0.0,
-      totalProductsQty: (json['total_products_qty'] as num?)?.toInt() ?? 0,
-      netProfitThisMonth: (json['net_profit_this_month'] as num?)?.toDouble() ?? 0.0,
-      activeContractsCount: (json['active_contracts_count'] as num?)?.toInt() ?? 0,
-      pendingPaymentsCount: (json['pending_payments_count'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -92,13 +74,6 @@ class DashboardDataModel with _$DashboardDataModel {
       nextPaymentAmount: nextPaymentAmount,
       nextPaymentDate: nextPaymentDate,
       activeContracts: activeContracts,
-      totalPaymentsThisMonth: totalPaymentsThisMonth,
-      totalIncomeThisMonth: totalIncomeThisMonth,
-      totalExpensesThisMonth: totalExpensesThisMonth,
-      totalProductsQty: totalProductsQty,
-      netProfitThisMonth: netProfitThisMonth,
-      activeContractsCount: activeContractsCount,
-      pendingPaymentsCount: pendingPaymentsCount,
     );
   }
 
