@@ -1,11 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tezqu/core/shared/app_banner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../../core/di/di.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../products/data/models/product_model.dart';
+import '../../../products/domain/repositories/product_repository.dart';
 import '../../domain/entities/payment_entity.dart';
 
 class DetailsPayment extends StatefulWidget {
@@ -20,6 +25,48 @@ class DetailsPayment extends StatefulWidget {
 }
 
 class _DetailsPaymentState extends State<DetailsPayment> {
+  ProductModel? _productDetails;
+  bool _isLoadingProduct = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProductDetails();
+  }
+
+  Future<void> _fetchProductDetails() async {
+    final productId = widget.payment?.contract?.productId;
+    if (productId == null || productId.isEmpty) return;
+
+    // Skip if already loaded
+    if (_productDetails != null) return;
+
+    setState(() {
+      _isLoadingProduct = true;
+    });
+
+    final productRepository = getIt<ProductRepository>();
+    final result = await productRepository.getProductById(productId);
+
+    result.fold(
+      (failure) {
+        if (mounted) {
+          setState(() {
+            _isLoadingProduct = false;
+          });
+        }
+      },
+      (product) {
+        if (mounted) {
+          setState(() {
+            _productDetails = product;
+            _isLoadingProduct = false;
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +99,8 @@ class _DetailsPaymentState extends State<DetailsPayment> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBanner(image: AppImages.reklama),
-              SizedBox(height: 22.h),
+              _buildProductImage(),
+              // SizedBox(height: 22.h),
               // Display contract ID for debugging
               if (widget.payment != null)
                 Text(
@@ -64,37 +111,34 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     color: AppColors.cxBlack,
                   ),
                 ),
-              SizedBox(height: 4.h),
-              Text(
-                '${AppLocalizations.of(context).contractId}: ${widget.contractId}',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.cxAFB1B1,
-                ),
-              ),
+              // SizedBox(height: 4.h),
+              // Text(
+              //   '${AppLocalizations.of(context).contractId}: ${widget.contractId}',
+              //   style: TextStyle(
+              //     fontSize: 16.sp,
+              //     fontWeight: FontWeight.w400,
+              //     color: AppColors.cxAFB1B1,
+              //   ),
+              // ),
               SizedBox(height: 12.h),
-              Row(
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context).remainingAmount}: ',
-                    style: TextStyle(
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.cxBlack,
-                    ),
+              // Product Name from API
+              if (_productDetails?.name != null) ...[
+                Text(
+                  _productDetails!.name,
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.cxBlack,
                   ),
-                  Text(
-                    '\$${_calculateRemainingAmount()}',
-                    style: TextStyle(
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.cx43C19F,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 24.h),
+                ),
+                SizedBox(height: 16.h),
+              ],
+              // Custom Fields
+              if (_productDetails?.customFields != null && _productDetails!.customFields!.isNotEmpty) ...[
+                ..._buildCustomFields(),
+                SizedBox(height: 16.h),
+              ],
+              SizedBox(height: 8.h),
               Expanded(
                 child: Column(
                   children: [
@@ -370,6 +414,50 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     }
   }
 
+  List<Widget> _buildCustomFields() {
+    if (_productDetails?.customFields == null || _productDetails!.customFields!.isEmpty) {
+      return [];
+    }
+
+    final customFields = _productDetails!.customFields!;
+    final List<Widget> fieldWidgets = [];
+
+    customFields.forEach((key, value) {
+      if (value != null && value.toString().isNotEmpty) {
+        fieldWidgets.add(
+          Padding(
+            padding: EdgeInsets.only(bottom: 8.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$key: ',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.cxAFB1B1,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    value.toString(),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.cxBlack,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    });
+
+    return fieldWidgets;
+  }
+
   String _calculateRemainingAmount() {
     if (widget.allPayments == null || widget.payment == null) return '0.00';
 
@@ -393,5 +481,76 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+
+  Widget _buildProductImage() {
+    if (_isLoadingProduct) {
+      return Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          height: 180.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+        ),
+      );
+    }
+
+    final imageUrl = _productDetails?.imageUrls.isNotEmpty == true 
+        ? _productDetails!.imageUrls.first 
+        : null;
+
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          height: 180.h,
+          width: double.infinity,
+          fit: BoxFit.cover,
+          memCacheHeight: (180 * 2.75).toInt(), // Cache at 2.75x for high DPI screens
+          memCacheWidth: (MediaQuery.of(context).size.width * 2.75).toInt(),
+          maxHeightDiskCache: (180 * 2.75).toInt(),
+          maxWidthDiskCache: (MediaQuery.of(context).size.width * 2.75).toInt(),
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 180.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
+            height: 180.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.cxF5F7F9,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.image_not_supported, size: 48.sp, color: AppColors.cxAFB1B1),
+                SizedBox(height: 8.h),
+                Text(
+                  'Image not available',
+                  style: TextStyle(color: AppColors.cxAFB1B1, fontSize: 14.sp),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Fallback to static banner if no product image
+    return AppBanner(image: AppImages.reklama);
   }
 }

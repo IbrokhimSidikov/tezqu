@@ -5,6 +5,8 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:tezqu/core/shared/button_widget_iconless.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
@@ -27,10 +29,13 @@ class _DetailsState extends State<Details> {
   bool _isFavorite = false;
   bool _isLoading = true;
   bool _isSubmittingRequest = false;
+  late PageController _pageController;
+  int _currentImageIndex = 0;
   
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
     _checkWishlistStatus();
     // Log product data when page loads
     print('=== DETAILS PAGE LOADED ===');
@@ -131,6 +136,12 @@ class _DetailsState extends State<Details> {
       }
     }
   }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -219,65 +230,95 @@ class _DetailsState extends State<Details> {
               ),
             ),
           ),
-          // Image Banner Section
+          // Image Banner Section - Swipeable Carousel
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             width: double.infinity,
             height: 240.h,
-            decoration: BoxDecoration(
-              color: AppColors.cxF5F7F9,
-              borderRadius: BorderRadius.circular(24.r),
-            ),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(24.r),
-                  child: product?.imageUrl != null && product!.imageUrl!.isNotEmpty
-                      ? Image.network(
-                          product!.imageUrl!,
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Center(
-                            child: Icon(
-                              Icons.image_not_supported_outlined,
-                              size: 60.sp,
-                              color: Colors.grey,
+            child: product?.imageUrls != null && product!.imageUrls.isNotEmpty
+                ? Stack(
+                    children: [
+                      // PageView for swipeable images
+                      PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _currentImageIndex = index;
+                          });
+                        },
+                        itemCount: product!.imageUrls.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 4.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.cxF5F7F9,
+                              borderRadius: BorderRadius.circular(24.r),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24.r),
+                              child: CachedNetworkImage(
+                                imageUrl: product!.imageUrls[index],
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade100,
+                                  child: Container(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Center(
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    size: 60.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      // Image indicator dots
+                      if (product!.imageUrls.length > 1)
+                        Positioned(
+                          bottom: 16.h,
+                          left: 0,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              product!.imageUrls.length,
+                              (index) => Container(
+                                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                width: _currentImageIndex == index ? 24.w : 8.w,
+                                height: 8.h,
+                                decoration: BoxDecoration(
+                                  color: _currentImageIndex == index 
+                                      ? AppColors.cx43C19F 
+                                      : Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(4.r),
+                                ),
+                              ),
                             ),
                           ),
-                        )
-                      : Center(
-                          child: Icon(
-                            Icons.image_not_supported_outlined,
-                            size: 60.sp,
-                            color: Colors.grey,
-                          ),
                         ),
-                ),
-                // Image indicator dots
-                if (product?.imageUrls != null && product!.imageUrls.length > 1)
-                  Positioned(
-                    bottom: 16.h,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        product!.imageUrls.length,
-                        (index) => Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.w),
-                          width: index == 0 ? 24.w : 8.w,
-                          height: 8.h,
-                          decoration: BoxDecoration(
-                            color: index == 0 ? AppColors.cx43C19F : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                        ),
+                    ],
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.cxF5F7F9,
+                      borderRadius: BorderRadius.circular(24.r),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 60.sp,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
-              ],
-            ),
           ),
           // Content Section
           Expanded(

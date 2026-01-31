@@ -15,6 +15,7 @@ class DioClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: 'https://api.tezqu.uz',
+        //baseUrl: 'https://5ee44ff6d128.ngrok-free.app', //dev
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {

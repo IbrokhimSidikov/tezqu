@@ -63,4 +63,17 @@ class ProductRepositoryImpl implements ProductRepository {
       return Left(ServerFailure('Failed to load products by category: ${e.toString()}'));
     }
   }
+
+  @override
+  Future<Either<Failure, ProductModel>> getProductById(String productId) async {
+    try {
+      final response = await dioClient.get('/products/$productId');
+      final ProductModel product = ProductModel.fromJson(response.data);
+      return Right(product);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure('Failed to load product: ${e.toString()}'));
+    }
+  }
 }

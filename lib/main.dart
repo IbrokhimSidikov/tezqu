@@ -30,17 +30,54 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  print('🚀 ========== APP STARTING ==========');
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
+  print('🔥 Initializing Firebase...');
   await Firebase.initializeApp();
+  print('✅ Firebase initialized');
   
+  print('📨 Setting up background message handler...');
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  print('✅ Background handler set');
   
+  print('💉 Configuring dependencies...');
   await configureDependencies();
+  print('✅ Dependencies configured');
   
+  print('🔔 Initializing Firebase Messaging Service...');
   await FirebaseMessagingService().initialize();
+  print('✅ Firebase Messaging Service initialized');
   
+  // Request notification permissions immediately
+  print('🔐 Requesting notification permissions...');
+  final messaging = FirebaseMessaging.instance;
+  final settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  
+  print('📋 Permission status: ${settings.authorizationStatus}');
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('✅ User granted notification permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('⚠️ User granted provisional permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+    print('❌ User denied notification permission');
+  } else {
+    print('❓ Permission status: ${settings.authorizationStatus}');
+  }
+  
+  // Run diagnostic check
+  await FirebaseMessagingService().checkNotificationStatus();
+  
+  print('🚀 ========== APP START COMPLETE ==========\n');
   runApp(const MyApp());
 }
 
@@ -157,7 +194,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     if (!_isInitialized) {
-      return const SplashPage();
+      return BlocProvider(
+        create: (context) => getIt<SplashScreenCubit>(),
+        child: const SplashPage(),
+      );
     }
 
     return ScreenUtilInit(

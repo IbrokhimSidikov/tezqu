@@ -188,7 +188,7 @@ class ExpenseCard extends StatelessWidget {
                 ],
               ),
               Text(
-                '${_formatAmount(expense.amount)} so\'m',
+                '${_formatAmount(expense.amount)} ',
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w700,
