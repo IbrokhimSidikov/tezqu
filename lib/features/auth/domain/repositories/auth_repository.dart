@@ -47,4 +47,9 @@ abstract class AuthRepository {
 
   /// Get current user
   Future<UserEntity?> getCurrentUser();
+
+  /// Update FCM token for push notifications
+  Future<Either<Failure, void>> updateFcmToken({
+    required String fcmToken,
+  });
 }

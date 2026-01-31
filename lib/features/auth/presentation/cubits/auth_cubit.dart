@@ -6,6 +6,7 @@ import '../../domain/usecases/register_usecase.dart';
 import '../../domain/usecases/send_code_usecase.dart';
 import '../../domain/usecases/send_login_code_usecase.dart';
 import '../../domain/usecases/verify_usecase.dart';
+import '../../domain/usecases/update_fcm_token_usecase.dart';
 import 'auth_state.dart';
 
 @injectable
@@ -16,6 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
   final SendCodeUseCase sendCodeUseCase;
   final SendLoginCodeUseCase sendLoginCodeUseCase;
   final LogoutUseCase logoutUseCase;
+  final UpdateFcmTokenUseCase updateFcmTokenUseCase;
 
   AuthCubit({
     required this.loginUseCase,
@@ -24,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.sendCodeUseCase,
     required this.sendLoginCodeUseCase,
     required this.logoutUseCase,
+    required this.updateFcmTokenUseCase,
   }) : super(AuthInitial());
 
   /// Register new user
@@ -132,6 +135,16 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (_) => emit(AuthUnauthenticated()),
+    );
+  }
+
+  /// Update FCM token
+  Future<void> updateFcmToken(String fcmToken) async {
+    final result = await updateFcmTokenUseCase(fcmToken: fcmToken);
+    
+    result.fold(
+      (failure) => print('Failed to update FCM token: ${failure.message}'),
+      (_) => print('FCM token updated successfully'),
     );
   }
 

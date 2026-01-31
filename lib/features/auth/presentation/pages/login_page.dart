@@ -19,6 +19,7 @@ import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/text_widget.dart';
 import '../../../../core/utils/phone_input_formatter.dart';
+import '../../../../core/services/firebase_messaging_service.dart';
 import '../cubits/auth_cubit.dart';
 import '../cubits/auth_state.dart';
 
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       create: (context) => getIt<AuthCubit>(),
       child: Builder(
         builder: (context) => BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is CodeSent) {
             setState(() {
               _isCodeSent = true;
@@ -86,6 +87,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           } else if (state is AuthSuccess) {
+            // Get FCM token and send to backend
+            final fcmToken = await FirebaseMessagingService().getToken();
+            if (fcmToken != null) {
+              context.read<AuthCubit>().updateFcmToken(fcmToken);
+            }
             context.go(AppRoutes.home);
           }
         },

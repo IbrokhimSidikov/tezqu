@@ -27,6 +27,8 @@ import '../../features/auth/domain/usecases/register_usecase.dart' as _i941;
 import '../../features/auth/domain/usecases/send_code_usecase.dart' as _i789;
 import '../../features/auth/domain/usecases/send_login_code_usecase.dart'
     as _i1008;
+import '../../features/auth/domain/usecases/update_fcm_token_usecase.dart'
+    as _i53;
 import '../../features/auth/domain/usecases/verify_usecase.dart' as _i778;
 import '../../features/auth/presentation/cubits/auth_cubit.dart' as _i521;
 import '../../features/contracts/data/datasources/contract_remote_data_source.dart'
@@ -287,6 +289,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i778.VerifyUseCase>(
       () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
     );
+    gh.factory<_i53.UpdateFcmTokenUseCase>(
+      () => _i53.UpdateFcmTokenUseCase(gh<_i787.AuthRepository>()),
+    );
     gh.lazySingleton<_i432.AcceptContract>(
       () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
     );
@@ -307,6 +312,7 @@ extension GetItInjectableX on _i174.GetIt {
         sendCodeUseCase: gh<_i789.SendCodeUseCase>(),
         sendLoginCodeUseCase: gh<_i1008.SendLoginCodeUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),
+        updateFcmTokenUseCase: gh<_i53.UpdateFcmTokenUseCase>(),
       ),
     );
     gh.factory<_i1055.ContractCubit>(

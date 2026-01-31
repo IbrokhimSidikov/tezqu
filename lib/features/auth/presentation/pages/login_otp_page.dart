@@ -15,6 +15,7 @@ import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/button_widget.dart';
 import '../../../../core/shared/text_widget.dart';
+import '../../../../core/services/firebase_messaging_service.dart';
 import '../cubits/auth_cubit.dart';
 import '../cubits/auth_state.dart';
 
@@ -63,11 +64,16 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
     return BlocProvider(
       create: (context) => getIt<AuthCubit>(),
       child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is AuthSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message ?? 'Muvaffaqiyatli')),
             );
+            // Get FCM token and send to backend
+            final fcmToken = await FirebaseMessagingService().getToken();
+            if (fcmToken != null) {
+              context.read<AuthCubit>().updateFcmToken(fcmToken);
+            }
             context.go(AppRoutes.home);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -28,6 +28,10 @@ abstract class AuthRemoteDataSource {
   Future<void> sendLoginCode({
     required String phone,
   });
+
+  Future<void> updateFcmToken({
+    required String fcmToken,
+  });
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -142,6 +146,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       '/auth/login',
       data: {
         'phone_number': phone,
+      },
+    );
+  }
+
+  @override
+  Future<void> updateFcmToken({
+    required String fcmToken,
+  }) async {
+    await dioClient.post(
+      '/user/fcm-token',
+      data: {
+        'fcm_token': fcmToken,
       },
     );
   }
