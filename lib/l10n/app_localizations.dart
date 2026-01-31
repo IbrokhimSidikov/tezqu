@@ -277,6 +277,18 @@ class AppLocalizations {
       'requestReceived':'Request received',
       'requestReceivedMessage':'Our staff will contact you soon',
       'cannotOpenPhone':'Cannot open phone app',
+      
+      // Dashboard Analytics
+      'dashboardAnalytics':'Dashboard Analytics',
+      'netProfitThisMonth':'Net Profit This Month',
+      'totalPaymentsThisMonth':'Total Payments This Month',
+      'totalIncomeThisMonth':'Income',
+      'totalExpensesThisMonth':'Expenses',
+      'activeContractsCount':'Active Contracts',
+      'pendingPaymentsCount':'Pending Payments',
+      'totalProductsQty':'Total Products',
+      'errorLoadingDashboard':'Error loading dashboard',
+      'noDataAvailable':'No data available',
 
     },
     'uz': {
@@ -539,7 +551,19 @@ class AppLocalizations {
       "productPrice": "Mahsulot narxi",
       "productStatus": "Mahsulot holati",
       "productDetails": "Mahsulot tafsilotlari",
-      "productImages": "Mahsulot rasmlari"
+      "productImages": "Mahsulot rasmlari",
+      
+      // Dashboard Analytics
+      'dashboardAnalytics':'Tahlil paneli',
+      'netProfitThisMonth':'Sof foyda (bu oy)',
+      'totalPaymentsThisMonth':'Jami to\'lovlar (bu oy)',
+      'totalIncomeThisMonth':'Daromad',
+      'totalExpensesThisMonth':'Xarajatlar',
+      'activeContractsCount':'Faol shartnomalar',
+      'pendingPaymentsCount':'Kutilayotgan to\'lovlar',
+      'totalProductsQty':'Jami mahsulotlar',
+      'errorLoadingDashboard':'Tahlilni yuklashda xatolik',
+      'noDataAvailable':'Ma\'lumot mavjud emas',
 
     },
     'ru': {
@@ -803,6 +827,18 @@ class AppLocalizations {
       "productStatus": "Статус продукта",
       "productDetails": "Детали продукта",
       "productImages": "Изображения продукта",
+      
+      // Dashboard Analytics
+      'dashboardAnalytics':'Панель аналитики',
+      'netProfitThisMonth':'Чистая прибыль (этот месяц)',
+      'totalPaymentsThisMonth':'Всего платежей (этот месяц)',
+      'totalIncomeThisMonth':'Доход',
+      'totalExpensesThisMonth':'Расходы',
+      'activeContractsCount':'Активные договоры',
+      'pendingPaymentsCount':'Ожидающие платежи',
+      'totalProductsQty':'Всего товаров',
+      'errorLoadingDashboard':'Ошибка загрузки панели',
+      'noDataAvailable':'Нет данных',
 
     },
   };
@@ -1059,5 +1095,17 @@ class AppLocalizations {
   String get productStatus => translate('productStatus');
   String get productDetails => translate('productDetails');
   String get productImages => translate('productImages');
+  
+  // Dashboard Analytics getters
+  String get dashboardAnalytics => translate('dashboardAnalytics');
+  String get netProfitThisMonth => translate('netProfitThisMonth');
+  String get totalPaymentsThisMonth => translate('totalPaymentsThisMonth');
+  String get totalIncomeThisMonth => translate('totalIncomeThisMonth');
+  String get totalExpensesThisMonth => translate('totalExpensesThisMonth');
+  String get activeContractsCount => translate('activeContractsCount');
+  String get pendingPaymentsCount => translate('pendingPaymentsCount');
+  String get totalProductsQty => translate('totalProductsQty');
+  String get errorLoadingDashboard => translate('errorLoadingDashboard');
+  String get noDataAvailable => translate('noDataAvailable');
 
 }

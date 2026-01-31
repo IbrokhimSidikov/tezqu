@@ -13,6 +13,8 @@ import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/dashboard_card.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../dashboard/presentation/pages/dashboard.dart';
+import '../../domain/entities/dashboard_entity.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
 
@@ -133,6 +135,9 @@ class _HomePageContent extends StatelessWidget {
         ],
       ),
       DashboardCardType.dashboard: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.dashboard);
+        },
         title: AppLocalizations.of(context).dashboard,
         subtitle: 'Faollik: 01.24',
         icons: [
@@ -236,16 +241,28 @@ class _HomePageContent extends StatelessWidget {
             }
 
             final dashboard = state is DashboardLoaded ? state.dashboard : null;
+            
+            // Get user role from dashboard
+            final userRole = UserRole.fromString(dashboard?.role);
+            final isAdmin = userRole == UserRole.admin;
+
+            // Customer fields
             final totalContractAmount = dashboard?.data.totalContractAmount ?? 0;
             final totalPaid = dashboard?.data.totalPaid ?? 0;
             final totalRemaining = dashboard?.data.totalRemaining ?? 0;
             final nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
             final activeContracts = dashboard?.data.activeContracts ?? 0;
             
-            // Get user role from dashboard
-            final userRole = UserRole.fromString(dashboard?.role);
+            // Admin fields
+            final totalPaymentsThisMonth = dashboard?.data.totalPaymentsThisMonth ?? 0;
+            final totalIncomeThisMonth = dashboard?.data.totalIncomeThisMonth ?? 0;
+            final totalExpensesThisMonth = dashboard?.data.totalExpensesThisMonth ?? 0;
+            final totalProductsQty = dashboard?.data.totalProductsQty ?? 0;
+            final netProfitThisMonth = dashboard?.data.netProfitThisMonth ?? 0;
+            final activeContractsCount = dashboard?.data.activeContractsCount ?? 0;
+            final pendingPaymentsCount = dashboard?.data.pendingPaymentsCount ?? 0;
 
-            // Calculate progress percentage
+            // Calculate progress percentage for customer
             final progressPercentage = totalContractAmount > 0 
                 ? totalPaid / totalContractAmount 
                 : 0.0;
@@ -256,23 +273,34 @@ class _HomePageContent extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    // Header section (same for both admin and customer)
                     Row(
                       children: [
                         Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
                         SizedBox(width: 10.w),
-                        Text(AppLocalizations.of(context).totalPayments, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
+                        Text(
+                          isAdmin ? 'Net Profit This Month' : AppLocalizations.of(context).totalPayments, 
+                          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                     SizedBox(height: 0),
                     Row(
                       children: [
                         Text(
-                          _formatCurrency(totalContractAmount),
-                          style: TextStyle(fontSize: 53.sp, fontWeight: FontWeight.bold)
+                          isAdmin 
+                            ? _formatCurrency(netProfitThisMonth)
+                            : _formatCurrency(totalContractAmount),
+                          style: TextStyle(
+                            fontSize: 53.sp, 
+                            fontWeight: FontWeight.bold,
+                            color: isAdmin && netProfitThisMonth < 0 ? AppColors.cxFF8B92 : Colors.black,
+                          )
                         ),
                       ],
                     ),
                     SizedBox(height: 15.h),
+                    // Next payment section with progress bar (same for both)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -285,12 +313,14 @@ class _HomePageContent extends StatelessWidget {
                             SizedBox(width: 12.w),
                             Expanded(
                               child: Text(
-                                AppLocalizations.of(context).nextPayment,
+                                isAdmin ? 'Total Payments This Month' : AppLocalizations.of(context).nextPayment,
                                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
                               ),
                             ),
                             Text(
-                              _formatCurrency(nextPaymentAmount),
+                              isAdmin 
+                                ? _formatCurrency(totalPaymentsThisMonth)
+                                : _formatCurrency(nextPaymentAmount),
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
@@ -316,9 +346,12 @@ class _HomePageContent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
+                              final percentage = isAdmin
+                                ? (totalIncomeThisMonth > 0 ? totalPaymentsThisMonth / totalIncomeThisMonth : 0.0)
+                                : progressPercentage;
                               return Container(
                                 height: 8,
-                                width: constraints.maxWidth * progressPercentage,
+                                width: constraints.maxWidth * percentage,
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.centerLeft,
@@ -336,19 +369,19 @@ class _HomePageContent extends StatelessWidget {
                         ),
                       ],
                     ),
-                SizedBox(height: 39.h),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 29.h,
-                  crossAxisSpacing: 16.w,
-                  childAspectRatio: 1.2, // adjust shape
-                  children: _buildDashboardCards(context, userRole),
-                )
-              ],
-            ),
-          ),
-        );
+                    SizedBox(height: 39.h),
+                    GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 29.h,
+                      crossAxisSpacing: 16.w,
+                      childAspectRatio: 1.2, // adjust shape
+                      children: _buildDashboardCards(context, userRole),
+                    )
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -548,6 +581,8 @@ class _HomeShimmerLoading extends StatelessWidget {
                   ],
                 ),
                 DashboardCard(
+                  onTap: () {
+                  },
                   title: AppLocalizations.of(context).dashboard,
                   subtitle: 'Faollik: 01.24',
                   icons: [

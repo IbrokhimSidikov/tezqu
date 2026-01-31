@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/dashboard_entity.dart';
 
 part 'dashboard_model.freezed.dart';
-// part 'dashboard_model.g.dart';
+part 'dashboard_model.g.dart';
 
 @freezed
 class DashboardModel with _$DashboardModel {
@@ -13,12 +13,7 @@ class DashboardModel with _$DashboardModel {
 
   const DashboardModel._();
 
-  factory DashboardModel.fromJson(Map<String, dynamic> json) {
-    return DashboardModel(
-      role: json['role'] as String? ?? 'customer',
-      data: DashboardDataModel.fromJson(json['data'] as Map<String, dynamic>? ?? {}),
-    );
-  }
+  factory DashboardModel.fromJson(Map<String, dynamic> json) => _$DashboardModelFromJson(json);
 
   DashboardEntity toEntity() {
     return DashboardEntity(
@@ -45,49 +40,70 @@ class DashboardModel with _$DashboardModel {
 @freezed
 class DashboardDataModel with _$DashboardDataModel {
   const factory DashboardDataModel({
-    @JsonKey(name: 'total_contract_amount') @Default(0.0) double totalContractAmount,
-    @JsonKey(name: 'total_paid') @Default(0.0) double totalPaid,
-    @JsonKey(name: 'total_remaining') @Default(0.0) double totalRemaining,
-    @JsonKey(name: 'next_payment_amount') @Default(0.0) double nextPaymentAmount,
-    @JsonKey(name: 'next_payment_date') @Default('') String nextPaymentDate,
-    @JsonKey(name: 'active_contracts') @Default(0) int activeContracts,
+    // Customer fields
+    @JsonKey(name: 'total_contract_amount') double? totalContractAmount,
+    @JsonKey(name: 'total_paid') double? totalPaid,
+    @JsonKey(name: 'total_remaining') double? totalRemaining,
+    @JsonKey(name: 'next_payment_amount') double? nextPaymentAmount,
+    @JsonKey(name: 'next_payment_date') String? nextPaymentDate,
+    @JsonKey(name: 'active_contracts') int? activeContracts,
+    // Admin fields
+    @JsonKey(name: 'total_payments_this_month') double? totalPaymentsThisMonth,
+    @JsonKey(name: 'total_income_this_month') double? totalIncomeThisMonth,
+    @JsonKey(name: 'total_expenses_this_month') double? totalExpensesThisMonth,
+    @JsonKey(name: 'total_products_qty') int? totalProductsQty,
+    @JsonKey(name: 'net_profit_this_month') double? netProfitThisMonth,
+    @JsonKey(name: 'active_contracts_count') int? activeContractsCount,
+    @JsonKey(name: 'pending_payments_count') int? pendingPaymentsCount,
   }) = _DashboardDataModel;
 
   const DashboardDataModel._();
 
-  factory DashboardDataModel.fromJson(Map<String, dynamic> json) {
-    return DashboardDataModel(
-      totalContractAmount: (json['total_contract_amount'] as num?)?.toDouble() ?? 0.0,
-      totalPaid: (json['total_paid'] as num?)?.toDouble() ?? 0.0,
-      totalRemaining: (json['total_remaining'] as num?)?.toDouble() ?? 0.0,
-      nextPaymentAmount: (json['next_payment_amount'] as num?)?.toDouble() ?? 0.0,
-      nextPaymentDate: json['next_payment_date'] as String? ?? '',
-      activeContracts: (json['active_contracts'] as num?)?.toInt() ?? 0,
-    );
-  }
+  factory DashboardDataModel.fromJson(Map<String, dynamic> json) => _$DashboardDataModelFromJson(json);
 
   DashboardData toEntity() {
     return DashboardData(
+      // Customer fields
       totalContractAmount: totalContractAmount,
       totalPaid: totalPaid,
       totalRemaining: totalRemaining,
       nextPaymentAmount: nextPaymentAmount,
       nextPaymentDate: nextPaymentDate,
       activeContracts: activeContracts,
+      // Admin fields
+      totalPaymentsThisMonth: totalPaymentsThisMonth,
+      totalIncomeThisMonth: totalIncomeThisMonth,
+      totalExpensesThisMonth: totalExpensesThisMonth,
+      totalProductsQty: totalProductsQty,
+      netProfitThisMonth: netProfitThisMonth,
+      activeContractsCount: activeContractsCount,
+      pendingPaymentsCount: pendingPaymentsCount,
     );
   }
 
   @override
   // TODO: implement activeContracts
-  int get activeContracts => throw UnimplementedError();
+  int? get activeContracts => throw UnimplementedError();
+
+  @override
+  // TODO: implement activeContractsCount
+  int? get activeContractsCount => throw UnimplementedError();
+
+  @override
+  // TODO: implement netProfitThisMonth
+  double? get netProfitThisMonth => throw UnimplementedError();
 
   @override
   // TODO: implement nextPaymentAmount
-  double get nextPaymentAmount => throw UnimplementedError();
+  double? get nextPaymentAmount => throw UnimplementedError();
 
   @override
   // TODO: implement nextPaymentDate
-  String get nextPaymentDate => throw UnimplementedError();
+  String? get nextPaymentDate => throw UnimplementedError();
+
+  @override
+  // TODO: implement pendingPaymentsCount
+  int? get pendingPaymentsCount => throw UnimplementedError();
 
   @override
   Map<String, dynamic> toJson() {
@@ -97,41 +113,29 @@ class DashboardDataModel with _$DashboardDataModel {
 
   @override
   // TODO: implement totalContractAmount
-  double get totalContractAmount => throw UnimplementedError();
-
-  @override
-  // TODO: implement totalPaid
-  double get totalPaid => throw UnimplementedError();
-
-  @override
-  // TODO: implement totalRemaining
-  double get totalRemaining => throw UnimplementedError();
-
-  @override
-  // TODO: implement activeContractsCount
-  int get activeContractsCount => throw UnimplementedError();
-
-  @override
-  // TODO: implement netProfitThisMonth
-  double get netProfitThisMonth => throw UnimplementedError();
-
-  @override
-  // TODO: implement pendingPaymentsCount
-  int get pendingPaymentsCount => throw UnimplementedError();
+  double? get totalContractAmount => throw UnimplementedError();
 
   @override
   // TODO: implement totalExpensesThisMonth
-  double get totalExpensesThisMonth => throw UnimplementedError();
+  double? get totalExpensesThisMonth => throw UnimplementedError();
 
   @override
   // TODO: implement totalIncomeThisMonth
-  double get totalIncomeThisMonth => throw UnimplementedError();
+  double? get totalIncomeThisMonth => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalPaid
+  double? get totalPaid => throw UnimplementedError();
 
   @override
   // TODO: implement totalPaymentsThisMonth
-  double get totalPaymentsThisMonth => throw UnimplementedError();
+  double? get totalPaymentsThisMonth => throw UnimplementedError();
 
   @override
   // TODO: implement totalProductsQty
-  int get totalProductsQty => throw UnimplementedError();
+  int? get totalProductsQty => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalRemaining
+  double? get totalRemaining => throw UnimplementedError();
 }

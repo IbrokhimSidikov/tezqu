@@ -286,11 +286,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1008.SendLoginCodeUseCase>(
       () => _i1008.SendLoginCodeUseCase(gh<_i787.AuthRepository>()),
     );
-    gh.factory<_i778.VerifyUseCase>(
-      () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
-    );
     gh.factory<_i53.UpdateFcmTokenUseCase>(
       () => _i53.UpdateFcmTokenUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i778.VerifyUseCase>(
+      () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
     );
     gh.lazySingleton<_i432.AcceptContract>(
       () => _i432.AcceptContract(gh<_i841.ContractRepository>()),

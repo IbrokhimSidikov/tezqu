@@ -11,6 +11,7 @@ import 'package:tezqu/features/warehouse/presentation/pages/add_product.dart';
 
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/dashboard/presentation/pages/dashboard.dart';
 import '../../features/expense/presentation/pages/expense.dart';
 import '../../features/home/presentation/pages/favourites.dart';
 import '../../features/income/presentation/pages/income.dart';
@@ -42,6 +43,7 @@ class AppRoutes {
   static const String contracts = '/contracts';
   static const String contractDetails = '/contractDetails';
   static const String addProduct = '/addProduct';
+  static const String dashboard = '/dashboard';
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -197,6 +199,11 @@ class AppRoutes {
             },
           );
         },
+      ),
+      GoRoute(
+        path: dashboard,
+        name: 'dashboard',
+        builder: (context, state) => const DashboardPage(),
       ),
 
     ],
