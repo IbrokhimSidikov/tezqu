@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/notification/domain/entities/notification_entity.dart';
 import '../../features/notification/presentation/cubit/notification_cubit.dart';
 import '../widgets/permission_dialog.dart';
@@ -143,7 +144,6 @@ class FirebaseMessagingService {
       print('📬 Message ID: ${message.messageId}');
       print('📊 Data: ${message.data}');
       print('👆 ======================================================\n');
-      _saveNotification(message);
       _handleNotificationTap(message);
       _messageStreamController.add(message);
     });
@@ -155,7 +155,6 @@ class FirebaseMessagingService {
       print('📬 Message ID: ${initialMessage.messageId}');
       print('📊 Data: ${initialMessage.data}');
       print('🚀 ==================================================================\n');
-      _saveNotification(initialMessage);
       _handleNotificationTap(initialMessage);
       _messageStreamController.add(initialMessage);
     } else {

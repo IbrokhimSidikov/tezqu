@@ -5,7 +5,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants/app_colors.dart';
 
 class AppTextField extends StatefulWidget {
-  const AppTextField({super.key, this.hint, this.controller, this.validator, required this.obscureText, this.prefixIcon, this.inputFormatters, this.keyboardType, this.prefixText, this.onChanged, this.focusNode, this.autofillHints, this.maxLength});
+  const AppTextField({
+    super.key,
+    this.hint,
+    this.controller,
+    this.validator,
+    required this.obscureText,
+    this.prefixIcon,
+    this.inputFormatters,
+    this.keyboardType,
+    this.prefixText,
+    this.onChanged,
+    this.focusNode,
+    this.autofillHints,
+    this.maxLength,
+  });
 
   final String? hint;
   final TextEditingController? controller;

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:tezqu/core/shared/button_widget.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -174,23 +175,38 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              AppTextField(
-                                controller: _codeController,
-                                obscureText: true,
-                                keyboardType: TextInputType.number,
-                                autofillHints: const [AutofillHints.oneTimeCode],
-                                maxLength: 4,
-                                onChanged: (value) {
-                                  if (value.length == 4) {
-                                    FocusScope.of(context).unfocus();
-                                  }
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return AppLocalizations.of(context).enterCode;
-                                  }
-                                  return null;
-                                },
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: PinCodeTextField(
+                                  controller: _codeController,
+                                  textStyle: TextStyle(fontSize: 36),
+                                  appContext: context,
+                                  length: 4,
+                                  animationType: AnimationType.fade,
+                                  pinTheme: PinTheme(
+                                    borderWidth: 0,
+                                    shape: PinCodeFieldShape.box,
+                                    borderRadius: BorderRadius.circular(25.r),
+                                    fieldHeight: 70,
+                                    fieldWidth: 68,
+                                    activeColor: Colors.transparent,
+                                    inactiveColor: AppColors.cxF5F6F9,
+                                    selectedColor: AppColors.cx43C19F,
+                                    activeFillColor: AppColors.cxF5F6F9,
+                                    inactiveFillColor: AppColors.cxF5F6F9,
+                                    selectedFillColor: AppColors.cxF5F6F9
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  enableActiveFill: true,
+                                  enablePinAutofill: true,
+                                  onChanged: (value) {
+                                    if (value.length == 4) {
+                                      FocusScope.of(context).unfocus();
+                                    }
+                                  },
+                                  onCompleted: (value) {
+                                  },
+                                ),
                               ),
                               SizedBox(height: 40.h),
                               InkWell(
