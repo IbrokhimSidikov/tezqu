@@ -42,7 +42,89 @@ class FirebaseMessagingService {
     await _setupLocalNotifications();
     await _setupMessageHandlers();
     await _getToken();
+    await _loadSavedNotifications();
     print('🔔 ========== FCM INITIALIZATION COMPLETE ==========');
+  }
+
+  // Static method to save notification to SharedPreferences (for background handler)
+  static Future<void> saveNotificationToStorage(RemoteMessage message) async {
+    if (message.notification == null) return;
+    
+    final prefs = await SharedPreferences.getInstance();
+    final notifications = prefs.getStringList('saved_notifications') ?? [];
+    
+    final notificationId = message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString();
+    
+    // Check if notification already exists to prevent duplicates
+    final existingIds = notifications.map((json) {
+      try {
+        final data = jsonDecode(json);
+        return data['id'] as String?;
+      } catch (e) {
+        return null;
+      }
+    }).where((id) => id != null).toSet();
+    
+    if (existingIds.contains(notificationId)) {
+      print('⚠️ Notification already exists in storage: $notificationId');
+      return;
+    }
+    
+    final notification = {
+      'id': notificationId,
+      'title': message.notification!.title ?? 'Notification',
+      'body': message.notification!.body ?? '',
+      'data': jsonEncode(message.data),
+      'timestamp': DateTime.now().toIso8601String(),
+      'isRead': false,
+    };
+    
+    notifications.insert(0, jsonEncode(notification));
+    await prefs.setStringList('saved_notifications', notifications);
+    print('✅ Notification saved to storage: ${notification['title']}');
+  }
+
+  // Load saved notifications from SharedPreferences and sync with cubit
+  Future<void> _loadSavedNotifications() async {
+    if (_notificationCubit == null) {
+      print('⚠️ NotificationCubit is null - cannot load notifications');
+      return;
+    }
+    
+    final prefs = await SharedPreferences.getInstance();
+    final notifications = prefs.getStringList('saved_notifications') ?? [];
+    
+    print('📥 Loading ${notifications.length} saved notifications...');
+    
+    // Get existing notification IDs to prevent duplicates
+    final existingIds = _notificationCubit!.state.notifications.map((n) => n.id).toSet();
+    
+    for (final notificationJson in notifications) {
+      try {
+        final data = jsonDecode(notificationJson);
+        final notificationId = data['id'];
+        
+        // Skip if notification already exists in cubit
+        if (existingIds.contains(notificationId)) {
+          continue;
+        }
+        
+        final notification = NotificationEntity(
+          id: notificationId,
+          title: data['title'],
+          body: data['body'],
+          data: jsonDecode(data['data']),
+          timestamp: DateTime.parse(data['timestamp']),
+          isRead: data['isRead'] ?? false,
+        );
+        _notificationCubit!.addNotification(notification);
+        existingIds.add(notificationId);
+      } catch (e) {
+        print('⚠️ Error loading notification: $e');
+      }
+    }
+    
+    print('✅ Loaded saved notifications');
   }
 
   Future<void> requestPermissionWithDialog() async {
@@ -166,24 +248,27 @@ class FirebaseMessagingService {
   
   void _saveNotification(RemoteMessage message) {
     print('💾 Attempting to save notification...');
-    if (_notificationCubit != null && message.notification != null) {
-      final notification = NotificationEntity(
-        id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-        title: message.notification!.title ?? 'Notification',
-        body: message.notification!.body ?? '',
-        data: message.data,
-        timestamp: DateTime.now(),
-        isRead: false,
-      );
-      _notificationCubit!.addNotification(notification);
-      print('✅ Notification saved to cubit');
+    if (message.notification != null) {
+      // Save to SharedPreferences for persistence
+      saveNotificationToStorage(message);
+      
+      // Also save to cubit if available
+      if (_notificationCubit != null) {
+        final notification = NotificationEntity(
+          id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
+          title: message.notification!.title ?? 'Notification',
+          body: message.notification!.body ?? '',
+          data: message.data,
+          timestamp: DateTime.now(),
+          isRead: false,
+        );
+        _notificationCubit!.addNotification(notification);
+        print('✅ Notification saved to cubit');
+      } else {
+        print('⚠️ NotificationCubit is null - saved to storage only');
+      }
     } else {
-      if (_notificationCubit == null) {
-        print('⚠️ NotificationCubit is null - cannot save notification');
-      }
-      if (message.notification == null) {
-        print('⚠️ Message notification is null - cannot save');
-      }
+      print('⚠️ Message notification is null - cannot save');
     }
   }
   

@@ -26,7 +26,16 @@ import 'features/onboard/presentation/cubit/splash_screen_cubit.dart';
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling a background message: ${message.messageId}');
+  print('🔔 ========== BACKGROUND MESSAGE RECEIVED ==========');
+  print('📬 Message ID: ${message.messageId}');
+  print('📊 Data: ${message.data}');
+  print('🔔 Notification: ${message.notification?.toMap()}');
+  
+  // Automatically save notification to storage
+  await FirebaseMessagingService.saveNotificationToStorage(message);
+  
+  print('✅ Background message handled and saved');
+  print('🔔 ===================================================');
 }
 
 void main() async {

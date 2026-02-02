@@ -14,6 +14,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/dashboard_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../dashboard/presentation/pages/dashboard.dart';
+import '../../../notification/presentation/cubit/notification_cubit.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
@@ -38,13 +39,24 @@ class _HomePageContent extends StatelessWidget {
     return '\$ ${formatter.format(amount)}';
   }
 
-  List<Widget> _buildDashboardCards(BuildContext context, UserRole userRole) {
+  String _getCurrentMonthYear() {
+    final now = DateTime.now();
+    return DateFormat('MMMM yyyy').format(now);
+  }
+
+  List<Widget> _buildDashboardCards(BuildContext context, UserRole userRole, DashboardEntity? dashboard) {
+    final totalIncomeThisMonth = dashboard?.data.totalIncomeThisMonth ?? 0;
+    final totalProductsQty = dashboard?.data.totalProductsQty ?? 0;
+    final pendingPaymentsCount = dashboard?.data.pendingPaymentsCount ?? 0;
+    final totalPaymentsThisMonth = dashboard?.data.totalPaymentsThisMonth ?? 0;
+    
     final allCards = <DashboardCardType, Widget>{
       DashboardCardType.payments: DashboardCard(
         onTap: () {
           context.push(AppRoutes.payments);
         },
         title: AppLocalizations.of(context).myPayments,
+        subtitle: _formatCurrency(totalPaymentsThisMonth),
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -62,6 +74,7 @@ class _HomePageContent extends StatelessWidget {
       ),
       DashboardCardType.products: DashboardCard(
         title: AppLocalizations.of(context).products,
+        subtitle: 'Total: $totalProductsQty',
         onTap: () {
           context.push(AppRoutes.products);
         },
@@ -76,7 +89,7 @@ class _HomePageContent extends StatelessWidget {
           context.push(AppRoutes.income);
         },
         title: AppLocalizations.of(context).income,
-        subtitle: "\$123,500",
+        subtitle: _formatCurrency(totalIncomeThisMonth),
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -118,7 +131,7 @@ class _HomePageContent extends StatelessWidget {
           context.push(AppRoutes.warehouse);
         },
         title: AppLocalizations.of(context).warehouse,
-        subtitle: 'Maxsulot: 120',
+        subtitle: 'Maxsulot: $totalProductsQty',
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -139,7 +152,7 @@ class _HomePageContent extends StatelessWidget {
           context.push(AppRoutes.dashboard);
         },
         title: AppLocalizations.of(context).dashboard,
-        subtitle: 'Faollik: 01.24',
+        subtitle: _getCurrentMonthYear(),
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -196,19 +209,56 @@ class _HomePageContent extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.cxF5F7F9,
-                ),
-                child: IconButton(
-                  iconSize: 29,
-                  icon: Icon(Icons.notifications),
-                  color: Colors.black,
-                  onPressed: () {
-                    context.push(AppRoutes.notifications);
-                  },
-                ),
+              child: BlocBuilder<NotificationCubit, NotificationState>(
+                builder: (context, state) {
+                  final unreadCount = state.notifications.where((n) => !n.isRead).length;
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.cxF5F7F9,
+                        ),
+                        child: IconButton(
+                          iconSize: 29,
+                          icon: Icon(Icons.notifications),
+                          color: Colors.black,
+                          onPressed: () {
+                            context.push(AppRoutes.notifications);
+                          },
+                        ),
+                      ),
+                      if (unreadCount > 0)
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 1.5),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 18,
+                              minHeight: 18,
+                            ),
+                            child: Center(
+                              child: Text(
+                                unreadCount > 99 ? '99+' : '$unreadCount',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -376,7 +426,7 @@ class _HomePageContent extends StatelessWidget {
                       mainAxisSpacing: 29.h,
                       crossAxisSpacing: 16.w,
                       childAspectRatio: 1.2, // adjust shape
-                      children: _buildDashboardCards(context, userRole),
+                      children: _buildDashboardCards(context, userRole, dashboard),
                     )
                   ],
                 ),
