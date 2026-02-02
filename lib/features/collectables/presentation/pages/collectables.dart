@@ -6,10 +6,12 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../expense/data/models/payment_method_model.dart';
 import '../../domain/entities/collectable_entity.dart';
 import '../cubit/collectables_cubit.dart';
 import '../cubit/collectables_state.dart';
 import '../widgets/collectable_card_shimmer.dart';
+import '../widgets/collect_payment_dialog.dart';
 
 class CollectablesPage extends StatelessWidget {
   const CollectablesPage({super.key});
@@ -336,6 +338,7 @@ class _CollectablesPageContent extends StatelessWidget {
                         );
 
                         return _CollectableCard(
+                          paymentId: payment.id,
                           customerName: contract?.user?.fullName ?? 'Unknown Customer',
                           amount: payment.amountRemaining,
                           dueDate: payment.dueDate,
@@ -348,6 +351,7 @@ class _CollectablesPageContent extends StatelessWidget {
                           formatDate: _formatDate,
                           getStatusColor: _getStatusColor,
                           getStatusText: (status, daysOverdue, context) => _getStatusText(status, daysOverdue, context),
+                          paymentMethods: state.paymentMethods,
                         );
                       },
                     ),
@@ -365,6 +369,7 @@ class _CollectablesPageContent extends StatelessWidget {
 }
 
 class _CollectableCard extends StatelessWidget {
+  final String paymentId;
   final String customerName;
   final double amount;
   final String dueDate;
@@ -377,8 +382,10 @@ class _CollectableCard extends StatelessWidget {
   final String Function(String) formatDate;
   final Color Function(String, int) getStatusColor;
   final String Function(String, int, BuildContext) getStatusText;
+  final List<PaymentMethodModel> paymentMethods;
 
   const _CollectableCard({
+    required this.paymentId,
     required this.customerName,
     required this.amount,
     required this.dueDate,
@@ -391,6 +398,7 @@ class _CollectableCard extends StatelessWidget {
     required this.formatDate,
     required this.getStatusColor,
     required this.getStatusText,
+    required this.paymentMethods,
   });
 
   @override
@@ -521,7 +529,53 @@ class _CollectableCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                final result = await showDialog<Map<String, dynamic>>(
+                  context: context,
+                  builder: (context) => CollectPaymentDialog(
+                    amount: amount,
+                    paymentMethods: paymentMethods,
+                  ),
+                );
+                
+                if (result != null && context.mounted) {
+                  // Show loading indicator
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.cx78D9BF,
+                      ),
+                    ),
+                  );
+
+                  // Record payment
+                  final success = await context.read<CollectablesCubit>().recordPayment(
+                    paymentId: paymentId,
+                    amount: result['amount'],
+                    paymentMethodId: result['payment_method_id'],
+                    paymentDate: result['payment_date'],
+                  );
+
+                  // Close loading indicator
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    
+                    final l10n = AppLocalizations.of(context);
+                    // Show success or error message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          success 
+                            ? l10n.paymentRecordedSuccessfully
+                            : l10n.failedToRecordPayment,
+                        ),
+                        backgroundColor: success ? AppColors.cx78D9BF : AppColors.cxFF8B92,
+                      ),
+                    );
+                  }
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.cxBlack,

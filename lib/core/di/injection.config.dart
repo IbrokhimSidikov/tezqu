@@ -39,6 +39,8 @@ import '../../features/collectables/domain/repositories/collectable_repository.d
     as _i59;
 import '../../features/collectables/domain/usecases/get_collectables.dart'
     as _i313;
+import '../../features/collectables/domain/usecases/record_payment.dart'
+    as _i252;
 import '../../features/collectables/presentation/cubit/collectables_cubit.dart'
     as _i896;
 import '../../features/contracts/data/datasources/contract_remote_data_source.dart'
@@ -314,6 +316,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i313.GetCollectables>(
       () => _i313.GetCollectables(gh<_i59.CollectableRepository>()),
     );
+    gh.lazySingleton<_i252.RecordPayment>(
+      () => _i252.RecordPayment(gh<_i59.CollectableRepository>()),
+    );
     gh.lazySingleton<_i432.AcceptContract>(
       () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
     );
@@ -338,7 +343,11 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.factory<_i896.CollectablesCubit>(
-      () => _i896.CollectablesCubit(gh<_i313.GetCollectables>()),
+      () => _i896.CollectablesCubit(
+        gh<_i313.GetCollectables>(),
+        gh<_i252.RecordPayment>(),
+        gh<_i31.ExpenseRepository>(),
+      ),
     );
     gh.factory<_i1055.ContractCubit>(
       () => _i1055.ContractCubit(

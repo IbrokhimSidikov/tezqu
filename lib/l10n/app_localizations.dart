@@ -301,6 +301,12 @@ class AppLocalizations {
       'amount':'Amount',
       'dueToday':'Due Today',
       'pending':'Pending',
+      'paymentMethod':'Payment Method',
+      'paymentDate':'Payment Date',
+      'selectPaymentMethod':'Select Payment Method',
+      'confirmPayment':'Confirm Payment',
+      'paymentRecordedSuccessfully':'Payment recorded successfully',
+      'failedToRecordPayment':'Failed to record payment',
 
     },
     'uz': {
@@ -588,6 +594,12 @@ class AppLocalizations {
       'amount':'Summa',
       'dueToday':'Bugun',
       'pending':'Kutilmoqda',
+      'paymentMethod':'To\'lov usuli',
+      'paymentDate':'To\'lov sanasi',
+      'selectPaymentMethod':'To\'lov usulini tanlang',
+      'confirmPayment':'To\'lovni tasdiqlash',
+      'paymentRecordedSuccessfully':'To\'lov muvaffaqiyatli qayd etildi',
+      'failedToRecordPayment':'To\'lovni qayd etib bo\'lmadi',
 
     },
     'ru': {
@@ -875,6 +887,12 @@ class AppLocalizations {
       'amount':'Сумма',
       'dueToday':'Сегодня',
       'pending':'В ожидании',
+      'paymentMethod':'Способ оплаты',
+      'paymentDate':'Дата оплаты',
+      'selectPaymentMethod':'Выберите способ оплаты',
+      'confirmPayment':'Подтвердить платеж',
+      'paymentRecordedSuccessfully':'Платеж успешно записан',
+      'failedToRecordPayment':'Не удалось записать платеж',
 
     },
   };
@@ -1155,4 +1173,9 @@ class AppLocalizations {
   String get amount => translate('amount');
   String get dueToday => translate('dueToday');
   String get pending => translate('pending');
+  String get paymentDate => translate('paymentDate');
+  String get selectPaymentMethod => translate('selectPaymentMethod');
+  String get confirmPayment => translate('confirmPayment');
+  String get paymentRecordedSuccessfully => translate('paymentRecordedSuccessfully');
+  String get failedToRecordPayment => translate('failedToRecordPayment');
 }

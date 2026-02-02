@@ -63,4 +63,28 @@ class CollectableRepositoryImpl implements CollectableRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> recordPayment({
+    required String paymentId,
+    required double amount,
+    required String paymentMethodId,
+    required String paymentDate,
+  }) async {
+    try {
+      await remoteDataSource.recordPayment(
+        paymentId: paymentId,
+        amount: amount,
+        paymentMethodId: paymentMethodId,
+        paymentDate: paymentDate,
+      );
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ServerFailure(
+        e.response?.data['message'] ?? 'Failed to record payment',
+      ));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

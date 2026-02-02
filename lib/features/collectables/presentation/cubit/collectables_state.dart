@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../../expense/data/models/payment_method_model.dart';
 import '../../domain/entities/collectable_entity.dart';
 
 abstract class CollectablesState extends Equatable {
@@ -14,11 +15,12 @@ class CollectablesLoading extends CollectablesState {}
 
 class CollectablesLoaded extends CollectablesState {
   final CollectablesEntity collectables;
+  final List<PaymentMethodModel> paymentMethods;
 
-  const CollectablesLoaded(this.collectables);
+  const CollectablesLoaded(this.collectables, {this.paymentMethods = const []});
 
   @override
-  List<Object?> get props => [collectables];
+  List<Object?> get props => [collectables, paymentMethods];
 }
 
 class CollectablesError extends CollectablesState {
