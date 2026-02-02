@@ -290,6 +290,18 @@ class AppLocalizations {
       'errorLoadingDashboard':'Error loading dashboard',
       'noDataAvailable':'No data available',
 
+      // Collectables
+      'collectables':'Collectables',
+      'paymentsToCollect':'Payments to Collect',
+      'totalToCollect':'Total to Collect',
+      'noPaymentsToCollect':'No payments to collect',
+      'allPaymentsCollected':'All payments have been collected',
+      'collectPayment':'Collect Payment',
+      'dueDate':'Due Date',
+      'amount':'Amount',
+      'dueToday':'Due Today',
+      'pending':'Pending',
+
     },
     'uz': {
       'totalPayments': 'Jami to‘lovlar',
@@ -564,6 +576,18 @@ class AppLocalizations {
       'totalProductsQty':'Jami mahsulotlar',
       'errorLoadingDashboard':'Tahlilni yuklashda xatolik',
       'noDataAvailable':'Ma\'lumot mavjud emas',
+
+      // Collectables
+      'collectables':'Yig\'ish kerak',
+      'paymentsToCollect':'Yig\'ish kerak bo\'lgan to\'lovlar',
+      'totalToCollect':'Jami yig\'ish kerak',
+      'noPaymentsToCollect':'Yig\'ish kerak bo\'lgan to\'lovlar yo\'q',
+      'allPaymentsCollected':'Barcha to\'lovlar yig\'ildi',
+      'collectPayment':'To\'lovni yig\'ish',
+      'dueDate':'To\'lov sanasi',
+      'amount':'Summa',
+      'dueToday':'Bugun',
+      'pending':'Kutilmoqda',
 
     },
     'ru': {
@@ -840,6 +864,18 @@ class AppLocalizations {
       'errorLoadingDashboard':'Ошибка загрузки панели',
       'noDataAvailable':'Нет данных',
 
+      // Collectables
+      'collectables':'Сборы',
+      'paymentsToCollect':'Платежи для сбора',
+      'totalToCollect':'Всего к сбору',
+      'noPaymentsToCollect':'Нет платежей для сбора',
+      'allPaymentsCollected':'Все платежи собраны',
+      'collectPayment':'Собрать платеж',
+      'dueDate':'Срок оплаты',
+      'amount':'Сумма',
+      'dueToday':'Сегодня',
+      'pending':'В ожидании',
+
     },
   };
 
@@ -1108,4 +1144,15 @@ class AppLocalizations {
   String get errorLoadingDashboard => translate('errorLoadingDashboard');
   String get noDataAvailable => translate('noDataAvailable');
 
+  // Collectables getters
+  String get collectables => translate('collectables');
+  String get paymentsToCollect => translate('paymentsToCollect');
+  String get totalToCollect => translate('totalToCollect');
+  String get noPaymentsToCollect => translate('noPaymentsToCollect');
+  String get allPaymentsCollected => translate('allPaymentsCollected');
+  String get collectPayment => translate('collectPayment');
+  String get dueDate => translate('dueDate');
+  String get amount => translate('amount');
+  String get dueToday => translate('dueToday');
+  String get pending => translate('pending');
 }

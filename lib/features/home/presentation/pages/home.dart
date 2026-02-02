@@ -168,6 +168,27 @@ class _HomePageContent extends StatelessWidget {
           ),
         ],
       ),
+      DashboardCardType.collectables: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.collectables);
+        },
+        title: 'Collectables',
+        subtitle: 'Pending: ${pendingPaymentsCount}',
+        icons: [
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 22.r,
+              backgroundColor: AppColors.cxFFBCFA,
+              child: const Icon(Icons.collections_bookmark, color: Colors.black),
+            ),
+          ),
+        ],
+      ),
     };
 
     // Filter cards based on user role

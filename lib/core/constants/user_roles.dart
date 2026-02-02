@@ -32,6 +32,7 @@ enum DashboardCardType {
   expense,
   warehouse,
   dashboard,
+  collectables,
 }
 
 class RolePermissions {
@@ -50,6 +51,7 @@ class RolePermissions {
       DashboardCardType.products,
       DashboardCardType.income,
       DashboardCardType.dashboard,
+      DashboardCardType.collectables,
     ],
     UserRole.investor: [
       DashboardCardType.income,

@@ -31,6 +31,16 @@ import '../../features/auth/domain/usecases/update_fcm_token_usecase.dart'
     as _i53;
 import '../../features/auth/domain/usecases/verify_usecase.dart' as _i778;
 import '../../features/auth/presentation/cubits/auth_cubit.dart' as _i521;
+import '../../features/collectables/data/datasources/collectable_remote_data_source.dart'
+    as _i1050;
+import '../../features/collectables/data/repositories/collectable_repository_impl.dart'
+    as _i1024;
+import '../../features/collectables/domain/repositories/collectable_repository.dart'
+    as _i59;
+import '../../features/collectables/domain/usecases/get_collectables.dart'
+    as _i313;
+import '../../features/collectables/presentation/cubit/collectables_cubit.dart'
+    as _i896;
 import '../../features/contracts/data/datasources/contract_remote_data_source.dart'
     as _i902;
 import '../../features/contracts/data/repositories/contract_repository_impl.dart'
@@ -201,6 +211,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i902.ContractRemoteDataSource>(
       () => _i902.ContractRemoteDataSourceImpl(gh<_i667.DioClient>()),
     );
+    gh.lazySingleton<_i1050.CollectableRemoteDataSource>(
+      () => _i1050.CollectableRemoteDataSourceImpl(gh<_i667.DioClient>()),
+    );
     gh.lazySingleton<_i386.DashboardRepository>(
       () =>
           _i1057.DashboardRepositoryImpl(gh<_i640.DashboardRemoteDataSource>()),
@@ -262,6 +275,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1007.AddToWishlistUseCase>(),
       ),
     );
+    gh.lazySingleton<_i59.CollectableRepository>(
+      () => _i1024.CollectableRepositoryImpl(
+        gh<_i1050.CollectableRemoteDataSource>(),
+        gh<_i787.AuthRepository>(),
+      ),
+    );
     gh.factory<_i814.GetDashboardUseCase>(
       () => _i814.GetDashboardUseCase(gh<_i386.DashboardRepository>()),
     );
@@ -292,6 +311,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i778.VerifyUseCase>(
       () => _i778.VerifyUseCase(gh<_i787.AuthRepository>()),
     );
+    gh.lazySingleton<_i313.GetCollectables>(
+      () => _i313.GetCollectables(gh<_i59.CollectableRepository>()),
+    );
     gh.lazySingleton<_i432.AcceptContract>(
       () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
     );
@@ -314,6 +336,9 @@ extension GetItInjectableX on _i174.GetIt {
         logoutUseCase: gh<_i48.LogoutUseCase>(),
         updateFcmTokenUseCase: gh<_i53.UpdateFcmTokenUseCase>(),
       ),
+    );
+    gh.factory<_i896.CollectablesCubit>(
+      () => _i896.CollectablesCubit(gh<_i313.GetCollectables>()),
     );
     gh.factory<_i1055.ContractCubit>(
       () => _i1055.ContractCubit(

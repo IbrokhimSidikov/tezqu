@@ -858,7 +858,7 @@ class _ProfileState extends State<Profile> {
               _buildSupportOption(
                 icon: Icons.phone,
                 title: AppLocalizations.of(context).phone,
-                subtitle: '+998 90 123 45 67',
+                subtitle: '+998889984444',
                 color: AppColors.cx78D9BF,
                 onTap: () {
                   Navigator.pop(context);
@@ -869,7 +869,7 @@ class _ProfileState extends State<Profile> {
               _buildSupportOption(
                 icon: Icons.email,
                 title: AppLocalizations.of(context).email,
-                subtitle: 'support@tezqu.uz',
+                subtitle: 'tezqu2025@gmail.com',
                 color: AppColors.cxFEDA84,
                 onTap: () {
                   Navigator.pop(context);
@@ -936,7 +936,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _callSupport() async {
-    const phoneNumber = 'tel:+998901234567';
+    const phoneNumber = 'tel:+998889984444';
     
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
