@@ -45,7 +45,7 @@ class _CollectablesPageContent extends StatelessWidget {
       return AppColors.cxFF8B92;
     }
     if (daysOverdue == 0 || status.toLowerCase() == 'due_today') {
-      return AppColors.cxFEC700;
+      return AppColors.cxBlack;
     }
     return AppColors.cx78D9BF;
   }
@@ -69,16 +69,16 @@ class _CollectablesPageContent extends StatelessWidget {
     for (final contract in collectables.contracts) {
       for (final payment in contract.payments) {
         final isPending = payment.status.toLowerCase() == 'pending' || payment.amountRemaining > 0;
-        final isAssignedToCurrentCollector = currentUserId == null || 
-                                             payment.collectorId == null || 
+        final isAssignedToCurrentCollector = currentUserId == null ||
+                                             payment.collectorId == null ||
                                              payment.collectorId == currentUserId;
-        
+
         if (isPending && isAssignedToCurrentCollector) {
           allPayments.add(payment);
         }
       }
     }
-    
+
     allPayments.sort((a, b) {
       try {
         final dateA = DateTime.parse(a.dueDate);
@@ -88,7 +88,7 @@ class _CollectablesPageContent extends StatelessWidget {
         return 0;
       }
     });
-    
+
     return allPayments;
   }
 
@@ -122,6 +122,23 @@ class _CollectablesPageContent extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFF5F7F9),
+            ),
+            child: IconButton(
+              iconSize: 29.sp,
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
       ),
       body: BlocBuilder<CollectablesCubit, CollectablesState>(
         builder: (context, state) {
@@ -317,7 +334,7 @@ class _CollectablesPageContent extends StatelessWidget {
                           state.collectables,
                           payment.contractId,
                         );
-                        
+
                         return _CollectableCard(
                           customerName: contract?.user?.fullName ?? 'Unknown Customer',
                           amount: payment.amountRemaining,
@@ -430,7 +447,7 @@ class _CollectableCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(
-                  getStatusText(status, daysOverdue, context),
+                  formatDate(dueDate),
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
