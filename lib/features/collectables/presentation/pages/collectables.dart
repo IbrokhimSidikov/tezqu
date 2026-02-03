@@ -29,7 +29,11 @@ class _CollectablesPageContent extends StatelessWidget {
   const _CollectablesPageContent();
 
   String _formatCurrency(double amount) {
-    final formatter = NumberFormat('#,###.00', 'en_US');
+    if (amount == amount.toInt()) {
+      final formatter = NumberFormat('#,###', 'en_US');
+      return '\$ ${formatter.format(amount.toInt())}';
+    }
+    final formatter = NumberFormat('#,###', 'en_US');
     return '\$ ${formatter.format(amount)}';
   }
 

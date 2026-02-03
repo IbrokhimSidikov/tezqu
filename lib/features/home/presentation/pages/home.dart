@@ -172,8 +172,8 @@ class _HomePageContent extends StatelessWidget {
         onTap: () {
           context.push(AppRoutes.collectables);
         },
-        title: 'Collectables',
-        subtitle: 'Pending: ${pendingPaymentsCount}',
+        title: AppLocalizations.of(context).collectables,
+        subtitle: '${AppLocalizations.of(context).pending}: ${pendingPaymentsCount}',
         icons: [
           Container(
             padding: EdgeInsets.all(2),

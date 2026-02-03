@@ -28,10 +28,17 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
   @override
   void initState() {
     super.initState();
-    _amountController.text = widget.amount.toStringAsFixed(2);
+    _amountController.text = _formatAmount(widget.amount);
     if (widget.paymentMethods.isNotEmpty) {
       _selectedPaymentMethodId = widget.paymentMethods.first.id;
     }
+  }
+
+  String _formatAmount(double amount) {
+    if (amount == amount.toInt()) {
+      return amount.toInt().toString();
+    }
+    return amount.toStringAsFixed(2);
   }
 
   @override
@@ -110,8 +117,12 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
               TextFormField(
                 controller: _amountController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                ),
                 decoration: InputDecoration(
-                  hintText: '0.00',
+                  hintText: '0',
                   prefixText: '\$ ',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
@@ -131,8 +142,15 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter amount';
                   }
-                  if (double.tryParse(value) == null) {
+                  final amount = double.tryParse(value);
+                  if (amount == null) {
                     return 'Please enter a valid number';
+                  }
+                  if (amount > widget.amount) {
+                    return 'Amount exceeds remaining \$${_formatAmount(widget.amount)}';
+                  }
+                  if (amount <= 0) {
+                    return 'Amount must be greater than zero';
                   }
                   return null;
                 },

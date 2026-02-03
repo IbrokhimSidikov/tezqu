@@ -49,8 +49,6 @@ class RolePermissions {
     UserRole.collector: [
       DashboardCardType.payments,
       DashboardCardType.products,
-      DashboardCardType.income,
-      DashboardCardType.dashboard,
       DashboardCardType.collectables,
     ],
     UserRole.investor: [
