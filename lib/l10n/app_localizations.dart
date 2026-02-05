@@ -207,7 +207,7 @@ class AppLocalizations {
       'shareAllApps':'Share via all apps',
       'openPlayStore':'Open in Play Store',
       'playStoreOpening':'Opening Play Store...',
-      'linkCopied':'Link copied!',
+      'linkCopied':'Adress copied!',
       'errorOccurred':'An error occurred',
       'appDescriptionLong':'TezQu - The best app for managing your business. Easily manage products, expenses and contracts.',
       'developer':'Developer',

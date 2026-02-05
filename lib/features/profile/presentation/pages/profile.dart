@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
@@ -421,31 +423,31 @@ class _ProfileState extends State<Profile> {
                   value: 'Proprietary',
                 ),
                 SizedBox(height: 24.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildAboutActionButton(
-                        icon: Icons.privacy_tip_outlined,
-                        label: AppLocalizations.of(context).privacy,
-                        onTap: () {
-                          Navigator.pop(context);
-                          _showPrivacyPolicy();
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _buildAboutActionButton(
-                        icon: Icons.description_outlined,
-                        label: AppLocalizations.of(context).terms,
-                        onTap: () {
-                          Navigator.pop(context);
-                          _showTermsOfService();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: _buildAboutActionButton(
+                //         icon: Icons.privacy_tip_outlined,
+                //         label: AppLocalizations.of(context).privacy,
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //           _showPrivacyPolicy();
+                //         },
+                //       ),
+                //     ),
+                //     SizedBox(width: 12.w),
+                //     Expanded(
+                //       child: _buildAboutActionButton(
+                //         icon: Icons.description_outlined,
+                //         label: AppLocalizations.of(context).terms,
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //           _showTermsOfService();
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(height: 12.h),
                 _buildAboutActionButton(
                   icon: Icons.star_border,
@@ -491,24 +493,41 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void _rateApp() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.star, color: AppColors.cxWhite),
-            SizedBox(width: 12.w),
-            Text(AppLocalizations.of(context).thankYouRating),
-          ],
-        ),
-        backgroundColor: AppColors.cx78D9BF,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        duration: Duration(seconds: 2),
-      ),
-    );
+  Future<void> _rateApp() async {
+    String storeUrl;
+    
+    if (Platform.isIOS) {
+      storeUrl = 'https://apps.apple.com/us/app/tezqu/id6757701566';
+    } else if (Platform.isAndroid) {
+      storeUrl = 'https://play.google.com/store/apps/details?id=com.tezqu.v1';
+    } else {
+      storeUrl = 'https://play.google.com/store/apps/details?id=com.tezqu.v1';
+    }
+    
+    try {
+      final uri = Uri.parse(storeUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context).errorOccurred),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _showSettingsBottomSheet() {
@@ -912,81 +931,114 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _openTelegram() async {
-    const telegramUrl = 'https://t.me/tezqu_support';
+    const telegramUrl = 'https://t.me/Sarvar_Xasanovich';
     
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.telegram, color: AppColors.cxWhite),
-              SizedBox(width: 12.w),
-              Text('${AppLocalizations.of(context).tgOpening}...'),
-            ],
+    try {
+      final uri = Uri.parse(telegramUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context).errorOccurred),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
+            backgroundColor: Colors.red,
           ),
-          backgroundColor: Color(0xFF0088CC),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          duration: Duration(seconds: 2),
-        ),
-      );
+        );
+      }
     }
   }
 
   Future<void> _callSupport() async {
     const phoneNumber = 'tel:+998889984444';
     
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.phone, color: AppColors.cxWhite),
-              SizedBox(width: 12.w),
-              Text(AppLocalizations.of(context).phoneOpening),
-            ],
+    try {
+      final uri = Uri.parse(phoneNumber);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context).errorOccurred),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
+            backgroundColor: Colors.red,
           ),
-          backgroundColor: AppColors.cx78D9BF,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          duration: Duration(seconds: 2),
-        ),
-      );
+        );
+      }
     }
   }
 
   Future<void> _emailSupport() async {
     const email = 'mailto:support@tezqu.uz';
+    const emailAddress = 'tezqu2025@gmail.com';
     
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.email, color: AppColors.cxWhite),
-              SizedBox(width: 12.w),
-              Text(AppLocalizations.of(context).emailOpening),
-            ],
+    try {
+      final uri = Uri.parse(email);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        if (mounted) {
+          await Clipboard.setData(ClipboardData(text: emailAddress));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: AppColors.cxWhite),
+                  SizedBox(width: 12.w),
+                  Text('${AppLocalizations.of(context).linkCopied}'),
+                ],
+              ),
+              backgroundColor: AppColors.cxFEDA84,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        await Clipboard.setData(ClipboardData(text: emailAddress));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: AppColors.cxWhite),
+                SizedBox(width: 12.w),
+                Text('${AppLocalizations.of(context).linkCopied}: $emailAddress'),
+              ],
+            ),
+            backgroundColor: AppColors.cxFEDA84,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            duration: Duration(seconds: 3),
           ),
-          backgroundColor: AppColors.cxFEDA84,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          duration: Duration(seconds: 2),
-          action: SnackBarAction(
-            label: AppLocalizations.of(context).copy,
-            textColor: AppColors.cxWhite,
-            onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: 'support@tezqu.uz'));
-            },
-          ),
-        ),
-      );
+        );
+      }
     }
   }
 
@@ -1080,13 +1132,13 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 16.h),
             
-            _buildMenuItem(
-              icon: Icons.share,
-              color: AppColors.cxD9D9D9,
-              iconColor: AppColors.cxAFB1B1,
-              title: AppLocalizations.of(context).shareApp,
-              onTap: _showShareBottomSheet,
-            ),
+            // _buildMenuItem(
+            //   icon: Icons.share,
+            //   color: AppColors.cxD9D9D9,
+            //   iconColor: AppColors.cxAFB1B1,
+            //   title: AppLocalizations.of(context).shareApp,
+            //   onTap: _showShareBottomSheet,
+            // ),
             SizedBox(height: 16.h),
 
             _buildMenuItem(
