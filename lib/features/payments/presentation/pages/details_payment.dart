@@ -74,11 +74,11 @@ class _DetailsPaymentState extends State<DetailsPayment> {
       appBar: AppBar(
         backgroundColor: AppColors.cxWhite,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+          padding: EdgeInsets.only(left: 10.w),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFFF5F7F9),
+              color: AppColors.cxF5F7F9,
             ),
             child: IconButton(
               iconSize: 29.sp,
@@ -92,7 +92,8 @@ class _DetailsPaymentState extends State<DetailsPayment> {
         ),
         title: Text(AppLocalizations.of(context).paymentDetails, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.only(
               top: 16.0, bottom: 16.0, left: 16.0, right: 20.0
           ),
@@ -139,122 +140,125 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                 SizedBox(height: 16.h),
               ],
               SizedBox(height: 8.h),
-              Expanded(
-                child: Column(
-                  children: [
-                    ..._buildPaymentTimeline(),
-                    32.verticalSpace,
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: widget.payment?.contract?.serviceContractPdf != null
-                                ? () => _openPdf(widget.payment!.contract!.serviceContractPdf!)
-                                : null,
-                            child: Container(
-                              width: 172.w,
-                              height: 126.h,
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: AppColors.cxF7F6F9,
-                                borderRadius: BorderRadius.circular(25.r),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('PDF',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                  SizedBox(height: 2.h),
-                                  Text(AppLocalizations.of(context).contract,
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: widget.payment?.contract?.serviceContractPdf != null 
-                                              ? AppColors.cx78D9BF 
-                                              : AppColors.cxAFB1B1
-                                      )),
-                                  SizedBox(height: 2.h),
-                                  Text(
-                                      widget.payment?.contract?.serviceContractPdf != null 
-                                          ? 'Ko\'rish' 
-                                          : 'Mavjud emas',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: widget.payment?.contract?.serviceContractPdf != null 
-                                              ? AppColors.cx78D9BF 
-                                              : AppColors.cxAFB1B1
-                                      )),
-                                  const Spacer(),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      padding: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.white, width: 2),
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 18.r,
-                                        backgroundColor: widget.payment?.contract?.serviceContractPdf != null 
-                                            ? AppColors.cxFEC700 
-                                            : AppColors.cxAFB1B1,
-                                        child: Icon(Icons.file_copy_outlined, color: Colors.black, size: 18.sp),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
+              Column(
+                children: [
+                  ..._buildPaymentTimeline(),
+                  32.verticalSpace,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: widget.payment?.contract?.serviceContractPdf != null
+                              ? () => _openPdf(widget.payment!.contract!.serviceContractPdf!)
+                              : null,
+                          child: Container(
                             width: 172.w,
                             height: 126.h,
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12.w),
                             decoration: BoxDecoration(
                               color: AppColors.cxF7F6F9,
                               borderRadius: BorderRadius.circular(25.r),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(AppLocalizations.of(context).contract,
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                Text('To\'lov:',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.cxAFB1B1
-                                    )),
-                                Text('Har oy:',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.cxAFB1B1
-                                    )),
-                                Text('Muddat:',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.cxAFB1B1
-                                    )),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('PDF',
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                    SizedBox(height: 4.h),
+                                    Text(AppLocalizations.of(context).contract,
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: widget.payment?.contract?.serviceContractPdf != null
+                                                ? AppColors.cx78D9BF
+                                                : AppColors.cxAFB1B1
+                                        )),
+                                    SizedBox(height: 2.h),
+                                    Text(
+                                        widget.payment?.contract?.serviceContractPdf != null
+                                            ? 'Ko\'rish'
+                                            : 'Mavjud emas',
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: widget.payment?.contract?.serviceContractPdf != null
+                                                ? AppColors.cx78D9BF
+                                                : AppColors.cxAFB1B1
+                                        )),
+                                  ],
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    padding: EdgeInsets.all(2.w),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.white, width: 2),
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 16.r,
+                                      backgroundColor: widget.payment?.contract?.serviceContractPdf != null
+                                          ? AppColors.cxFEC700
+                                          : AppColors.cxAFB1B1,
+                                      child: Icon(Icons.file_copy_outlined, color: Colors.black, size: 16.sp),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ]
-                    )
-                  ],
-                ),
+                        ),
+                        Container(
+                          width: 172.w,
+                          height: 126.h,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.cxF7F6F9,
+                            borderRadius: BorderRadius.circular(25.r),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(AppLocalizations.of(context).contract,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                              Text('To\'lov:',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.cxAFB1B1
+                                  )),
+                              Text('Har oy:',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.cxAFB1B1
+                                  )),
+                              Text('Muddat:',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.cxAFB1B1
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ]
+                  )
+                ],
               ),
             ]
           )
+        ),
       ),
     );
   }
@@ -422,36 +426,128 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     final customFields = _productDetails!.customFields!;
     final List<Widget> fieldWidgets = [];
 
+    // Fields to exclude (old UUID-based fields)
+    final excludedFields = ['avtomobil_brendi', 'avtomobil_modeli'];
+
     customFields.forEach((key, value) {
+      // Skip excluded fields
+      if (excludedFields.contains(key)) {
+        return;
+      }
+
       if (value != null && value.toString().isNotEmpty) {
-        fieldWidgets.add(
-          Padding(
-            padding: EdgeInsets.only(bottom: 8.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '$key: ',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.cxAFB1B1,
-                  ),
+        // Handle car_brand object
+        if (key == 'car_brand' && value is Map) {
+          final brandName = value['name'];
+          final logoUrl = value['logo_url'];
+          
+          if (brandName != null) {
+            fieldWidgets.add(
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Brand: ',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
+                    if (logoUrl != null && logoUrl.toString().isNotEmpty) ...[
+                      CachedNetworkImage(
+                        imageUrl: logoUrl.toString(),
+                        width: 24.w,
+                        height: 24.h,
+                        fit: BoxFit.contain,
+                        errorWidget: (context, url, error) => SizedBox.shrink(),
+                      ),
+                      SizedBox(width: 8.w),
+                    ],
+                    Expanded(
+                      child: Text(
+                        brandName.toString(),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.cxBlack,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Text(
-                    value.toString(),
+              ),
+            );
+          }
+        }
+        // Handle car_model object
+        else if (key == 'car_model' && value is Map) {
+          final modelName = value['name'];
+          
+          if (modelName != null) {
+            fieldWidgets.add(
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Model: ',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        modelName.toString(),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.cxBlack,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+        // Handle regular fields
+        else {
+          fieldWidgets.add(
+            Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '$key: ',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.cxBlack,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.cxAFB1B1,
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Text(
+                      value.toString(),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.cxBlack,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
     });
 

@@ -125,11 +125,11 @@ class PaymentsView extends StatelessWidget {
 
   Widget _buildPaymentsList(BuildContext context, PaymentsEntity payments) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 16.0,
-        bottom: 16.0,
-        left: 16.0,
-        right: 20.0,
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 16.h,
+        left: 16.w,
+        right: 20.w,
       ),
       child: Column(
         children: [
@@ -319,9 +319,16 @@ class PaymentsView extends StatelessWidget {
                     Wrap(
                       spacing: 8.w,
                       runSpacing: 4.h,
-                      children: customFields.entries.map((entry) {
+                      children: customFields.entries
+                          .where((entry) => ['yili', 'rangi', 'yoqilgi_turi'].contains(entry.key))
+                          .map((entry) {
+                        String label = entry.key;
+                        if (entry.key == 'yili') label = 'Year';
+                        if (entry.key == 'rangi') label = 'Color';
+                        if (entry.key == 'yoqilgi_turi') label = 'Fuel type';
+                        
                         return Text(
-                          '${entry.key}: ${entry.value}',
+                          '$label: ${entry.value}',
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.cxAFB1B1,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +13,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/services/firebase_messaging_service.dart';
 import '../../../../core/shared/dashboard_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../dashboard/presentation/pages/dashboard.dart';
@@ -31,8 +34,34 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _HomePageContent extends StatelessWidget {
+class _HomePageContent extends StatefulWidget {
   const _HomePageContent();
+
+  @override
+  State<_HomePageContent> createState() => _HomePageContentState();
+}
+
+class _HomePageContentState extends State<_HomePageContent> {
+  StreamSubscription? _messageSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupNotificationListener();
+  }
+
+  void _setupNotificationListener() {
+    _messageSubscription = FirebaseMessagingService().onMessageStream.listen((message) {
+      print('🔄 Notification received in HomePage - refreshing dashboard...');
+      context.read<DashboardCubit>().loadDashboard();
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageSubscription?.cancel();
+    super.dispose();
+  }
 
   String _formatCurrency(double amount) {
     final formatter = NumberFormat('#,###', 'en_US');
