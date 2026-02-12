@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/usecase/use_case.dart';
 import '../../domain/usecases/accept_contract.dart';
 import '../../domain/usecases/get_contracts.dart';
@@ -25,8 +26,37 @@ class ContractCubit extends Cubit<ContractState> {
     
     result.fold(
       (failure) => emit(ContractState.error(failure.message)),
-      (contracts) => emit(ContractState.loaded(contracts)),
+      (contracts) async {
+        emit(ContractState.loaded(contracts));
+        await _updateNewContractsCount(contracts);
+      },
     );
+  }
+
+  Future<void> _updateNewContractsCount(contracts) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final seenIds = prefs.getStringList('seen_contract_ids') ?? [];
+      final seenSet = seenIds.toSet();
+      
+      // Get all contract IDs from loaded contracts
+      final allContractIds = <String>[];
+      for (final group in contracts.contractGroups) {
+        for (final contract in group.contracts) {
+          allContractIds.add(contract.id);
+        }
+      }
+      
+      // Calculate new contracts count (contracts not in seen set)
+      final newContractsCount = allContractIds.where((id) => !seenSet.contains(id)).length;
+      
+      // Save the count
+      await prefs.setInt('new_contracts_count', newContractsCount);
+      
+      print('📊 New contracts count updated: $newContractsCount');
+    } catch (e) {
+      print('Error updating new contracts count: $e');
+    }
   }
 
   Future<bool> acceptContractAction(String contractId) async {

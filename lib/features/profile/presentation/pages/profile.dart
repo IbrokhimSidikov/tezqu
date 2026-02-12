@@ -32,12 +32,14 @@ class _ProfileState extends State<Profile> {
   bool _isLoading = true;
   String _selectedLanguage = 'uz';
   bool _isDarkMode = false;
+  int _newContractsCount = 0;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
     _loadSelectedLanguage();
+    _loadNewContractsCount();
   }
 
   Future<void> _loadUserData() async {
@@ -74,6 +76,18 @@ class _ProfileState extends State<Profile> {
     setState(() {
       _selectedLanguage = localeProvider.locale.languageCode;
     });
+  }
+
+  Future<void> _loadNewContractsCount() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final count = prefs.getInt('new_contracts_count') ?? 0;
+      setState(() {
+        _newContractsCount = count;
+      });
+    } catch (e) {
+      print('Error loading new contracts count: $e');
+    }
   }
 
   Future<void> _showLogoutConfirmation() async {
@@ -1125,9 +1139,11 @@ class _ProfileState extends State<Profile> {
               color: Color(0xFFFFB6C1),
               iconColor: AppColors.cxBlack,
               title: AppLocalizations.of(context).contracts,
-              badgeCount: 1,
-              onTap: () {
-                context.push(AppRoutes.contracts);
+              badgeCount: _newContractsCount,
+              onTap: () async {
+                await context.push(AppRoutes.contracts);
+                // Reload count after returning from contracts page
+                _loadNewContractsCount();
               },
             ),
             SizedBox(height: 16.h),

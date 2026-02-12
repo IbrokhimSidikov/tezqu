@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,8 +26,65 @@ class ContractsPage extends StatelessWidget {
   }
 }
 
-class ContractsView extends StatelessWidget {
+class ContractsView extends StatefulWidget {
   const ContractsView({super.key});
+
+  @override
+  State<ContractsView> createState() => _ContractsViewState();
+}
+
+class _ContractsViewState extends State<ContractsView> {
+  Set<String> _seenContractIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSeenContracts();
+  }
+
+  Future<void> _loadSeenContracts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final seenIds = prefs.getStringList('seen_contract_ids') ?? [];
+      setState(() {
+        _seenContractIds = seenIds.toSet();
+      });
+    } catch (e) {
+      print('Error loading seen contracts: $e');
+    }
+  }
+
+  Future<void> _markContractsAsSeen(ContractsEntity contracts) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Get all contract IDs from the loaded contracts
+      final allContractIds = <String>[];
+      for (final group in contracts.contractGroups) {
+        for (final contract in group.contracts) {
+          allContractIds.add(contract.id);
+        }
+      }
+      
+      // Add new contract IDs to seen set
+      final updatedSeenIds = {..._seenContractIds, ...allContractIds};
+      
+      // Calculate new contracts count (contracts not in seen set)
+      final newContractsCount = allContractIds.where((id) => !_seenContractIds.contains(id)).length;
+      
+      // Save to SharedPreferences
+      await prefs.setStringList('seen_contract_ids', updatedSeenIds.toList());
+      await prefs.setInt('new_contracts_count', 0); // Reset badge count
+      
+      setState(() {
+        _seenContractIds = updatedSeenIds;
+      });
+      
+      print('✅ Marked ${newContractsCount} new contracts as seen');
+    } catch (e) {
+      print('Error marking contracts as seen: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +119,13 @@ class ContractsView extends StatelessWidget {
           return state.when(
             initial: () => _buildShimmerLoading(),
             loading: () => _buildShimmerLoading(),
-            loaded: (contracts) => _buildContractsList(context, contracts),
+            loaded: (contracts) {
+              // Mark contracts as seen when loaded
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _markContractsAsSeen(contracts);
+              });
+              return _buildContractsList(context, contracts);
+            },
             error: (message) => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

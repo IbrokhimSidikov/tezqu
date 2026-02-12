@@ -171,7 +171,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
                                         )),
-                                    SizedBox(height: 4.h),
+                                    SizedBox(height: 2.h),
                                     Text(AppLocalizations.of(context).contract,
                                         style: TextStyle(
                                             fontSize: 13.sp,
@@ -180,7 +180,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                                                 ? AppColors.cx78D9BF
                                                 : AppColors.cxAFB1B1
                                         )),
-                                    SizedBox(height: 2.h),
+                                    SizedBox(height: 1.h),
                                     Text(
                                         widget.payment?.contract?.serviceContractPdf != null
                                             ? 'Ko\'rish'
@@ -195,7 +195,7 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                                   ],
                                 ),
                                 Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.topRight,
                                   child: Container(
                                     padding: EdgeInsets.all(2.w),
                                     decoration: BoxDecoration(
@@ -504,6 +504,41 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                     Expanded(
                       child: Text(
                         modelName.toString(),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.cxBlack,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+        // Handle avtomobil_raqami (plate number) - extract only the number
+        else if (key == 'avtomobil_raqami' && value is Map) {
+          final plateNumber = value['number'];
+          
+          if (plateNumber != null) {
+            fieldWidgets.add(
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'avtomobil_raqami: ',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.cxAFB1B1,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        plateNumber.toString(),
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,

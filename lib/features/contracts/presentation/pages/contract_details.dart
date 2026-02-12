@@ -128,9 +128,9 @@ class _ContractDetailsState extends State<ContractDetails> {
                   if (contract.initialPayment != null)
                     _buildDetailItem(AppLocalizations.of(context).initialPayment, '${contract.initialPayment} USD'),
                   
-                  // Narx (Price from product)
-                  if (contract.productPrice != null)
-                    _buildDetailItem(AppLocalizations.of(context).price, '${contract.productPrice} USD'),
+                  // Narx (Total Price from contract)
+                  if (contract.totalPrice != null)
+                    _buildDetailItem(AppLocalizations.of(context).price, '${contract.totalPrice} USD'),
                   
                   // Mijoz (Customer/User)
                   if (contract.userFirstName != null || contract.userLastName != null)

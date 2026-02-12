@@ -16,7 +16,6 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/services/firebase_messaging_service.dart';
 import '../../../../core/shared/dashboard_card.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../dashboard/presentation/pages/dashboard.dart';
 import '../../../notification/presentation/cubit/notification_cubit.dart';
 import '../../domain/entities/dashboard_entity.dart';
 import '../cubit/dashboard_cubit.dart';
