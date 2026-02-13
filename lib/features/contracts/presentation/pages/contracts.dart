@@ -238,168 +238,262 @@ class _ContractsViewState extends State<ContractsView> {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        margin: EdgeInsets.only(bottom: 16.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.1),
-              spreadRadius: 1,
-              blurRadius: 6,
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 8,
               offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                // Vehicle image/icon
-                Container(
-                  width: 60.w,
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.cxF5F7F9,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: contract.vehicleImage != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Image.network(
-                            contract.vehicleImage!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(
-                                Icons.directions_car,
-                                size: 30.sp,
-                                color: AppColors.cxBlack,
-                              );
-                            },
-                          ),
-                        )
-                      : Icon(
-                          Icons.directions_car,
-                          size: 30.sp,
-                          color: AppColors.cxBlack,
-                        ),
-                ),
-                SizedBox(width: 16.w),
-                // Contract details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        contract.productName ?? contract.vehicleName,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.cxBlack,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        '${contract.clientName} ${contract.clientId}',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.cxAFB1B1,
-                        ),
-                      ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.r),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFFFAFAFA),
+                      Colors.white,
                     ],
                   ),
                 ),
-                // Status badge (if available)
-                if (contract.status != null)
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                    decoration: BoxDecoration(
-                      color: _getStatusColor(contract.status!),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Text(
-                      contract.status!,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                child: Row(
+                  children: [
+                    // Vehicle image/icon with enhanced styling
+                    Container(
+                      width: 70.w,
+                      height: 70.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-              ],
-            ),
-            // Additional contract information
-            SizedBox(height: 12.h),
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: AppColors.cxF5F7F9,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Column(
-                children: [
-                  // Contract type
-                  if (contract.contractType != null)
-                    _buildInfoRow(
-                      '${AppLocalizations.of(context).contractType}:',
-                      _formatContractType(context, contract.contractType!),
-                    ),
-                  // Total service fee
-                  if (contract.totalServiceFee != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: _buildInfoRow(
-                        '${AppLocalizations.of(context).serviceFee}:',
-                        '${double.tryParse(contract.totalServiceFee!)?.toInt() ?? contract.totalServiceFee}',
-                      ),
-                    ),
-                  // Collector name
-                  if (contract.collectorFirstName != null || contract.collectorLastName != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: _buildInfoRow(
-                        '${AppLocalizations.of(context).collector}:',
-                        '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim(),
-                      ),
-                    ),
-                  // Service contract PDF link
-                  if (contract.serviceContractPdf != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: GestureDetector(
-                        onTap: () => _openPdf(contract.serviceContractPdf!),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.picture_as_pdf,
-                              size: 16.sp,
-                              color: AppColors.cx78D9BF,
-                            ),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: Text(
-                                AppLocalizations.of(context).contractPdf,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: AppColors.cx78D9BF,
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.underline,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16.r),
+                        child: contract.vehicleImage != null
+                            ? Image.network(
+                                contract.vehicleImage!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Color(0xFFF5F7F9),
+                                          Color(0xFFE8EAED),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.directions_car_rounded,
+                                      size: 32.sp,
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                  );
+                                },
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFFF5F7F9),
+                                      Color(0xFFE8EAED),
+                                    ],
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.directions_car_rounded,
+                                  size: 32.sp,
+                                  color: Color(0xFF6B7280),
                                 ),
                               ),
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    // Contract details
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            contract.productName ?? contract.vehicleName,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1A1A1A),
+                              letterSpacing: -0.3,
                             ),
-                            Icon(
-                              Icons.open_in_new,
-                              size: 16.sp,
-                              color: AppColors.cx78D9BF,
+                          ),
+                          SizedBox(height: 6.h),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.person_outline_rounded,
+                                size: 14.sp,
+                                color: Color(0xFF9CA3AF),
+                              ),
+                              SizedBox(width: 4.w),
+                              Expanded(
+                                child: Text(
+                                  '${contract.clientName} ${contract.clientId}',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Color(0xFF6B7280),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Status badge with enhanced styling
+                    if (contract.status != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(contract.status!),
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _getStatusColor(contract.status!).withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
                           ],
                         ),
+                        child: Text(
+                          contract.status!,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              // Additional contract information with refined design
+              Container(
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFAFBFC),
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xFFE5E7EB),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    // Contract type
+                    if (contract.contractType != null)
+                      _buildInfoRow(
+                        '${AppLocalizations.of(context).contractType}:',
+                        _formatContractType(context, contract.contractType!),
+                      ),
+                    // Total service fee
+                    if (contract.totalServiceFee != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.h),
+                        child: _buildInfoRow(
+                          '${AppLocalizations.of(context).serviceFee}:',
+                          '${double.tryParse(contract.totalServiceFee!)?.toInt() ?? contract.totalServiceFee}',
+                        ),
+                      ),
+                    // Collector name
+                    if (contract.collectorFirstName != null || contract.collectorLastName != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.h),
+                        child: _buildInfoRow(
+                          '${AppLocalizations.of(context).collector}:',
+                          '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim(),
+                        ),
+                      ),
+                    // Service contract PDF link with enhanced styling
+                    if (contract.serviceContractPdf != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 12.h),
+                        child: GestureDetector(
+                          onTap: () => _openPdf(contract.serviceContractPdf!),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF4AC1A7).withOpacity(0.08),
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: Color(0xFF4AC1A7).withOpacity(0.2),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(6.w),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF4AC1A7).withOpacity(0.15),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.picture_as_pdf_rounded,
+                                    size: 16.sp,
+                                    color: Color(0xFF4AC1A7),
+                                  ),
+                                ),
+                                SizedBox(width: 12.w),
+                                Expanded(
+                                  child: Text(
+                                    AppLocalizations.of(context).contractPdf,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Color(0xFF4AC1A7),
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 14.sp,
+                                  color: Color(0xFF4AC1A7),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -408,21 +502,25 @@ class _ContractsViewState extends State<ContractsView> {
   Widget _buildInfoRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: TextStyle(
             fontSize: 14.sp,
-            color: AppColors.cxAFB1B1,
+            color: Color(0xFF6B7280),
+            fontWeight: FontWeight.w400,
           ),
         ),
+        SizedBox(width: 12.w),
         Flexible(
           child: Text(
             value,
             style: TextStyle(
               fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColors.cxBlack,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1A1A1A),
+              letterSpacing: -0.2,
             ),
             textAlign: TextAlign.right,
           ),
@@ -451,14 +549,26 @@ class _ContractsViewState extends State<ContractsView> {
 
   Color _getStatusColor(String status) {
     final lowerStatus = status.toLowerCase();
-    if (lowerStatus.contains('yangi') || lowerStatus.contains('new')) {
-      return Colors.green;
-    } else if (lowerStatus.contains('aktiv') || lowerStatus.contains('active')) {
-      return AppColors.cx78D9BF;
-    } else if (lowerStatus.contains('tugallangan') || lowerStatus.contains('completed')) {
-      return Colors.grey;
+    
+    // Active status - Premium Teal
+    if (lowerStatus == 'active') {
+      return Color(0xFF4AC1A7); // Premium teal
+    } 
+    // Finished status - Blue
+    else if (lowerStatus == 'finished') {
+      return Color(0xFF3B82F6); // Bright blue
+    } 
+    // Cancelled status - Red
+    else if (lowerStatus == 'cancelled') {
+      return Color(0xFFEF4444); // Vibrant red
     }
-    return AppColors.cx78D9BF;
+    // Returned status - Orange
+    else if (lowerStatus == 'returned') {
+      return Color(0xFFF59E0B); // Amber
+    }
+    
+    // Default - Teal (for any unexpected status)
+    return Color(0xFF4AC1A7);
   }
 
   Widget _buildShimmerLoading() {
