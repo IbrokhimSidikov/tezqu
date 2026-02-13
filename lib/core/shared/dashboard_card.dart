@@ -29,28 +29,42 @@ class DashboardCard extends StatelessWidget {
           color: AppColors.cxF7F6F9,
           borderRadius: BorderRadius.circular(25.r),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Text(title,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w500,
-                )),
-            if (subtitle != null) ...[
-              SizedBox(height: 4.h),
-              Text(
-                subtitle!,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  color: AppColors.cxAFB1B1,
-                  fontWeight: FontWeight.w500,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
+                if (subtitle != null) ...[
+                  SizedBox(height: 4.h),
+                  Text(
+                    subtitle!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: AppColors.cxAFB1B1,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: icons,
               ),
-            ],
-            const Spacer(),
-            Row(
-              children: icons,
             ),
           ],
         ),

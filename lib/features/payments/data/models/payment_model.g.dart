@@ -9,7 +9,7 @@ part of 'payment_model.dart';
 _PaymentsModel _$PaymentsModelFromJson(Map<String, dynamic> json) =>
     _PaymentsModel(
       nextPayments:
-          (json['next_payments'] as List<dynamic>?)
+          (json['next_payment'] as List<dynamic>?)
               ?.map((e) => PaymentModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -25,7 +25,7 @@ _PaymentsModel _$PaymentsModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PaymentsModelToJson(_PaymentsModel instance) =>
     <String, dynamic>{
-      'next_payments': instance.nextPayments,
+      'next_payment': instance.nextPayments,
       'paid_payments': instance.paidPayments,
       'summary': instance.summary,
     };

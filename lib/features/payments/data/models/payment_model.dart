@@ -7,7 +7,7 @@ part 'payment_model.g.dart';
 @freezed
 class PaymentsModel with _$PaymentsModel {
   const factory PaymentsModel({
-    @JsonKey(name: 'next_payments') @Default([]) List<PaymentModel> nextPayments,
+    @JsonKey(name: 'next_payment') @Default([]) List<PaymentModel> nextPayments,
     @JsonKey(name: 'paid_payments') @Default([]) List<PaymentModel> paidPayments,
     SummaryModel? summary,
   }) = _PaymentsModel;

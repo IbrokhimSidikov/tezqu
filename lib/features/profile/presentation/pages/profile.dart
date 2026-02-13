@@ -766,7 +766,9 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Icon(Icons.check_circle, color: AppColors.cxWhite),
                   SizedBox(width: 12.w),
-                  Text('${AppLocalizations.of(context).languageSnackbar} : $name'),
+                  Expanded(
+                    child: Text('${AppLocalizations.of(context).languageSnackbar} : $name'),
+                  ),
                 ],
               ),
               backgroundColor: AppColors.cx78D9BF,

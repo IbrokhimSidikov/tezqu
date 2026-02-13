@@ -135,10 +135,10 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                 SizedBox(height: 16.h),
               ],
               // Custom Fields
-              if (_productDetails?.customFields != null && _productDetails!.customFields!.isNotEmpty) ...[
-                ..._buildCustomFields(),
-                SizedBox(height: 16.h),
-              ],
+              // if (_productDetails?.customFields != null && _productDetails!.customFields!.isNotEmpty) ...[
+              //   ..._buildCustomFields(),
+              //   SizedBox(height: 16.h),
+              // ],
               SizedBox(height: 8.h),
               Column(
                 children: [

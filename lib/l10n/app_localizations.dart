@@ -301,12 +301,14 @@ class AppLocalizations {
       'amount':'Amount',
       'dueToday':'Due Today',
       'pending':'Pending',
-      'paymentMethod':'Payment Method',
       'paymentDate':'Payment Date',
       'selectPaymentMethod':'Select Payment Method',
       'confirmPayment':'Confirm Payment',
       'paymentRecordedSuccessfully':'Payment recorded successfully',
       'failedToRecordPayment':'Failed to record payment',
+
+      'carCondition': 'Car Condition',
+      'transmissionType': 'Transmission Type',
 
     },
     'uz': {
@@ -601,6 +603,9 @@ class AppLocalizations {
       'paymentRecordedSuccessfully':'To\'lov muvaffaqiyatli qayd etildi',
       'failedToRecordPayment':'To\'lovni qayd etib bo\'lmadi',
 
+
+      'carCondition': 'Avtomobil holati',
+      'transmissionType': 'Uzatmalar qutisi turi',
     },
     'ru': {
       'totalPayments': 'Всего платежей',
@@ -894,6 +899,8 @@ class AppLocalizations {
       'paymentRecordedSuccessfully':'Платеж успешно записан',
       'failedToRecordPayment':'Не удалось записать платеж',
 
+      'carCondition': 'Состояние автомобиля',
+      'transmissionType': 'Тип коробки передач',
     },
   };
 
@@ -1178,4 +1185,8 @@ class AppLocalizations {
   String get confirmPayment => translate('confirmPayment');
   String get paymentRecordedSuccessfully => translate('paymentRecordedSuccessfully');
   String get failedToRecordPayment => translate('failedToRecordPayment');
+  String get carCondition => translate('carCondition');
+  String get transmissionType => translate('transmissionType');
+
+
 }

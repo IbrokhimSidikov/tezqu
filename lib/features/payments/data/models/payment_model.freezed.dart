@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentsModel {
 
-@JsonKey(name: 'next_payments') List<PaymentModel> get nextPayments;@JsonKey(name: 'paid_payments') List<PaymentModel> get paidPayments; SummaryModel? get summary;
+@JsonKey(name: 'next_payment') List<PaymentModel> get nextPayments;@JsonKey(name: 'paid_payments') List<PaymentModel> get paidPayments; SummaryModel? get summary;
 /// Create a copy of PaymentsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PaymentsModelCopyWith<$Res>  {
   factory $PaymentsModelCopyWith(PaymentsModel value, $Res Function(PaymentsModel) _then) = _$PaymentsModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
+@JsonKey(name: 'next_payment') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
 });
 
 
@@ -167,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payment')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentsModel() when $default != null:
 return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
@@ -188,7 +188,7 @@ return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'next_payment')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentsModel():
 return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
@@ -208,7 +208,7 @@ return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'next_payments')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'next_payment')  List<PaymentModel> nextPayments, @JsonKey(name: 'paid_payments')  List<PaymentModel> paidPayments,  SummaryModel? summary)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentsModel() when $default != null:
 return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
@@ -223,11 +223,11 @@ return $default(_that.nextPayments,_that.paidPayments,_that.summary);case _:
 @JsonSerializable()
 
 class _PaymentsModel extends PaymentsModel {
-  const _PaymentsModel({@JsonKey(name: 'next_payments') final  List<PaymentModel> nextPayments = const [], @JsonKey(name: 'paid_payments') final  List<PaymentModel> paidPayments = const [], this.summary}): _nextPayments = nextPayments,_paidPayments = paidPayments,super._();
+  const _PaymentsModel({@JsonKey(name: 'next_payment') final  List<PaymentModel> nextPayments = const [], @JsonKey(name: 'paid_payments') final  List<PaymentModel> paidPayments = const [], this.summary}): _nextPayments = nextPayments,_paidPayments = paidPayments,super._();
   factory _PaymentsModel.fromJson(Map<String, dynamic> json) => _$PaymentsModelFromJson(json);
 
  final  List<PaymentModel> _nextPayments;
-@override@JsonKey(name: 'next_payments') List<PaymentModel> get nextPayments {
+@override@JsonKey(name: 'next_payment') List<PaymentModel> get nextPayments {
   if (_nextPayments is EqualUnmodifiableListView) return _nextPayments;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_nextPayments);
@@ -275,7 +275,7 @@ abstract mixin class _$PaymentsModelCopyWith<$Res> implements $PaymentsModelCopy
   factory _$PaymentsModelCopyWith(_PaymentsModel value, $Res Function(_PaymentsModel) _then) = __$PaymentsModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'next_payments') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
+@JsonKey(name: 'next_payment') List<PaymentModel> nextPayments,@JsonKey(name: 'paid_payments') List<PaymentModel> paidPayments, SummaryModel? summary
 });
 
 

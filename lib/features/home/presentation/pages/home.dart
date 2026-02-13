@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/constants/user_roles.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
@@ -77,6 +79,7 @@ class _HomePageContentState extends State<_HomePageContent> {
     final totalProductsQty = dashboard?.data.totalProductsQty ?? 0;
     final pendingPaymentsCount = dashboard?.data.pendingPaymentsCount ?? 0;
     final totalPaymentsThisMonth = dashboard?.data.totalPaymentsThisMonth ?? 0;
+    final totalExpensesThisMonth = dashboard?.data.totalExpensesThisMonth ?? 0;
     
     final allCards = <DashboardCardType, Widget>{
       DashboardCardType.payments: DashboardCard(
@@ -102,14 +105,48 @@ class _HomePageContentState extends State<_HomePageContent> {
       ),
       DashboardCardType.products: DashboardCard(
         title: AppLocalizations.of(context).products,
-        subtitle: 'Total: $totalProductsQty',
+        // subtitle: 'Total: $totalProductsQty',
         onTap: () {
           context.push(AppRoutes.products);
         },
         icons: [
-          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
-          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
-          CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
+            SizedBox(
+            width: 140.w,
+            height: 50.h,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  child: _buildCircle(
+                    color: AppColors.cx78D9BF,
+                    child: Icon(Icons.directions_car, color: AppColors.cxWhite),
+                  ),
+                ),
+                Positioned(
+                  left: 30.w, // overlap amount
+                  child: _buildCircle(
+                    color: AppColors.cxFEDA84,
+                    child: SizedBox(
+                      width: 24.w,
+                      height: 24.h,
+                      child: SvgPicture.asset(AppIcons.gadget),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 60.w,
+                  child: _buildCircle(
+                    color: AppColors.cxFFBCFA,
+                    child: SizedBox(
+                      width: 24.w,
+                      height: 24.h,
+                      child: SvgPicture.asset(AppIcons.house),
+                    ),
+                  ),
+                ),
+                ],
+              ),
+            ),
         ],
       ),
       DashboardCardType.income: DashboardCard(
@@ -138,7 +175,7 @@ class _HomePageContentState extends State<_HomePageContent> {
           context.push(AppRoutes.expense);
         },
         title: AppLocalizations.of(context).expenses,
-        subtitle: "\$1,500",
+        subtitle: _formatCurrency(totalExpensesThisMonth),
         icons: [
           Container(
             padding: EdgeInsets.all(2),
@@ -367,15 +404,19 @@ class _HomePageContentState extends State<_HomePageContent> {
                 : 0.0;
 
             return Padding(
-              padding: const EdgeInsets.only(
-                  top: 16.0, bottom: 16.0, left: 16.0, right: 20.0),
+              padding:  EdgeInsets.only(
+                  top: 16.h, bottom: 16.h, left: 16.w, right: 20.w),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     // Header section (same for both admin and customer)
                     Row(
                       children: [
-                        Iconify(Tabler.credit_card, color: AppColors.cx4AC1A7,),
+                        SizedBox(
+                          width: 24.w,
+                          height: 24.h,
+                            child: SvgPicture.asset(AppIcons.credCard)
+                        ),
                         SizedBox(width: 10.w),
                         Text(
                           isAdmin ? 'Net Profit This Month' : AppLocalizations.of(context).totalPayments, 
@@ -406,8 +447,8 @@ class _HomePageContentState extends State<_HomePageContent> {
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: AppColors.cx78D9BF,
-                              child: Icon(Icons.access_time, color: AppColors.cxWhite),
+                              backgroundColor: AppColors.cxWhite,
+                              child: SvgPicture.asset(AppIcons.time),
                             ),
                             SizedBox(width: 12.w),
                             Expanded(
@@ -426,17 +467,11 @@ class _HomePageContentState extends State<_HomePageContent> {
                                 color: AppColors.cx78D9BF,
                               ),
                             ),
-                            SizedBox(width: 32.w),
-                            CircleAvatar(
-                              backgroundColor: Colors.black87,
-                              child: IconButton(
-                                  iconSize: 24.sp,
-                                  onPressed: () {
-                                    context.push(AppRoutes.favourites);
-                                  },
-                                  icon: Icon(Icons.favorite),
-                                  color: AppColors.cxWhite,
-                              ),
+                            32.horizontalSpace,
+                            SizedBox(
+                              width: 48.w,
+                              height: 48.h,
+                              child: SvgPicture.asset(AppIcons.wishlist),
                             ),
                           ],
                         ),
@@ -472,7 +507,7 @@ class _HomePageContentState extends State<_HomePageContent> {
                     GridView.count(
                       shrinkWrap: true,
                       crossAxisCount: 2,
-                      mainAxisSpacing: 29.h,
+                      mainAxisSpacing: 20.h,
                       crossAxisSpacing: 16.w,
                       childAspectRatio: 1.2, // adjust shape
                       children: _buildDashboardCards(context, userRole, dashboard),
@@ -486,6 +521,24 @@ class _HomePageContentState extends State<_HomePageContent> {
       ),
     );
   }
+
+  Widget _buildCircle({
+    required Color color,
+    required Widget child,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.cxWhite, width: 3),
+      ),
+      child: CircleAvatar(
+        radius: 22.r,
+        backgroundColor: color,
+        child: child,
+      ),
+    );
+  }
+
 }
 
 class _HomeShimmerLoading extends StatelessWidget {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:intl/intl.dart';
 import 'package:tezqu/core/shared/button_widget_iconless.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -337,16 +338,15 @@ class _DetailsState extends State<Details> {
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  // Model/Year in green
-                  Text(
-                    product?.year ?? "",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.cx43C19F,
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
+                  // Text(
+                  //   product?.year ?? "",
+                  //   style: TextStyle(
+                  //     fontSize: 18.sp,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: AppColors.cx43C19F,
+                  //   ),
+                  // ),
+                  SizedBox(height: 4.h),
                   // Product Details Section
                   Text(
                     AppLocalizations.of(context).productAbout,
@@ -359,7 +359,36 @@ class _DetailsState extends State<Details> {
                   SizedBox(height: 12.h),
                   // Custom fields as bullet points
                   if (product?.customFields != null)
-                    ...product!.customFields!.entries.map((entry) {
+                    ...product!.customFields!.entries
+                        .where((entry) => 
+                            entry.key != 'type' && 
+                            entry.key != 'vin' &&
+                            entry.key != 'avtomobil_modeli' &&
+                            entry.key != 'avtomobil_brendi')
+                        .map((entry) {
+                      String displayKey = entry.key;
+                      dynamic displayValue = entry.value;
+                      
+                      if (entry.key == 'avtomobil_raqami') {
+                        displayKey = AppLocalizations.of(context).plateNumber;
+                        // Extract 'number' field if value is a Map
+                        if (entry.value is Map) {
+                          displayValue = entry.value['number'] ?? entry.value;
+                        }
+                      } else if (entry.key == 'avtomobil_xolati') {
+                        displayKey = AppLocalizations.of(context).carCondition;
+                      } else if (entry.key == 'yurgan_masofasi') {
+                        displayKey = AppLocalizations.of(context).mileage;
+                      } else if (entry.key == 'yoqilgi_turi'){
+                        displayKey = AppLocalizations.of(context).fuelType;
+                      }else if (entry.key == 'rangi'){
+                        displayKey = AppLocalizations.of(context).color;
+                      }else if (entry.key == 'uzatmalar_qutisi'){
+                        displayKey = AppLocalizations.of(context).transmissionType;
+                      }else if (entry.key == 'yili'){
+                        displayKey = AppLocalizations.of(context).year;
+                      }
+                      
                       return Padding(
                         padding: EdgeInsets.only(bottom: 6.h),
                         child: Row(
@@ -374,10 +403,11 @@ class _DetailsState extends State<Details> {
                             ),
                             Expanded(
                               child: Text(
-                                "${entry.key} - ${entry.value}",
+                                "$displayKey - $displayValue",
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: AppColors.cxBlack,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
@@ -396,6 +426,7 @@ class _DetailsState extends State<Details> {
                       ),
                     ),
                   ],
+                  12.verticalSpace,
                   // Pricing Section
                   Row(
                     children: [
@@ -420,7 +451,7 @@ class _DetailsState extends State<Details> {
                               ),
                               SizedBox(height: 8.h),
                               Text(
-                                "\$${product?.price ?? '0'}",
+                                "\$ ${NumberFormat('#,###', 'en_US').format(double.tryParse(product!.price)?.toInt() ?? 0).replaceAll(',', ' ')}",
                                 style: TextStyle(
                                   fontSize: 28.sp,
                                   fontWeight: FontWeight.w600,

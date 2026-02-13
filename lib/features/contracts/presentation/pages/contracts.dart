@@ -350,7 +350,7 @@ class _ContractsViewState extends State<ContractsView> {
                       padding: EdgeInsets.only(top: 8.h),
                       child: _buildInfoRow(
                         '${AppLocalizations.of(context).serviceFee}:',
-                        '${contract.totalServiceFee} so\'m',
+                        '${double.tryParse(contract.totalServiceFee!)?.toInt() ?? contract.totalServiceFee}',
                       ),
                     ),
                   // Collector name

@@ -283,7 +283,6 @@ class _ProductsState extends State<Products> {
           children: [
             AppBanner(image: AppImages.reklama),
             SizedBox(height: 30.h),
-            
             // Error message
             BlocBuilder<ProductCubit, ProductState>(
               builder: (context, state) {
@@ -389,12 +388,12 @@ class _ProductsState extends State<Products> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(AppLocalizations.of(context).products, style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500)),
-                        IconButton(
-                          icon: Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA),
-                          onPressed: () {
-                            // TODO: Implement filter functionality
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: Iconify(Tabler.filter, size: 27.sp, color: AppColors.cxDADADA),
+                        //   onPressed: () {
+                        //     // TODO: Implement filter functionality
+                        //   },
+                        // ),
                       ],
                     ),
             ),

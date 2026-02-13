@@ -124,19 +124,25 @@ class PaymentsView extends StatelessWidget {
   }
 
   Widget _buildPaymentsList(BuildContext context, PaymentsEntity payments) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 16.h,
-        bottom: 16.h,
-        left: 16.w,
-        right: 20.w,
-      ),
-      child: Column(
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<PaymentCubit>().getPayments();
+      },
+      child: ListView(
+        padding: EdgeInsets.only(
+          top: 16.h,
+          bottom: 16.h,
+          left: 16.w,
+          right: 20.w,
+        ),
         children: [
+          // Summary Dashboard
           if (payments.summary != null) ...[
             _buildSummaryDashboard(context, payments.summary!),
             SizedBox(height: 24.h),
           ],
+          
+          // Next Payments Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -147,90 +153,84 @@ class PaymentsView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Iconify(
-                Tabler.filter,
-                size: 27.sp,
-                color: AppColors.cxDADADA,
-              ),
+
             ],
           ),
           SizedBox(height: 20.h),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                context.read<PaymentCubit>().getPayments();
-              },
-              child: ListView(
-                children: [
-                  // Upcoming payments
-                  if (payments.nextPayments.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 32.h),
-                        child: Text(
-                          AppLocalizations.of(context).noNextPayments,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppColors.cxAFB1B1,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    ...payments.nextPayments.map((payment) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        child: _buildPaymentItem(
-                          context,
-                          payment,
-                          isPaid: false,
-                          allPayments: payments,
-                        ),
-                      );
-                    }).toList(),
-
-                  SizedBox(height: 24.h),
-
-                  // Payment history section
-                  Text(
-                    AppLocalizations.of(context).paymentsHistory,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.cxBlack,
-                    ),
+          
+          // Upcoming payments - Horizontal scrollable with max 3 items
+          if (payments.nextPayments.isEmpty)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 32.h),
+                child: Text(
+                  AppLocalizations.of(context).noNextPayments,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: AppColors.cxAFB1B1,
                   ),
-                  SizedBox(height: 16.h),
-
-                  if (payments.paidPayments.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 32.h),
-                        child: Text(
-                          AppLocalizations.of(context).noPaymentsHistory,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppColors.cxAFB1B1,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    ...payments.paidPayments.map((payment) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        child: _buildPaymentItem(
-                          context,
-                          payment,
-                          isPaid: true,
-                          allPayments: payments,
-                        ),
-                      );
-                    }).toList(),
-                ],
+                ),
+              ),
+            )
+          else
+            SizedBox(
+              height: 160.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: payments.nextPayments.length > 3 ? 3 : payments.nextPayments.length,
+                itemBuilder: (context, index) {
+                  final payment = payments.nextPayments[index];
+                  return Container(
+                    width: 300.w,
+                    margin: EdgeInsets.only(right: 12.w),
+                    child: _buildNextPaymentCard(
+                      context,
+                      payment,
+                      allPayments: payments,
+                    ),
+                  );
+                },
               ),
             ),
+
+          SizedBox(height: 24.h),
+
+          // Payment history section
+          Text(
+            AppLocalizations.of(context).paymentsHistory,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.cxBlack,
+            ),
           ),
+          SizedBox(height: 16.h),
+
+          if (payments.paidPayments.isEmpty)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 32.h),
+                child: Text(
+                  AppLocalizations.of(context).noPaymentsHistory,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: AppColors.cxAFB1B1,
+                  ),
+                ),
+              ),
+            )
+          else
+            ...payments.paidPayments.map((payment) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 12.h),
+                child: _buildPaymentItem(
+                  context,
+                  payment,
+                  isPaid: true,
+                  allPayments: payments,
+                ),
+              );
+            }).toList(),
         ],
       ),
     );
@@ -371,6 +371,122 @@ class PaymentsView extends StatelessWidget {
                   ),
                 ],
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNextPaymentCard(BuildContext context, PaymentEntity payment, {PaymentsEntity? allPayments}) {
+    final contractProduct = payment.contract?.product;
+    final productName = contractProduct?.name ?? payment.productName;
+
+    return InkWell(
+      onTap: () {
+        context.pushNamed(
+          'detailsPayment',
+          queryParameters: {'contractId': payment.contractId.toString()},
+          extra: {
+            'payment': payment,
+            'allPayments': allPayments,
+          },
+        );
+      },
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 80.w),
+                  child: Text(
+                    productName,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.cxBlack,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  'To\'lov sanasi',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.cxAFB1B1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  payment.dueDate,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.cxBlack,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Summa',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: AppColors.cxAFB1B1,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '\$${payment.amount.toStringAsFixed(0)}',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.cxBlack,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: AppColors.cxFEC700.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6.r),
+                ),
+                child: Text(
+                  'Kutilmoqda',
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.cxFEC700,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

@@ -98,14 +98,14 @@ class _ContractDetailsState extends State<ContractDetails> {
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  Text(
-                    'SL03',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.cx78D9BF,
-                    ),
-                  ),
+                  // Text(
+                  //   'SL03',
+                  //   style: TextStyle(
+                  //     fontSize: 16.sp,
+                  //     fontWeight: FontWeight.w400,
+                  //     color: AppColors.cx78D9BF,
+                  //   ),
+                  // ),
                   
                   SizedBox(height: 24.h),
                   
@@ -148,7 +148,7 @@ class _ContractDetailsState extends State<ContractDetails> {
                       Expanded(
                         child: _buildInfoCard(
                           AppLocalizations.of(context).agreement,
-                          '${AppLocalizations.of(context).monthly}: ${contract.monthlyPayment ?? "0"} USD',
+                          '${AppLocalizations.of(context).monthly}: ${double.tryParse(contract.monthlyPayment!)?.toInt() ?? "0"} USD',
                           '${AppLocalizations.of(context).period}: ${contract.installmentPeriodMonths ?? 0} ${AppLocalizations.of(context).months}',
                           AppColors.cxF5F7F9,
                           AppColors.cx78D9BF,
