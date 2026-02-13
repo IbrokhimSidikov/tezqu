@@ -275,22 +275,35 @@ class _HomePageContentState extends State<_HomePageContent> {
           leading: Padding(
             padding: EdgeInsets.only(left: 10.w),
             child:
-               Container(
-                 decoration: BoxDecoration(
-                   shape: BoxShape.circle,
-                   color: const Color(0xFFF5F7F9),
-                 ),
-                child: IconButton(
-                  onPressed: () {
-                    context.pushNamed(AppRoutes.profile);
-                  },
-                  icon: Icon(Icons.person),
-                  color: AppColors.cxBlack,
-                  style: IconButton.styleFrom(
-                    iconSize: 32,
-                  ),
+              //  Container(
+              //    decoration: BoxDecoration(
+              //      shape: BoxShape.circle,
+              //      color: const Color(0xFFF5F7F9),
+              //    ),
+              //   child: IconButton(
+              //     onPressed: () {
+              //       context.pushNamed(AppRoutes.profile);
+              //     },
+              //     icon: Icon(Icons.person),
+              //     color: AppColors.cxBlack,
+              //     style: IconButton.styleFrom(
+              //       iconSize: 32,
+              //     ),
+              //   ),
+              // ),
+            GestureDetector(
+              onTap: () {
+                context.push(AppRoutes.profile);
+              },
+              child: Container(
+                padding: EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.cxF5F7F9,
                 ),
+                  child: SvgPicture.asset(AppIcons.profile)
               ),
+            ),
           ),
           actions: [
             Padding(
@@ -468,10 +481,15 @@ class _HomePageContentState extends State<_HomePageContent> {
                               ),
                             ),
                             32.horizontalSpace,
-                            SizedBox(
-                              width: 48.w,
-                              height: 48.h,
-                              child: SvgPicture.asset(AppIcons.wishlist),
+                            GestureDetector(
+                              onTap: () {
+                                context.push(AppRoutes.favourites);
+                              },
+                              child: SizedBox(
+                                width: 48.w,
+                                height: 48.h,
+                                child: SvgPicture.asset(AppIcons.wishlist),
+                              ),
                             ),
                           ],
                         ),

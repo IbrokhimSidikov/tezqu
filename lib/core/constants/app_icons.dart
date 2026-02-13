@@ -5,4 +5,5 @@ abstract class AppIcons {
   static const String wishlist = 'assets/icons/wishlist.svg';
   static const String time = 'assets/icons/time.svg';
   static const String time2 = 'assets/icons/time2.svg';
+  static const String profile = 'assets/icons/Profile.svg';
 }

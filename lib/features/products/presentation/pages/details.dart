@@ -76,12 +76,19 @@ class _DetailsState extends State<Details> {
     }
   }
 
-  Future<void> _submitProductRequest() async {
+  Future<void> _submitProductRequest([Function(void Function())? dialogSetState]) async {
     if (product == null || _isSubmittingRequest) return;
 
     setState(() {
       _isSubmittingRequest = true;
     });
+    
+    // Also update dialog state if callback provided
+    if (dialogSetState != null) {
+      dialogSetState(() {
+        _isSubmittingRequest = true;
+      });
+    }
 
     try {
       await getIt<ProductRequestService>().createProductRequest(product!.id);
@@ -89,6 +96,11 @@ class _DetailsState extends State<Details> {
         setState(() {
           _isSubmittingRequest = false;
         });
+        if (dialogSetState != null) {
+          dialogSetState(() {
+            _isSubmittingRequest = false;
+          });
+        }
         Navigator.of(context).pop(); // Close the purchase dialog
         _showSuccessDialog(context);
       }
@@ -97,6 +109,11 @@ class _DetailsState extends State<Details> {
         setState(() {
           _isSubmittingRequest = false;
         });
+        if (dialogSetState != null) {
+          dialogSetState(() {
+            _isSubmittingRequest = false;
+          });
+        }
         Navigator.of(context).pop(); // Close the purchase dialog
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -523,11 +540,13 @@ class _DetailsState extends State<Details> {
                     barrierDismissible: true,
                     barrierColor: Colors.black.withOpacity(0.5),
                     builder: (BuildContext context) {
-                      return Dialog(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
-                        child: Container(
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(28.r),
@@ -615,7 +634,7 @@ class _DetailsState extends State<Details> {
                                   child: Column(
                                     children: [
                                       GestureDetector(
-                                        onTap: _isSubmittingRequest ? null : _submitProductRequest,
+                                        onTap: _isSubmittingRequest ? null : () => _submitProductRequest(setState),
                                         child: Container(
                                           width: double.infinity,
                                           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
@@ -748,6 +767,8 @@ class _DetailsState extends State<Details> {
                             ),
                           ),
                         ),
+                          );
+                        },
                       );
                     },
                   );
@@ -766,64 +787,172 @@ void _showSuccessDialog(BuildContext context) {
   showDialog(
     context: context,
     barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.5),
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: AppColors.cxWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.r),
-        ),
-        insetPadding: EdgeInsets.all(20.sp),
-        child: SizedBox(
-          width: 360.w,
-          height: 214.h,
-          child: Padding(
-            padding: EdgeInsets.all(20.sp),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: EdgeInsets.symmetric(horizontal: 32.w),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 40,
+                offset: Offset(0, 20),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(28.r),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Stack(
-                 alignment: Alignment.center,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context).requestReceived,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 32.h),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFFF0FDF4),
+                        Colors.white,
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8.w),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF3F4F6),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.close_rounded,
+                                size: 20.sp,
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: 80.w,
+                        height: 80.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xFF10B981),
+                              Color(0xFF059669),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF10B981).withOpacity(0.4),
+                              blurRadius: 24,
+                              offset: Offset(0, 12),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.check_rounded,
+                          size: 48.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Text(
+                        AppLocalizations.of(context).requestReceived,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1A1A1A),
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Text(
+                          AppLocalizations.of(context).requestReceivedMessage,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF6B7280),
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFAFBFC),
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xFFE5E7EB),
+                        width: 1,
                       ),
                     ),
-                    Positioned(
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop(); // closes current dialog
-                          Navigator.of(context).pop(); // closes one more (previous)
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            shape: BoxShape.circle,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF10B981),
+                            Color(0xFF059669),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(14.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFF10B981).withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: Offset(0, 6),
                           ),
-                          child: Icon(Icons.close, size: 22.sp),
+                        ],
+                      ),
+                      child: Text(
+                        'Done',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          letterSpacing: -0.3,
                         ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Container(
-                  padding:EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.cx43C19F, width: 3.w),
                   ),
-                  child: Iconify(Tabler.icons, size: 40.sp, color: AppColors.cx43C19F),
-                ),
-                SizedBox(height: 10.h),
-                Text(
-                  AppLocalizations.of(context).requestReceivedMessage,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
