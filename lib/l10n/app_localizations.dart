@@ -309,6 +309,7 @@ class AppLocalizations {
 
       'carCondition': 'Car Condition',
       'transmissionType': 'Transmission Type',
+      'contactMethod': 'Choose your preferred contact method',
 
     },
     'uz': {
@@ -606,6 +607,7 @@ class AppLocalizations {
 
       'carCondition': 'Avtomobil holati',
       'transmissionType': 'Uzatmalar qutisi turi',
+      'contactMethod': 'O‘zingizga qulay aloqa usulini tanlang'
     },
     'ru': {
       'totalPayments': 'Всего платежей',
@@ -901,6 +903,7 @@ class AppLocalizations {
 
       'carCondition': 'Состояние автомобиля',
       'transmissionType': 'Тип коробки передач',
+      'contactMethod': 'Выберите удобный способ связи'
     },
   };
 
@@ -1187,6 +1190,7 @@ class AppLocalizations {
   String get failedToRecordPayment => translate('failedToRecordPayment');
   String get carCondition => translate('carCondition');
   String get transmissionType => translate('transmissionType');
+  String get contactMethod => translate('contactMethod');
 
 
 }

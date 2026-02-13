@@ -521,115 +521,231 @@ class _DetailsState extends State<Details> {
                   showDialog(
                     context: context,
                     barrierDismissible: true,
+                    barrierColor: Colors.black.withOpacity(0.5),
                     builder: (BuildContext context) {
                       return Dialog(
-                        backgroundColor: AppColors.cxWhite,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.r),
-                        ),
-                        insetPadding: EdgeInsets.all(20.w), // margin from screen edges
-                        child: Padding(
-                          padding: EdgeInsets.all(20.w),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context).toPurchase,
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 36.h),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: _isSubmittingRequest ? null : _submitProductRequest,
-                                      child: Container(
-                                        width: 150.w,
-                                        height: 100.h,
-                                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.cxFEDA84,
-                                          borderRadius: BorderRadius.circular(25.r),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            _isSubmittingRequest
-                                                ? SizedBox(
-                                                    width: 20.w,
-                                                    height: 20.h,
-                                                    child: CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                                                    ),
-                                                  )
-                                                : Text(
-                                                    AppLocalizations.of(context).sendRequest,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 20.sp,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                            SizedBox(height: 6.h),
-                                            Text(
-                                              AppLocalizations.of(context).contactMe,
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: _makePhoneCall,
-                                      child: Container(
-                                        width: 150.w,
-                                        height: 100.h,
-                                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.cxF7F6F9,
-                                          borderRadius: BorderRadius.circular(25.r),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              AppLocalizations.of(context).callMyself,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 20.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            SizedBox(height: 6.h),
-                                            Text(
-                                              AppLocalizations.of(context).callCenter,
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500
-
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        insetPadding: EdgeInsets.symmetric(horizontal: 24.w),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(28.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 40,
+                                offset: Offset(0, 20),
                               ),
                             ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(28.r),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.fromLTRB(32.w, 32.h, 32.w, 24.h),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xFFF8F9FA),
+                                        Colors.white,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 56.w,
+                                        height: 56.h,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xFF4AC1A7),
+                                              Color(0xFF43C19F),
+                                            ],
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0xFF4AC1A7).withOpacity(0.3),
+                                              blurRadius: 16,
+                                              offset: Offset(0, 8),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Icon(
+                                          Icons.shopping_bag_outlined,
+                                          color: Colors.white,
+                                          size: 28.sp,
+                                        ),
+                                      ),
+                                      SizedBox(height: 20.h),
+                                      Text(
+                                        AppLocalizations.of(context).toPurchase,
+                                        style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF1A1A1A),
+                                          letterSpacing: -0.5,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Text(
+                                        AppLocalizations.of(context).contactMethod,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF6B7280),
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 32.h),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: _isSubmittingRequest ? null : _submitProductRequest,
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Color(0xFF1A1A1A),
+                                                Color(0xFF2D2D2D),
+                                              ],
+                                            ),
+                                            borderRadius: BorderRadius.circular(16.r),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.15),
+                                                blurRadius: 20,
+                                                offset: Offset(0, 10),
+                                              ),
+                                            ],
+                                          ),
+                                          child: _isSubmittingRequest
+                                              ? Center(
+                                                  child: SizedBox(
+                                                    width: 24.w,
+                                                    height: 24.h,
+                                                    child: CircularProgressIndicator(
+                                                      strokeWidth: 2.5,
+                                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.send_rounded,
+                                                      color: Colors.white,
+                                                      size: 20.sp,
+                                                    ),
+                                                    SizedBox(width: 12.w),
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          AppLocalizations.of(context).sendRequest,
+                                                          style: TextStyle(
+                                                            fontSize: 17.sp,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.white,
+                                                            letterSpacing: -0.3,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 2.h),
+                                                        Text(
+                                                          AppLocalizations.of(context).contactMe,
+                                                          style: TextStyle(
+                                                            fontSize: 12.sp,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Colors.white.withOpacity(0.7),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 12.h),
+                                      GestureDetector(
+                                        onTap: _makePhoneCall,
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFF8F9FA),
+                                            borderRadius: BorderRadius.circular(16.r),
+                                            border: Border.all(
+                                              color: Color(0xFFE5E7EB),
+                                              width: 1.5,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(8.w),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF4AC1A7).withOpacity(0.1),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(
+                                                  Icons.phone_rounded,
+                                                  color: Color(0xFF4AC1A7),
+                                                  size: 18.sp,
+                                                ),
+                                              ),
+                                              SizedBox(width: 12.w),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    AppLocalizations.of(context).callMyself,
+                                                    style: TextStyle(
+                                                      fontSize: 17.sp,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Color(0xFF1A1A1A),
+                                                      letterSpacing: -0.3,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 2.h),
+                                                  Text(
+                                                    AppLocalizations.of(context).callCenter,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Color(0xFF6B7280),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
@@ -194,7 +195,7 @@ class _ProductsState extends State<Products> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '\$${product.price}',
+                  '\$${NumberFormat('#,###', 'en_US').format(double.tryParse(product.price)?.toInt()).replaceAll(',', ' ') ?? '0'}',
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
