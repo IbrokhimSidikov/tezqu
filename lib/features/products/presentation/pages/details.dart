@@ -503,7 +503,7 @@ class _DetailsState extends State<Details> {
           ),
           // Fixed Bottom Button
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
