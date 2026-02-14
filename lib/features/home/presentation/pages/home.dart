@@ -90,63 +90,71 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: _formatCurrency(totalPaymentsThisMonth),
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFFF6B7A),
+                  const Color(0xFFFF4757),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF4757).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFFFF4757).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cxFF8B92,
-              child: const Icon(Icons.attach_money, color: Colors.white),
-            ),
+            child: Icon(Icons.payments_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
       DashboardCardType.products: DashboardCard(
         title: AppLocalizations.of(context).products,
-        // subtitle: 'Total: $totalProductsQty',
         onTap: () {
           context.push(AppRoutes.products);
         },
         icons: [
-            SizedBox(
-            width: 140.w,
-            height: 50.h,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  child: _buildCircle(
-                    color: AppColors.cx78D9BF,
-                    child: Icon(Icons.directions_car, color: AppColors.cxWhite),
-                  ),
-                ),
-                Positioned(
-                  left: 30.w, // overlap amount
-                  child: _buildCircle(
-                    color: AppColors.cxFEDA84,
-                    child: SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: SvgPicture.asset(AppIcons.gadget),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 60.w,
-                  child: _buildCircle(
-                    color: AppColors.cxFFBCFA,
-                    child: SizedBox(
-                      width: 24.w,
-                      height: 24.h,
-                      child: SvgPicture.asset(AppIcons.house),
-                    ),
-                  ),
-                ),
+          Container(
+            width: 56.w,
+            height: 56.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF0EA5E9),
+                  const Color(0xFF0284C7),
                 ],
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0284C7).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFF0284C7).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
+            child: Icon(Icons.shopping_bag_rounded, color: Colors.white, size: 28.sp),
+          ),
         ],
       ),
       DashboardCardType.income: DashboardCard(
@@ -157,16 +165,33 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: _formatCurrency(totalIncomeThisMonth),
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF10B981),
+                  const Color(0xFF059669),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF059669).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFF059669).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cx78D9BF,
-              child: const Icon(Icons.swap_horiz, color: Colors.white),
-            ),
+            child: Icon(Icons.trending_up_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
@@ -178,16 +203,33 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: _formatCurrency(totalExpensesThisMonth),
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFFBBF24),
+                  const Color(0xFFF59E0B),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFF59E0B).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFFF59E0B).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cxFEC700,
-              child: const Icon(Icons.arrow_upward, color: Colors.black),
-            ),
+            child: Icon(Icons.trending_down_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
@@ -199,16 +241,33 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: 'Maxsulot: $totalProductsQty',
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF374151),
+                  const Color(0xFF1F2937),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF1F2937).withOpacity(0.5),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFF1F2937).withOpacity(0.3),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cx292B2F,
-              child: const Icon(Icons.inventory_2_outlined, color: Colors.white),
-            ),
+            child: Icon(Icons.warehouse_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
@@ -220,16 +279,33 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: _getCurrentMonthYear(),
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF8B5CF6),
+                  const Color(0xFF7C3AED),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF7C3AED).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFF7C3AED).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cx02D5F5,
-              child: const Icon(Icons.bar_chart_outlined, color: Colors.white),
-            ),
+            child: Icon(Icons.analytics_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
@@ -241,16 +317,33 @@ class _HomePageContentState extends State<_HomePageContent> {
         subtitle: '${AppLocalizations.of(context).pending}: ${pendingPaymentsCount}',
         icons: [
           Container(
-            padding: EdgeInsets.all(2),
+            width: 56.w,
+            height: 56.h,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFEC4899),
+                  const Color(0xFFDB2777),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFDB2777).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFFDB2777).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 22.r,
-              backgroundColor: AppColors.cxFFBCFA,
-              child: const Icon(Icons.collections_bookmark, color: Colors.black),
-            ),
+            child: Icon(Icons.receipt_long_rounded, color: Colors.white, size: 28.sp),
           ),
         ],
       ),
@@ -662,7 +755,7 @@ class _HomeShimmerLoading extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              mainAxisSpacing: 29.h,
+              mainAxisSpacing: 20.h,
               crossAxisSpacing: 16.w,
               childAspectRatio: 1.2,
               children: [
@@ -671,16 +764,27 @@ class _HomeShimmerLoading extends StatelessWidget {
                   title: AppLocalizations.of(context).myPayments,
                   icons: [
                     Container(
-                      padding: EdgeInsets.all(2),
+                      width: 56.w,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFFFF6B7A),
+                            const Color(0xFFFF4757),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFF4757).withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 22.r,
-                        backgroundColor: AppColors.cxFF8B92,
-                        child: const Icon(Icons.attach_money, color: Colors.white),
-                      ),
+                      child: Icon(Icons.payments_rounded, color: Colors.white, size: 28.sp),
                     ),
                   ],
                 ),
@@ -688,9 +792,29 @@ class _HomeShimmerLoading extends StatelessWidget {
                   title: AppLocalizations.of(context).products,
                   onTap: () {},
                   icons: [
-                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cx78D9BF, child: Icon(Icons.directions_car, color: Colors.white)),
-                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFEDA84, child: Icon(Icons.bus_alert, color: Colors.black)),
-                    CircleAvatar(radius: 22.r, backgroundColor: AppColors.cxFFBCFA, child: Icon(Icons.home, color: Colors.black)),
+                    Container(
+                      width: 56.w,
+                      height: 56.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFF0EA5E9),
+                            const Color(0xFF0284C7),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF0284C7).withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Icon(Icons.shopping_bag_rounded, color: Colors.white, size: 28.sp),
+                    ),
                   ],
                 ),
                 DashboardCard(
@@ -699,16 +823,27 @@ class _HomeShimmerLoading extends StatelessWidget {
                   subtitle: "\$123,500",
                   icons: [
                     Container(
-                      padding: EdgeInsets.all(2),
+                      width: 56.w,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFF10B981),
+                            const Color(0xFF059669),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF059669).withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 22.r,
-                        backgroundColor: AppColors.cx78D9BF,
-                        child: const Icon(Icons.swap_horiz, color: Colors.white),
-                      ),
+                      child: Icon(Icons.trending_up_rounded, color: Colors.white, size: 28.sp),
                     ),
                   ],
                 ),
@@ -718,16 +853,27 @@ class _HomeShimmerLoading extends StatelessWidget {
                   subtitle: "\$1,500",
                   icons: [
                     Container(
-                      padding: EdgeInsets.all(2),
+                      width: 56.w,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFFFBBF24),
+                            const Color(0xFFF59E0B),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFF59E0B).withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 22.r,
-                        backgroundColor: AppColors.cxFEC700,
-                        child: const Icon(Icons.arrow_upward, color: Colors.black),
-                      ),
+                      child: Icon(Icons.trending_down_rounded, color: Colors.white, size: 28.sp),
                     ),
                   ],
                 ),
@@ -737,36 +883,57 @@ class _HomeShimmerLoading extends StatelessWidget {
                   subtitle: 'Maxsulot: 120',
                   icons: [
                     Container(
-                      padding: EdgeInsets.all(2),
+                      width: 56.w,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFF374151),
+                            const Color(0xFF1F2937),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF1F2937).withOpacity(0.5),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 22.r,
-                        backgroundColor: AppColors.cx292B2F,
-                        child: const Icon(Icons.inventory_2_outlined, color: Colors.white),
-                      ),
+                      child: Icon(Icons.warehouse_rounded, color: Colors.white, size: 28.sp),
                     ),
                   ],
                 ),
                 DashboardCard(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   title: AppLocalizations.of(context).dashboard,
                   subtitle: 'Faollik: 01.24',
                   icons: [
                     Container(
-                      padding: EdgeInsets.all(2),
+                      width: 56.w,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFF8B5CF6),
+                            const Color(0xFF7C3AED),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF7C3AED).withOpacity(0.4),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 22.r,
-                        backgroundColor: AppColors.cx02D5F5,
-                        child: const Icon(Icons.bar_chart_outlined, color: Colors.white),
-                      ),
+                      child: Icon(Icons.analytics_rounded, color: Colors.white, size: 28.sp),
                     )
                   ],
                 ),
