@@ -66,7 +66,7 @@ class _HomePageContentState extends State<_HomePageContent> {
 
   String _formatCurrency(double amount) {
     final formatter = NumberFormat('#,###', 'en_US');
-    return '\$ ${formatter.format(amount)}';
+    return '${formatter.format(amount)} \$';
   }
 
   String _getCurrentMonthYear() {
@@ -347,6 +347,45 @@ class _HomePageContentState extends State<_HomePageContent> {
           ),
         ],
       ),
+      DashboardCardType.contract: DashboardCard(
+        onTap: () {
+          context.push(AppRoutes.contracts);
+        },
+        title: AppLocalizations.of(context).contracts,
+        subtitle: AppLocalizations.of(context).contracts,
+        icons: [
+          Container(
+            width: 56.w,
+            height: 56.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFFEC4899),
+                  const Color(0xFFDB2777),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFDB2777).withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: const Color(0xFFDB2777).withOpacity(0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(Icons.document_scanner_rounded, color: Colors.white, size: 28.sp),
+          ),
+        ],
+      ),
+
     };
 
     // Filter cards based on user role
@@ -536,7 +575,7 @@ class _HomePageContentState extends State<_HomePageContent> {
                         Text(
                           isAdmin 
                             ? _formatCurrency(netProfitThisMonth)
-                            : _formatCurrency(totalContractAmount),
+                            : ' - ${_formatCurrency(totalRemaining)}',
                           style: TextStyle(
                             fontSize: 53.sp, 
                             fontWeight: FontWeight.bold,
@@ -617,10 +656,11 @@ class _HomePageContentState extends State<_HomePageContent> {
                     SizedBox(height: 39.h),
                     GridView.count(
                       shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
                       mainAxisSpacing: 20.h,
                       crossAxisSpacing: 16.w,
-                      childAspectRatio: 1.2, // adjust shape
+                      childAspectRatio: 1.2,
                       children: _buildDashboardCards(context, userRole, dashboard),
                     )
                   ],

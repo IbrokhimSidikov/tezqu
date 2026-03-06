@@ -108,6 +108,7 @@ class ContractItemModel with _$ContractItemModel {
     String? approvedByAdminLastName,
     List<String>? productImageUrls,
     bool? userAccepted,
+    String? paymentType,
   }) = _ContractItemModel;
 
   const ContractItemModel._();
@@ -187,6 +188,7 @@ class ContractItemModel with _$ContractItemModel {
       approvedByAdminLastName: approvedByAdminLastName,
       productImageUrls: productImageUrls,
       userAccepted: json['user_accepted'] as bool?,
+      paymentType: json['payment_type'] as String?,
     );
   }
 
@@ -218,6 +220,7 @@ class ContractItemModel with _$ContractItemModel {
       approvedByAdminLastName: approvedByAdminLastName,
       productImageUrls: productImageUrls,
       userAccepted: userAccepted,
+      paymentType: paymentType,
     );
   }
 
@@ -324,4 +327,8 @@ class ContractItemModel with _$ContractItemModel {
   @override
   // TODO: implement userAccepted
   bool? get userAccepted => throw UnimplementedError();
+
+  @override
+  // TODO: implement paymentType
+  String? get paymentType => throw UnimplementedError();
 }

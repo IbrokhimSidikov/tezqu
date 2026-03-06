@@ -124,8 +124,8 @@ class _ContractDetailsState extends State<ContractDetails> {
                   if (contract.collectorFirstName != null || contract.collectorLastName != null)
                     _buildDetailItem(AppLocalizations.of(context).collector, '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
                   
-                  // Boshlang'ich to'lov (Initial Payment)
-                  if (contract.initialPayment != null)
+                  // Boshlang'ich to'lov (Initial Payment) - Hide if payment_type is "cash"
+                  if (contract.initialPayment != null && contract.paymentType != 'cash')
                     _buildDetailItem(AppLocalizations.of(context).initialPayment, '${contract.initialPayment} USD'),
                   
                   // Narx (Total Price from contract)

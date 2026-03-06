@@ -51,6 +51,7 @@ class ContractItemEntity extends Equatable {
   final String? approvedByAdminLastName;
   final List<String>? productImageUrls;
   final bool? userAccepted;
+  final String? paymentType;
 
   const ContractItemEntity({
     required this.id,
@@ -79,6 +80,7 @@ class ContractItemEntity extends Equatable {
     this.approvedByAdminLastName,
     this.productImageUrls,
     this.userAccepted,
+    this.paymentType,
   });
 
   @override
@@ -109,5 +111,6 @@ class ContractItemEntity extends Equatable {
         approvedByAdminLastName,
         productImageUrls,
         userAccepted,
+        paymentType,
       ];
 }

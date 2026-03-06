@@ -65,10 +65,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthCubit>(),
-      child: Builder(
-        builder: (context) => BlocListener<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
         listener: (context, state) async {
           if (state is CodeSent) {
             setState(() {
@@ -293,8 +290,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        ),
-      ),
     );
   }
 }

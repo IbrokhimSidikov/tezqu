@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tezqu/features/auth/presentation/pages/login_otp_page.dart';
 import 'package:tezqu/features/contracts/domain/entities/contract_entity.dart';
@@ -9,6 +10,8 @@ import 'package:tezqu/features/onboard/presentation/pages/onboard.dart';
 import 'package:tezqu/features/onboard/presentation/pages/splash_page.dart';
 import 'package:tezqu/features/warehouse/presentation/pages/add_product.dart';
 
+import '../../core/di/injection.dart';
+import '../../features/auth/presentation/cubits/auth_cubit.dart';
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/collectables/presentation/pages/collectables.dart';
@@ -71,7 +74,10 @@ class AppRoutes {
       GoRoute(
         path: login,
         name: 'login',
-        builder: (context, state) => const LoginPage(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => getIt<AuthCubit>(),
+          child: const LoginPage(),
+        ),
       ),
       GoRoute(
           path: loginOtp,

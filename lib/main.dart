@@ -205,7 +205,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (!_isInitialized) {
       return BlocProvider(
         create: (context) => getIt<SplashScreenCubit>(),
-        child: const SplashPage(),
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashPage(),
+        ),
       );
     }
 
