@@ -16,11 +16,16 @@ class CollectablesLoading extends CollectablesState {}
 class CollectablesLoaded extends CollectablesState {
   final CollectablesEntity collectables;
   final List<PaymentMethodModel> paymentMethods;
+  final double? pendingCollections;
 
-  const CollectablesLoaded(this.collectables, {this.paymentMethods = const []});
+  const CollectablesLoaded(
+    this.collectables, {
+    this.paymentMethods = const [],
+    this.pendingCollections,
+  });
 
   @override
-  List<Object?> get props => [collectables, paymentMethods];
+  List<Object?> get props => [collectables, paymentMethods, pendingCollections];
 }
 
 class CollectablesError extends CollectablesState {

@@ -25,8 +25,45 @@ class CollectablesPage extends StatelessWidget {
   }
 }
 
-class _CollectablesPageContent extends StatelessWidget {
+class _CollectablesPageContent extends StatefulWidget {
   const _CollectablesPageContent();
+
+  @override
+  State<_CollectablesPageContent> createState() => _CollectablesPageContentState();
+}
+
+class _CollectablesPageContentState extends State<_CollectablesPageContent> {
+  late DateTime _selectedMonth;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _selectedMonth = DateTime(now.year, now.month);
+  }
+
+  void _previousMonth() {
+    setState(() {
+      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1);
+    });
+  }
+
+  void _nextMonth() {
+    setState(() {
+      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1);
+    });
+  }
+
+  List<CollectablePaymentEntity> _filterByMonth(List<CollectablePaymentEntity> payments) {
+    return payments.where((p) {
+      try {
+        final date = DateTime.parse(p.dueDate);
+        return date.year == _selectedMonth.year && date.month == _selectedMonth.month;
+      } catch (_) {
+        return false;
+      }
+    }).toList();
+  }
 
   String _formatCurrency(double amount) {
     if (amount == amount.toInt()) {
@@ -225,43 +262,12 @@ class _CollectablesPageContent extends StatelessWidget {
           }
 
           if (state is CollectablesLoaded) {
-            final allPayments = _getAllPendingPayments(state.collectables, null);
+            final allPayments = _filterByMonth(_getAllPendingPayments(state.collectables, null));
             final totalAmount = allPayments.fold<double>(
               0,
               (sum, payment) => sum + payment.amountRemaining,
             );
 
-            if (allPayments.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      size: 64.sp,
-                      color: AppColors.cx78D9BF,
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      l10n.noPaymentsToCollect,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.cxBlack,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      l10n.allPaymentsCollected,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
 
             return RefreshIndicator(
               onRefresh: () => context.read<CollectablesCubit>().refreshCollectables(),
@@ -290,13 +296,54 @@ class _CollectablesPageContent extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          l10n.totalToCollect,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              l10n.totalToCollect,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: _previousMonth,
+                                  child: Container(
+                                    padding: EdgeInsets.all(6.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.4),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.chevron_left, size: 20.sp, color: AppColors.cxBlack),
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  DateFormat('MMM yyyy').format(_selectedMonth),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.cxBlack,
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                GestureDetector(
+                                  onTap: _nextMonth,
+                                  child: Container(
+                                    padding: EdgeInsets.all(6.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.4),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.chevron_right, size: 20.sp, color: AppColors.cxBlack),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         SizedBox(height: 8.h),
                         Text(
@@ -315,6 +362,44 @@ class _CollectablesPageContent extends StatelessWidget {
                             color: Colors.black54,
                           ),
                         ),
+                        if (state.pendingCollections != null) ...[
+                          SizedBox(height: 12.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.account_balance_wallet,
+                                  size: 16.sp,
+                                  color: AppColors.cxBlack,
+                                ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  l10n.cashInHand,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  _formatCurrency(state.pendingCollections!),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cxBlack,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -331,34 +416,64 @@ class _CollectablesPageContent extends StatelessWidget {
                   ),
                   SizedBox(height: 12.h),
                   Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      itemCount: allPayments.length,
-                      itemBuilder: (context, index) {
-                        final payment = allPayments[index];
-                        final contract = _findContractForPayment(
-                          state.collectables,
-                          payment.contractId,
-                        );
+                    child: allPayments.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  size: 64.sp,
+                                  color: AppColors.cx78D9BF,
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  l10n.noPaymentsToCollect,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.cxBlack,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  l10n.allPaymentsCollected,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            itemCount: allPayments.length,
+                            itemBuilder: (context, index) {
+                              final payment = allPayments[index];
+                              final contract = _findContractForPayment(
+                                state.collectables,
+                                payment.contractId,
+                              );
 
-                        return _CollectableCard(
-                          paymentId: payment.id,
-                          customerName: contract?.user?.fullName ?? 'Unknown Customer',
-                          amount: payment.amountRemaining,
-                          dueDate: payment.dueDate,
-                          contractId: payment.contractId,
-                          status: payment.status,
-                          daysOverdue: payment.daysOverdue,
-                          paymentNumber: payment.paymentNumber,
-                          productName: contract?.product?.name,
-                          formatCurrency: _formatCurrency,
-                          formatDate: _formatDate,
-                          getStatusColor: _getStatusColor,
-                          getStatusText: (status, daysOverdue, context) => _getStatusText(status, daysOverdue, context),
-                          paymentMethods: state.paymentMethods,
-                        );
-                      },
-                    ),
+                              return _CollectableCard(
+                                paymentId: payment.id,
+                                customerName: contract?.user?.fullName ?? 'Unknown Customer',
+                                amount: payment.amountRemaining,
+                                dueDate: payment.dueDate,
+                                contractId: payment.contractId,
+                                status: payment.status,
+                                daysOverdue: payment.daysOverdue,
+                                paymentNumber: payment.paymentNumber,
+                                productName: contract?.product?.name,
+                                formatCurrency: _formatCurrency,
+                                formatDate: _formatDate,
+                                getStatusColor: _getStatusColor,
+                                getStatusText: (status, daysOverdue, context) => _getStatusText(status, daysOverdue, context),
+                                paymentMethods: state.paymentMethods,
+                              );
+                            },
+                          ),
                   ),
                 ],
               ),
@@ -443,7 +558,9 @@ class _CollectableCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      'Payment #$paymentNumber${productName != null ? ' - $productName' : ''}',
+                      paymentNumber == -1 
+                        ? '${l10n.initialPayment}${productName != null ? ' - $productName' : ''}'
+                        : 'Payment #$paymentNumber${productName != null ? ' - $productName' : ''}',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.grey.shade600,

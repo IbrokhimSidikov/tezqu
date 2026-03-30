@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/usecase/use_case.dart';
+import '../../../auth/domain/repositories/auth_repository.dart';
 import '../../../expense/domain/repositories/expense_repository.dart';
 import '../../domain/usecases/get_collectables.dart';
+import '../../domain/usecases/get_user_balance.dart';
 import '../../domain/usecases/record_payment.dart';
 import 'collectables_state.dart';
 
@@ -11,11 +13,15 @@ class CollectablesCubit extends Cubit<CollectablesState> {
   final GetCollectables getCollectables;
   final RecordPayment recordPaymentUseCase;
   final ExpenseRepository expenseRepository;
+  final GetUserBalance getUserBalance;
+  final AuthRepository authRepository;
 
   CollectablesCubit(
     this.getCollectables,
     this.recordPaymentUseCase,
     this.expenseRepository,
+    this.getUserBalance,
+    this.authRepository,
   ) : super(CollectablesInitial());
 
   Future<void> loadCollectables() async {
@@ -24,10 +30,25 @@ class CollectablesCubit extends Cubit<CollectablesState> {
     try {
       final result = await getCollectables(NoParams());
       final paymentMethods = await expenseRepository.getPaymentMethods();
+      
+      final currentUser = await authRepository.getCurrentUser();
+      double? pendingCollections;
+      
+      if (currentUser?.id != null) {
+        final balanceResult = await getUserBalance(currentUser!.id!);
+        balanceResult.fold(
+          (failure) => null,
+          (balance) => pendingCollections = balance.pendingCollections,
+        );
+      }
 
       result.fold(
         (failure) => emit(CollectablesError(failure.message)),
-        (collectables) => emit(CollectablesLoaded(collectables, paymentMethods: paymentMethods)),
+        (collectables) => emit(CollectablesLoaded(
+          collectables,
+          paymentMethods: paymentMethods,
+          pendingCollections: pendingCollections,
+        )),
       );
     } catch (e) {
       emit(CollectablesError(e.toString()));

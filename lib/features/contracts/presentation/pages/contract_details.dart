@@ -90,7 +90,9 @@ class _ContractDetailsState extends State<ContractDetails> {
                   
                   // Contract Name and Number
                   Text(
-                    contract.productName ?? contract.vehicleName,
+                    contract.productYear != null && contract.productYear!.isNotEmpty
+                        ? '${contract.productName ?? contract.vehicleName} (${contract.productYear})'
+                        : contract.productName ?? contract.vehicleName,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w700,
@@ -119,26 +121,34 @@ class _ContractDetailsState extends State<ContractDetails> {
                     ),
                   ),
                   SizedBox(height: 12.h),
+                  // Mijoz/Sotuvchi (Customer/Seller based on contract direction)
+                  if (contract.userFirstName != null || contract.userLastName != null)
+                    _buildDetailItem(
+                      contract.contractDirection == 'purchase' 
+                        ? AppLocalizations.of(context).seller 
+                        : AppLocalizations.of(context).customer, 
+                      '${contract.userFirstName ?? ''} ${contract.userLastName ?? ''}'.trim(),
+                    ),
+                  
+                  // Xaridor (Buyer) - Only show for purchase contracts
+                  if (contract.contractDirection == 'purchase')
+                    _buildDetailItem(AppLocalizations.of(context).buyer, 'TEZQU'),
                   
                   // Sotuvchi (Seller/Collector)
                   if (contract.collectorFirstName != null || contract.collectorLastName != null)
                     _buildDetailItem(AppLocalizations.of(context).collector, '${contract.collectorFirstName ?? ''} ${contract.collectorLastName ?? ''}'.trim()),
                   
-                  // Boshlang'ich to'lov (Initial Payment) - Hide if payment_type is "cash"
-                  if (contract.initialPayment != null && contract.paymentType != 'cash')
-                    _buildDetailItem(AppLocalizations.of(context).initialPayment, '${contract.initialPayment} USD'),
-                  
                   // Narx (Total Price from contract)
                   if (contract.totalPrice != null)
-                    _buildDetailItem(AppLocalizations.of(context).price, '${contract.totalPrice} USD'),
-                  
-                  // Mijoz (Customer/User)
-                  if (contract.userFirstName != null || contract.userLastName != null)
-                    _buildDetailItem(AppLocalizations.of(context).customer, '${contract.userFirstName ?? ''} ${contract.userLastName ?? ''}'.trim()),
+                    _buildDetailItem(AppLocalizations.of(context).price, '${double.parse(contract.totalPrice!).toStringAsFixed(0)} USD'),
+                  // Boshlang'ich to'lov (Initial Payment) - Hide if payment_type is "cash"
+                  if (contract.initialPayment != null && contract.paymentType != 'cash')
+                    _buildDetailItem(AppLocalizations.of(context).initialPayment, '${double.parse(contract.initialPayment!).toStringAsFixed(0)} USD'),
+
                   
                   // Tasdiqlagan admin (Approved by admin)
-                  if (contract.approvedByAdminFirstName != null || contract.approvedByAdminLastName != null)
-                    _buildDetailItem(AppLocalizations.of(context).approvedBy, '${contract.approvedByAdminFirstName ?? ''} ${contract.approvedByAdminLastName ?? ''}'.trim()),
+                  // if (contract.approvedByAdminFirstName != null || contract.approvedByAdminLastName != null)
+                  //   _buildDetailItem(AppLocalizations.of(context).approvedBy, '${contract.approvedByAdminFirstName ?? ''} ${contract.approvedByAdminLastName ?? ''}'.trim()),
                   
                   SizedBox(height: 24.h),
                   

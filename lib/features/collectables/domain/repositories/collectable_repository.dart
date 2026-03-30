@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
+import '../entities/balance_entity.dart';
 import '../entities/collectable_entity.dart';
 
 abstract class CollectableRepository {
@@ -11,4 +12,5 @@ abstract class CollectableRepository {
     required String paymentMethodId,
     required String paymentDate,
   });
+  Future<Either<Failure, UserBalanceEntity>> getUserBalanceDetails(String userId);
 }

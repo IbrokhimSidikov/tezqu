@@ -34,6 +34,8 @@ class AppLocalizations {
       'mainContractTerms': 'Main contract terms',
       'initialPayment': 'Initial payment',
       'customer': 'Customer',
+      'seller': 'Seller',
+      'buyer': 'Buyer',
       'approvedBy': 'Approved by',
       'agreement': 'Agreement',
       'monthly': 'Monthly',
@@ -306,6 +308,7 @@ class AppLocalizations {
       'confirmPayment':'Confirm Payment',
       'paymentRecordedSuccessfully':'Payment recorded successfully',
       'failedToRecordPayment':'Failed to record payment',
+      'cashInHand':'Cash in Hand',
 
       'carCondition': 'Car Condition',
       'transmissionType': 'Transmission Type',
@@ -336,6 +339,8 @@ class AppLocalizations {
       'mainContractTerms': 'Shartnoma asosiy shartlari',
       'initialPayment': 'Boshlang‘ich to‘lov',
       'customer': 'Mijoz',
+      'seller': 'Sotuvchi',
+      'buyer': 'Xaridor',
       'approvedBy': 'Tasdiqlangan',
       'agreement': 'Kelishuv',
       'monthly': 'Oyiga',
@@ -603,6 +608,7 @@ class AppLocalizations {
       'confirmPayment':'To\'lovni tasdiqlash',
       'paymentRecordedSuccessfully':'To\'lov muvaffaqiyatli qayd etildi',
       'failedToRecordPayment':'To\'lovni qayd etib bo\'lmadi',
+      'cashInHand':'Qo\'lda naqd pul',
 
 
       'carCondition': 'Avtomobil holati',
@@ -633,6 +639,8 @@ class AppLocalizations {
       "mainContractTerms": "Основные условия договора",
       "initialPayment": "Первоначальный взнос",
       "customer": "Клиент",
+      "seller": "Продавец",
+      "buyer": "Покупатель",
       "approvedBy": "Утверждено",
       "agreement": "Соглашение",
       "monthly": "Ежемесячно",
@@ -900,6 +908,7 @@ class AppLocalizations {
       'confirmPayment':'Подтвердить платеж',
       'paymentRecordedSuccessfully':'Платеж успешно записан',
       'failedToRecordPayment':'Не удалось записать платеж',
+      'cashInHand':'Наличные в руках',
 
       'carCondition': 'Состояние автомобиля',
       'transmissionType': 'Тип коробки передач',
@@ -1077,6 +1086,8 @@ class AppLocalizations {
   // Additional getters
   String get collector => translate('collector');
   String get customer => translate('customer');
+  String get seller => translate('seller');
+  String get buyer => translate('buyer');
   String get investor => translate('investor');
   String get error => translate('error');
   String get retry => translate('retry');
@@ -1188,6 +1199,7 @@ class AppLocalizations {
   String get confirmPayment => translate('confirmPayment');
   String get paymentRecordedSuccessfully => translate('paymentRecordedSuccessfully');
   String get failedToRecordPayment => translate('failedToRecordPayment');
+  String get cashInHand => translate('cashInHand');
   String get carCondition => translate('carCondition');
   String get transmissionType => translate('transmissionType');
   String get contactMethod => translate('contactMethod');

@@ -32,9 +32,11 @@ class ContractItemEntity extends Equatable {
   final String? status;
   final String? vehicleImage;
   final String? contractType;
+  final String? contractDirection;
   final String? totalServiceFee;
   final String? serviceContractPdf;
   final String? productName;
+  final String? productYear;
   final String? collectorFirstName;
   final String? collectorLastName;
   final String? totalPrice;
@@ -61,9 +63,11 @@ class ContractItemEntity extends Equatable {
     this.status,
     this.vehicleImage,
     this.contractType,
+    this.contractDirection,
     this.totalServiceFee,
     this.serviceContractPdf,
     this.productName,
+    this.productYear,
     this.collectorFirstName,
     this.collectorLastName,
     this.totalPrice,
@@ -92,9 +96,11 @@ class ContractItemEntity extends Equatable {
         status,
         vehicleImage,
         contractType,
+        contractDirection,
         totalServiceFee,
         serviceContractPdf,
         productName,
+        productYear,
         collectorFirstName,
         collectorLastName,
         totalPrice,

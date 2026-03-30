@@ -39,6 +39,8 @@ import '../../features/collectables/domain/repositories/collectable_repository.d
     as _i59;
 import '../../features/collectables/domain/usecases/get_collectables.dart'
     as _i313;
+import '../../features/collectables/domain/usecases/get_user_balance.dart'
+    as _i751;
 import '../../features/collectables/domain/usecases/record_payment.dart'
     as _i252;
 import '../../features/collectables/presentation/cubit/collectables_cubit.dart'
@@ -319,6 +321,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i252.RecordPayment>(
       () => _i252.RecordPayment(gh<_i59.CollectableRepository>()),
     );
+    gh.lazySingleton<_i751.GetUserBalance>(
+      () => _i751.GetUserBalance(gh<_i59.CollectableRepository>()),
+    );
     gh.lazySingleton<_i432.AcceptContract>(
       () => _i432.AcceptContract(gh<_i841.ContractRepository>()),
     );
@@ -331,6 +336,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i989.DashboardCubit>(
       () => _i989.DashboardCubit(gh<_i814.GetDashboardUseCase>()),
     );
+    gh.factory<_i896.CollectablesCubit>(
+      () => _i896.CollectablesCubit(
+        gh<_i313.GetCollectables>(),
+        gh<_i252.RecordPayment>(),
+        gh<_i31.ExpenseRepository>(),
+        gh<_i751.GetUserBalance>(),
+        gh<_i787.AuthRepository>(),
+      ),
+    );
     gh.factory<_i521.AuthCubit>(
       () => _i521.AuthCubit(
         loginUseCase: gh<_i188.LoginUseCase>(),
@@ -340,13 +354,6 @@ extension GetItInjectableX on _i174.GetIt {
         sendLoginCodeUseCase: gh<_i1008.SendLoginCodeUseCase>(),
         logoutUseCase: gh<_i48.LogoutUseCase>(),
         updateFcmTokenUseCase: gh<_i53.UpdateFcmTokenUseCase>(),
-      ),
-    );
-    gh.factory<_i896.CollectablesCubit>(
-      () => _i896.CollectablesCubit(
-        gh<_i313.GetCollectables>(),
-        gh<_i252.RecordPayment>(),
-        gh<_i31.ExpenseRepository>(),
       ),
     );
     gh.factory<_i1055.ContractCubit>(

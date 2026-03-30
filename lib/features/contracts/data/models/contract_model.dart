@@ -89,9 +89,11 @@ class ContractItemModel with _$ContractItemModel {
     String? status,
     String? vehicleImage,
     String? contractType,
+    String? contractDirection,
     String? totalServiceFee,
     String? serviceContractPdf,
     String? productName,
+    String? productYear,
     String? collectorFirstName,
     String? collectorLastName,
     String? totalPrice,
@@ -121,13 +123,23 @@ class ContractItemModel with _$ContractItemModel {
       return '';
     }
 
-    // Extract product name, price, and image URLs from nested product object
+    // Extract product name, price, year, and image URLs from nested product object
     String? productName;
     String? productPrice;
+    String? productYear;
     List<String>? productImageUrls;
     if (json['product'] != null && json['product'] is Map) {
       productName = json['product']['name'] as String?;
       productPrice = json['product']['price'] as String?;
+      
+      // Extract year from custom_fields
+      final customFields = json['product']['custom_fields'] as Map<String, dynamic>?;
+      if (customFields != null) {
+        productYear = customFields['Yili']?.toString() ?? 
+                     customFields['Yil']?.toString() ?? 
+                     customFields['year']?.toString() ?? 
+                     customFields['yili']?.toString();
+      }
       
       // Extract image_urls array
       if (json['product']['image_urls'] != null && json['product']['image_urls'] is List) {
@@ -169,9 +181,11 @@ class ContractItemModel with _$ContractItemModel {
       status: json['status'] as String?,
       vehicleImage: json['vehicle_image'] as String? ?? json['vehicleImage'] as String?,
       contractType: json['contract_type'] as String?,
+      contractDirection: json['contract_direction'] as String?,
       totalServiceFee: json['total_service_fee'] as String?,
       serviceContractPdf: json['service_contract_pdf'] as String?,
       productName: productName,
+      productYear: productYear,
       collectorFirstName: collectorFirstName,
       collectorLastName: collectorLastName,
       totalPrice: json['total_price'] as String?,
@@ -201,9 +215,11 @@ class ContractItemModel with _$ContractItemModel {
       status: status,
       vehicleImage: vehicleImage,
       contractType: contractType,
+      contractDirection: contractDirection,
       totalServiceFee: totalServiceFee,
       serviceContractPdf: serviceContractPdf,
       productName: productName,
+      productYear: productYear,
       collectorFirstName: collectorFirstName,
       collectorLastName: collectorLastName,
       totalPrice: totalPrice,
@@ -253,6 +269,10 @@ class ContractItemModel with _$ContractItemModel {
   String? get contractType => throw UnimplementedError();
 
   @override
+  // TODO: implement contractDirection
+  String? get contractDirection => throw UnimplementedError();
+
+  @override
   // TODO: implement totalServiceFee
   String? get totalServiceFee => throw UnimplementedError();
 
@@ -263,6 +283,10 @@ class ContractItemModel with _$ContractItemModel {
   @override
   // TODO: implement productName
   String? get productName => throw UnimplementedError();
+
+  @override
+  // TODO: implement productYear
+  String? get productYear => throw UnimplementedError();
 
   @override
   // TODO: implement collectorFirstName

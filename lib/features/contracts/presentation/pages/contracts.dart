@@ -80,7 +80,7 @@ class _ContractsViewState extends State<ContractsView> {
         _seenContractIds = updatedSeenIds;
       });
       
-      print('✅ Marked ${newContractsCount} new contracts as seen');
+      // print('✅ Marked ${newContractsCount} new contracts as seen');
     } catch (e) {
       print('Error marking contracts as seen: $e');
     }

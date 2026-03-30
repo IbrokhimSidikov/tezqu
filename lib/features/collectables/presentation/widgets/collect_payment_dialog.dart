@@ -29,8 +29,11 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
   void initState() {
     super.initState();
     _amountController.text = _formatAmount(widget.amount);
-    if (widget.paymentMethods.isNotEmpty) {
-      _selectedPaymentMethodId = widget.paymentMethods.first.id;
+    final cashMethod = widget.paymentMethods
+        .where((method) => method.name.toUpperCase() == 'NAQD')
+        .firstOrNull;
+    if (cashMethod != null) {
+      _selectedPaymentMethodId = cashMethod.id;
     }
   }
 
@@ -185,7 +188,9 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 ),
                 hint: Text(l10n.selectPaymentMethod),
-                items: widget.paymentMethods.map((method) {
+                items: widget.paymentMethods
+                    .where((method) => method.name.toUpperCase() == 'NAQD')
+                    .map((method) {
                   return DropdownMenuItem<String>(
                     value: method.id,
                     child: Text(method.name),
@@ -206,42 +211,42 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
               SizedBox(height: 20.h),
 
               // Payment Date
-              Text(
-                l10n.paymentDate,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.cxBlack,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              InkWell(
-                onTap: () => _selectDate(context),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _formatDate(_selectedDate),
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.cxBlack,
-                        ),
-                      ),
-                      Icon(
-                        Icons.calendar_today,
-                        size: 20.sp,
-                        color: AppColors.cx78D9BF,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Text(
+              //   l10n.paymentDate,
+              //   style: TextStyle(
+              //     fontSize: 14.sp,
+              //     fontWeight: FontWeight.w500,
+              //     color: AppColors.cxBlack,
+              //   ),
+              // ),
+              // SizedBox(height: 8.h),
+              // InkWell(
+              //   onTap: () => _selectDate(context),
+              //   child: Container(
+              //     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.grey.shade300),
+              //       borderRadius: BorderRadius.circular(8.r),
+              //     ),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Text(
+              //           _formatDate(_selectedDate),
+              //           style: TextStyle(
+              //             fontSize: 14.sp,
+              //             color: AppColors.cxBlack,
+              //           ),
+              //         ),
+              //         Icon(
+              //           Icons.calendar_today,
+              //           size: 20.sp,
+              //           color: AppColors.cx78D9BF,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 32.h),
 
               // Buttons

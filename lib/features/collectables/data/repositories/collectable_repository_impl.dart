@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
+import '../../domain/entities/balance_entity.dart';
 import '../../domain/entities/collectable_entity.dart';
 import '../../domain/repositories/collectable_repository.dart';
 import '../datasources/collectable_remote_data_source.dart';
@@ -82,6 +83,20 @@ class CollectableRepositoryImpl implements CollectableRepository {
     } on DioException catch (e) {
       return Left(ServerFailure(
         e.response?.data['message'] ?? 'Failed to record payment',
+      ));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserBalanceEntity>> getUserBalanceDetails(String userId) async {
+    try {
+      final result = await remoteDataSource.getUserBalanceDetails(userId);
+      return Right(result.toEntity());
+    } on DioException catch (e) {
+      return Left(ServerFailure(
+        e.response?.data['message'] ?? 'Failed to fetch balance details',
       ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));

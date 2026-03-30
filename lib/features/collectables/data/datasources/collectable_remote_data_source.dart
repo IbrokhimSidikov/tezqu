@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import '../../../../core/network/dio_client.dart';
+import '../models/balance_model.dart';
 import '../models/collectable_model.dart';
 
 abstract class CollectableRemoteDataSource {
@@ -11,6 +12,7 @@ abstract class CollectableRemoteDataSource {
     required String paymentMethodId,
     required String paymentDate,
   });
+  Future<UserBalanceModel> getUserBalanceDetails(String userId);
 }
 
 @LazySingleton(as: CollectableRemoteDataSource)
@@ -53,6 +55,16 @@ class CollectableRemoteDataSourceImpl implements CollectableRemoteDataSource {
         'payment_method_id': paymentMethodId,
         'payment_date': paymentDate,
       });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserBalanceModel> getUserBalanceDetails(String userId) async {
+    try {
+      final response = await dioClient.get('/users/$userId/balance-details');
+      return UserBalanceModel.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

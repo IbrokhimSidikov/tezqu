@@ -575,7 +575,9 @@ class _HomePageContentState extends State<_HomePageContent> {
                         Text(
                           isAdmin 
                             ? _formatCurrency(netProfitThisMonth)
-                            : ' - ${_formatCurrency(totalRemaining)}',
+                            : totalRemaining == 0 
+                              ? _formatCurrency(totalRemaining)
+                              : ' - ${_formatCurrency(totalRemaining)}',
                           style: TextStyle(
                             fontSize: 53.sp, 
                             fontWeight: FontWeight.bold,
