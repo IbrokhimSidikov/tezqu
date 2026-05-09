@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/dio_client.dart';
 import '../cubit/add_product_cubit.dart';
@@ -151,9 +152,8 @@ class _AddProductState extends State<AddProduct> {
     // Calculate remaining slots
     final remainingSlots = _maxImages - _selectedImages.length;
     if (remainingSlots <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Maksimal $_maxImages ta rasm qo\'shish mumkin')),
-      );
+      showAppSnackBar(context, 'Maksimal $_maxImages ta rasm qo\'shish mumkin',
+          type: SnackBarType.info);
       return;
     }
     
@@ -162,11 +162,8 @@ class _AddProductState extends State<AddProduct> {
     if (images.isNotEmpty) {
       // Check if adding these would exceed the limit
       if (_selectedImages.length + images.length > _maxImages) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Faqat $remainingSlots ta rasm qo\'shishingiz mumkin'),
-          ),
-        );
+        showAppSnackBar(context, 'Faqat $remainingSlots ta rasm qo\'shishingiz mumkin',
+            type: SnackBarType.info);
         // Take only what fits
         setState(() {
           _selectedImages.addAll(images.take(remainingSlots));
@@ -188,17 +185,15 @@ class _AddProductState extends State<AddProduct> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       if (_selectedCategory == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Iltimos, kategoriyani tanlang')),
-        );
+        showAppSnackBar(context, 'Iltimos, kategoriyani tanlang',
+            type: SnackBarType.info);
         return;
       }
 
       final price = double.tryParse(_priceController.text);
       if (price == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Iltimos, to\'g\'ri narx kiriting')),
-        );
+        showAppSnackBar(context, 'Iltimos, to\'g\'ri narx kiriting',
+            type: SnackBarType.info);
         return;
       }
 
@@ -232,9 +227,8 @@ class _AddProductState extends State<AddProduct> {
           setState(() {
             _isUploadingImages = false;
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Rasmlarni yuklashda xatolik: ${e.toString()}')),
-          );
+          showAppSnackBar(context, 'Rasmlarni yuklashda xatolik: ${e.toString()}',
+              type: SnackBarType.error);
           return;
         }
         
@@ -260,20 +254,10 @@ class _AddProductState extends State<AddProduct> {
     return BlocListener<AddProductCubit, AddProductState>(
       listener: (context, state) {
         if (state is AddProductSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          showAppSnackBar(context, state.message, type: SnackBarType.success);
           Navigator.pop(context, true); // Return true to indicate success
         } else if (state is AddProductError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, state.message, type: SnackBarType.error);
         }
       },
       child: Scaffold(

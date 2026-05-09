@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -174,15 +175,15 @@ class PaymentsView extends StatelessWidget {
             )
           else
             SizedBox(
-              height: 160.h,
+              height: 240.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: payments.nextPayments.length > 3 ? 3 : payments.nextPayments.length,
                 itemBuilder: (context, index) {
                   final payment = payments.nextPayments[index];
                   return Container(
-                    width: 300.w,
-                    margin: EdgeInsets.only(right: 12.w),
+                    width: 280.w,
+                    margin: EdgeInsets.only(right: 16.w),
                     child: _buildNextPaymentCard(
                       context,
                       payment,
@@ -237,7 +238,15 @@ class PaymentsView extends StatelessWidget {
   }
 
   Widget _buildPaymentItem(BuildContext context, PaymentEntity payment, {required bool isPaid, PaymentsEntity? allPayments}) {
-    // Determine icon based on product category
+    // Get contract product info
+    final contractProduct = payment.contract?.product;
+    final productName = contractProduct?.name ?? payment.productName;
+    final customFields = contractProduct?.customFields ?? {};
+    
+    // Get product image URL
+    final imageUrl = payment.productImage;
+    
+    // Determine icon based on product category as fallback
     IconData icon = Icons.shopping_bag;
     if (payment.productCategory != null) {
       final category = payment.productCategory!.toLowerCase();
@@ -252,11 +261,6 @@ class PaymentsView extends StatelessWidget {
       }
     }
 
-    // Get contract product info
-    final contractProduct = payment.contract?.product;
-    final productName = contractProduct?.name ?? payment.productName;
-    final customFields = contractProduct?.customFields ?? {};
-
     return InkWell(
       onTap: () {
         context.pushNamed(
@@ -268,28 +272,68 @@ class PaymentsView extends StatelessWidget {
           },
         );
       },
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(16.r),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+        padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: Colors.grey.shade200),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isPaid 
+              ? [Colors.white, AppColors.cx43C19F.withOpacity(0.05)]
+              : [Colors.white, Colors.white],
+          ),
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(
+            color: isPaid ? AppColors.cx43C19F.withOpacity(0.3) : Colors.grey.shade200,
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isPaid 
+                ? AppColors.cx43C19F.withOpacity(0.1)
+                : Colors.black.withOpacity(0.03),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [
+            // Product Image or Icon
             Container(
-              width: 45.w,
-              height: 45.h,
+              width: 60.w,
+              height: 60.h,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
                 color: Colors.grey.shade100,
-                shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                color: Colors.grey.shade700,
-                size: 20.sp,
-              ),
+              child: imageUrl != null && imageUrl.isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColors.cx43C19F,
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        icon,
+                        color: Colors.grey.shade600,
+                        size: 28.sp,
+                      ),
+                    ),
+                  )
+                : Icon(
+                    icon,
+                    color: Colors.grey.shade600,
+                    size: 28.sp,
+                  ),
             ),
             SizedBox(width: 12.w),
             Expanded(
@@ -343,33 +387,54 @@ class PaymentsView extends StatelessWidget {
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: isPaid 
+                        ? [AppColors.cx43C19F, AppColors.cx43C19F.withOpacity(0.8)]
+                        : [AppColors.cxFEC700, AppColors.cxFEC700.withOpacity(0.8)],
+                    ),
+                    borderRadius: BorderRadius.circular(20.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (isPaid ? AppColors.cx43C19F : AppColors.cxFEC700).withOpacity(0.3),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isPaid ? Icons.check_circle : Icons.schedule,
+                        color: Colors.white,
+                        size: 14.sp,
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        isPaid ? AppLocalizations.of(context).paid : 'Pending',
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8.h),
                 Text(
                   '\$${payment.amount.toStringAsFixed(0)}',
                   style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
                     color: AppColors.cxBlack,
                   ),
                 ),
-                if (isPaid) ...[
-                  SizedBox(height: 2.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Text(
-                      'to\'landi',
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ],
@@ -381,6 +446,22 @@ class PaymentsView extends StatelessWidget {
   Widget _buildNextPaymentCard(BuildContext context, PaymentEntity payment, {PaymentsEntity? allPayments}) {
     final contractProduct = payment.contract?.product;
     final productName = contractProduct?.name ?? payment.productName;
+    final imageUrl = payment.productImage;
+    
+    // Determine icon based on product category as fallback
+    IconData icon = Icons.shopping_bag;
+    if (payment.productCategory != null) {
+      final category = payment.productCategory!.toLowerCase();
+      if (category.contains('car') || category.contains('auto')) {
+        icon = Icons.directions_car;
+      } else if (category.contains('phone') || category.contains('mobile')) {
+        icon = Icons.phone_iphone;
+      } else if (category.contains('laptop') || category.contains('computer')) {
+        icon = Icons.laptop;
+      } else if (category.contains('home') || category.contains('house')) {
+        icon = Icons.home;
+      }
+    }
 
     return InkWell(
       onTap: () {
@@ -393,99 +474,264 @@ class PaymentsView extends StatelessWidget {
           },
         );
       },
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(20.r),
       child: Container(
-        padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.shade200),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.cxFEC700.withOpacity(0.1),
+              Colors.white,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(
+            color: AppColors.cxFEC700.withOpacity(0.3),
+            width: 2,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
-              offset: Offset(0, 2),
+              color: AppColors.cxFEC700.withOpacity(0.15),
+              blurRadius: 12,
+              offset: Offset(0, 4),
             ),
           ],
         ),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 80.w),
-                  child: Text(
+            // Product Image Section
+            Container(
+              height: 100.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18.r),
+                  topRight: Radius.circular(18.r),
+                ),
+                color: Colors.grey.shade100,
+              ),
+              child: Stack(
+                children: [
+                  // Product Image
+                  if (imageUrl != null && imageUrl.isNotEmpty)
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.r),
+                        topRight: Radius.circular(18.r),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        width: double.infinity,
+                        height: 100.h,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.cxFEC700,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Center(
+                          child: Icon(
+                            icon,
+                            color: Colors.grey.shade400,
+                            size: 40.sp,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    Center(
+                      child: Icon(
+                        icon,
+                        color: Colors.grey.shade400,
+                        size: 40.sp,
+                      ),
+                    ),
+                  // Status Badge
+                  Positioned(
+                    top: 8.h,
+                    right: 8.w,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.cxFEC700,
+                        borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.cxFEC700.withOpacity(0.4),
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.schedule,
+                            color: Colors.white,
+                            size: 12.sp,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'Pending',
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Details Section
+            Padding(
+              padding: EdgeInsets.all(12.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     productName,
                     style: TextStyle(
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: AppColors.cxBlack,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'To\'lov sanasi',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColors.cxAFB1B1,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  payment.dueDate,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.cxBlack,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Summa',
-                      style: TextStyle(
-                        fontSize: 12.sp,
+                  SizedBox(height: 8.h),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today,
+                        size: 14.sp,
                         color: AppColors.cxAFB1B1,
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                    Text(
-                      '\$${payment.amount.toStringAsFixed(0)}',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.cxBlack,
+                      SizedBox(width: 4.w),
+                      Text(
+                        payment.dueDate,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.cxAFB1B1,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: AppColors.cxFEC700.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                child: Text(
-                  'Kutilmoqda',
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.cxFEC700,
+                    ],
                   ),
-                ),
+                  SizedBox(height: 8.h),
+                  // Check if payment is partial
+                  if (payment.status.toLowerCase() == 'partial') ...[
+                    // Show paid and remaining amounts for partial payments
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.cx43C19F.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).paidAmount,
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: AppColors.cx43C19F,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '\$${payment.amountPaid.toStringAsFixed(0)}',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.cx43C19F,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.cxFEC700.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(
+                          color: AppColors.cxFEC700.withOpacity(0.4),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.warning_amber_rounded,
+                                size: 14.sp,
+                                color: AppColors.cxFEC700,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                'Left to Pay',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: AppColors.cxFEC700,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            '\$${payment.amountRemaining.toStringAsFixed(0)}',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.cxFEC700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ] else
+                    // Show total amount for non-partial payments
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.cxFEC700.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Amount',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: AppColors.cxAFB1B1,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '\$${payment.amount.toStringAsFixed(0)}',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.cxBlack,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ),
           ],

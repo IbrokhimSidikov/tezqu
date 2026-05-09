@@ -13,6 +13,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'core/di/di.dart';
 import 'core/events/auth_event_bus.dart';
+import 'core/utils/snackbar_helper.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/services/firebase_messaging_service.dart';
 import 'core/services/version_service.dart';
@@ -120,13 +121,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       final context = AppRoutes.navigatorKey.currentContext;
       if (context != null && mounted) {
         AppRoutes.router.go(AppRoutes.login);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sessiya tugadi. Iltimos, qaytadan kiring.'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
+        showAppSnackBar(context, 'Sessiya tugadi. Iltimos, qaytadan kiring.',
+            type: SnackBarType.error);
       }
     });
   }

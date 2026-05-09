@@ -20,8 +20,11 @@ class PaymentEntity extends Equatable {
   final String productName;
   final String dueDate;
   final double amount;
+  final double amountPaid;
+  final double amountRemaining;
   final String status;
   final int contractId;
+  final int paymentNumber;
   final String? productImage;
   final String? productCategory;
   final ContractEntity? contract;
@@ -31,8 +34,11 @@ class PaymentEntity extends Equatable {
     required this.productName,
     required this.dueDate,
     required this.amount,
+    required this.amountPaid,
+    required this.amountRemaining,
     required this.status,
     required this.contractId,
+    required this.paymentNumber,
     this.productImage,
     this.productCategory,
     this.contract,
@@ -44,8 +50,11 @@ class PaymentEntity extends Equatable {
         productName,
         dueDate,
         amount,
+        amountPaid,
+        amountRemaining,
         status,
         contractId,
+        paymentNumber,
         productImage,
         productCategory,
         contract,

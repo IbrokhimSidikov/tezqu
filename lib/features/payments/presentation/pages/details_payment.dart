@@ -27,11 +27,19 @@ class DetailsPayment extends StatefulWidget {
 class _DetailsPaymentState extends State<DetailsPayment> {
   ProductModel? _productDetails;
   bool _isLoadingProduct = false;
+  int _currentImageIndex = 0;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
     super.initState();
     _fetchProductDetails();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchProductDetails() async {
@@ -263,9 +271,9 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     );
   }
 
-  Widget _buildTimelineItem(String date, String amount, bool isPaid, bool isFirst, bool showBottomLine) {
+  Widget _buildTimelineItem(String date, String amount, bool isPaid, bool isFirst, bool showBottomLine, {String? paymentLabel, bool isPartial = false, String? paidAmount, String? remainingAmount}) {
     return Container(
-      height: 60.h,
+      height: isPartial ? 80.h : 60.h,
       child: Row(
         children: [
           Column(
@@ -285,10 +293,10 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                 width: 26.w,
                 height: 26.h,
                 decoration: BoxDecoration(
-                  color: isPaid ? AppColors.cx43C19F : Colors.grey.shade300,
+                  color: isPaid ? AppColors.cx43C19F : (isPartial ? AppColors.cxFEC700 : Colors.grey.shade300),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isPaid ? AppColors.cx43C19F : Colors.grey.shade400,
+                    color: isPaid ? AppColors.cx43C19F : (isPartial ? AppColors.cxFEC700 : Colors.grey.shade400),
                     width: 2,
                   ),
                 ),
@@ -298,7 +306,13 @@ class _DetailsPaymentState extends State<DetailsPayment> {
                         color: Colors.white,
                         size: 10.sp,
                       )
-                    : null,
+                    : (isPartial 
+                        ? Icon(
+                            Icons.more_horiz,
+                            color: Colors.white,
+                            size: 10.sp,
+                          )
+                        : null),
               ),
               if (showBottomLine)
                 Expanded(
@@ -315,25 +329,91 @@ class _DetailsPaymentState extends State<DetailsPayment> {
           ),
           SizedBox(width: 16.w),
           Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  date,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isPaid ? AppColors.cxBlack : AppColors.cxB0B0B0,
+                if (paymentLabel != null) ...[
+                  Text(
+                    paymentLabel,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isPaid ? AppColors.cx78D9BF : (isPartial ? AppColors.cxFEC700 : AppColors.cxB0B0B0),
+                    ),
                   ),
+                  SizedBox(height: 2.h),
+                ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      date,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                        color: isPaid || isPartial ? AppColors.cxBlack : AppColors.cxB0B0B0,
+                      ),
+                    ),
+                    if (!isPartial)
+                      Text(
+                        amount,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isPaid ? AppColors.cxBlack : AppColors.cxB0B0B0,
+                        ),
+                      ),
+                  ],
                 ),
-                Text(
-                  amount,
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: isPaid ? AppColors.cxBlack : AppColors.cxB0B0B0,
+                if (isPartial && paidAmount != null && remainingAmount != null) ...[
+                  SizedBox(height: 4.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context).paidAmount}: ',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.cx43C19F,
+                            ),
+                          ),
+                          Text(
+                            paidAmount,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.cx43C19F,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context).remainingPayments}: ',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.cxB0B0B0,
+                            ),
+                          ),
+                          Text(
+                            remainingAmount,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.cxB0B0B0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -373,19 +453,36 @@ class _DetailsPaymentState extends State<DetailsPayment> {
 
     final List<Widget> timelineWidgets = [];
 
+    // Track regular payment index (excluding initial payment)
+    int regularPaymentIndex = 1;
+
     // Add paid payments (connected)
     for (int i = 0; i < paidPayments.length; i++) {
       final payment = paidPayments[i];
       final isFirst = i == 0;
       final isLast = i == paidPayments.length - 1;
+      final isPartial = payment.status.toLowerCase() == 'partial';
+      
+      // Determine payment label
+      String? paymentLabel;
+      if (payment.paymentNumber == -1) {
+        paymentLabel = AppLocalizations.of(context).initialPayment;
+      } else {
+        paymentLabel = 'Payment #$regularPaymentIndex';
+        regularPaymentIndex++;
+      }
       
       timelineWidgets.add(
         _buildTimelineItem(
           _formatDate(payment.dueDate),
-          '\$${payment.amount.toStringAsFixed(2)}',
-          true,
+          '\$${payment.amount.toStringAsFixed(0)}',
+          !isPartial, // Not fully paid if partial
           isFirst,
           !isLast, // Show bottom line if not last paid payment
+          paymentLabel: paymentLabel,
+          isPartial: isPartial,
+          paidAmount: isPartial ? '\$${payment.amountPaid.toStringAsFixed(0)}' : null,
+          remainingAmount: isPartial ? '\$${payment.amountRemaining.toStringAsFixed(0)}' : null,
         ),
       );
     }
@@ -394,14 +491,28 @@ class _DetailsPaymentState extends State<DetailsPayment> {
     for (int i = 0; i < nextPayments.length; i++) {
       final payment = nextPayments[i];
       final isFirst = i == 0 && paidPayments.isEmpty;
+      final isPartial = payment.status.toLowerCase() == 'partial';
+      
+      // Determine payment label
+      String? paymentLabel;
+      if (payment.paymentNumber == -1) {
+        paymentLabel = AppLocalizations.of(context).initialPayment;
+      } else {
+        paymentLabel = 'Payment #$regularPaymentIndex';
+        regularPaymentIndex++;
+      }
       
       timelineWidgets.add(
         _buildTimelineItem(
           _formatDate(payment.dueDate),
-          '\$${payment.amount.toStringAsFixed(2)}',
+          '\$${payment.amount.toStringAsFixed(0)}',
           false,
           isFirst,
           false, // No bottom line for next payments
+          paymentLabel: paymentLabel,
+          isPartial: isPartial,
+          paidAmount: isPartial ? '\$${payment.amountPaid.toStringAsFixed(0)}' : null,
+          remainingAmount: isPartial ? '\$${payment.amountRemaining.toStringAsFixed(0)}' : null,
         ),
       );
     }
@@ -630,54 +741,136 @@ class _DetailsPaymentState extends State<DetailsPayment> {
       );
     }
 
-    final imageUrl = _productDetails?.imageUrls.isNotEmpty == true 
-        ? _productDetails!.imageUrls.first 
-        : null;
+    final imageUrls = _productDetails?.imageUrls ?? [];
 
-    if (imageUrl != null && imageUrl.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(16.r),
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          height: 180.h,
-          width: double.infinity,
-          fit: BoxFit.cover,
-          memCacheHeight: (180 * 2.75).toInt(), // Cache at 2.75x for high DPI screens
-          memCacheWidth: (MediaQuery.of(context).size.width * 2.75).toInt(),
-          maxHeightDiskCache: (180 * 2.75).toInt(),
-          maxWidthDiskCache: (MediaQuery.of(context).size.width * 2.75).toInt(),
-          placeholder: (context, url) => Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
+    if (imageUrls.isNotEmpty) {
+      // If only one image, display it without carousel
+      if (imageUrls.length == 1) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(16.r),
+          child: CachedNetworkImage(
+            imageUrl: imageUrls.first,
+            height: 180.h,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            memCacheHeight: (180 * 2.75).toInt(),
+            memCacheWidth: (MediaQuery.of(context).size.width * 2.75).toInt(),
+            maxHeightDiskCache: (180 * 2.75).toInt(),
+            maxWidthDiskCache: (MediaQuery.of(context).size.width * 2.75).toInt(),
+            placeholder: (context, url) => Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: 180.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => Container(
               height: 180.h,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.cxF5F7F9,
                 borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.image_not_supported, size: 48.sp, color: AppColors.cxAFB1B1),
+                  SizedBox(height: 8.h),
+                  Text(
+                    'Image not available',
+                    style: TextStyle(color: AppColors.cxAFB1B1, fontSize: 14.sp),
+                  ),
+                ],
               ),
             ),
           ),
-          errorWidget: (context, url, error) => Container(
-            height: 180.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.cxF5F7F9,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.image_not_supported, size: 48.sp, color: AppColors.cxAFB1B1),
-                SizedBox(height: 8.h),
-                Text(
-                  'Image not available',
-                  style: TextStyle(color: AppColors.cxAFB1B1, fontSize: 14.sp),
-                ),
-              ],
+        );
+      }
+
+      // Multiple images - show carousel
+      return Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.r),
+            child: SizedBox(
+              height: 180.h,
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentImageIndex = index;
+                  });
+                },
+                itemCount: imageUrls.length,
+                itemBuilder: (context, index) {
+                  return CachedNetworkImage(
+                    imageUrl: imageUrls[index],
+                    height: 180.h,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    memCacheHeight: (180 * 2.75).toInt(),
+                    memCacheWidth: (MediaQuery.of(context).size.width * 2.75).toInt(),
+                    maxHeightDiskCache: (180 * 2.75).toInt(),
+                    maxWidthDiskCache: (MediaQuery.of(context).size.width * 2.75).toInt(),
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 180.h,
+                        width: double.infinity,
+                        color: Colors.white,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      height: 180.h,
+                      width: double.infinity,
+                      color: AppColors.cxF5F7F9,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.image_not_supported, size: 48.sp, color: AppColors.cxAFB1B1),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'Image not available',
+                            style: TextStyle(color: AppColors.cxAFB1B1, fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
+          // Image indicator dots
+          Positioned(
+            bottom: 12.h,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                imageUrls.length,
+                (index) => Container(
+                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                  width: 8.w,
+                  height: 8.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentImageIndex == index
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.5),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
 

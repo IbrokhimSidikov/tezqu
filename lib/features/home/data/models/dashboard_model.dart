@@ -38,9 +38,69 @@ class DashboardModel with _$DashboardModel {
 }
 
 @freezed
+class ContractDataModel with _$ContractDataModel {
+  const factory ContractDataModel({
+    @JsonKey(name: 'total_contract_amount') @Default(0.0) double totalContractAmount,
+    @JsonKey(name: 'total_paid') @Default(0.0) double totalPaid,
+    @JsonKey(name: 'total_remaining') @Default(0.0) double totalRemaining,
+    @JsonKey(name: 'next_payment_amount') @Default(0.0) double nextPaymentAmount,
+    @JsonKey(name: 'next_payment_date') String? nextPaymentDate,
+    @JsonKey(name: 'active_contracts') @Default(0) int activeContracts,
+  }) = _ContractDataModel;
+
+  const ContractDataModel._();
+
+  factory ContractDataModel.fromJson(Map<String, dynamic> json) => _$ContractDataModelFromJson(json);
+
+  ContractData toEntity() {
+    return ContractData(
+      totalContractAmount: totalContractAmount,
+      totalPaid: totalPaid,
+      totalRemaining: totalRemaining,
+      nextPaymentAmount: nextPaymentAmount,
+      nextPaymentDate: nextPaymentDate,
+      activeContracts: activeContracts,
+    );
+  }
+
+  @override
+  // TODO: implement activeContracts
+  int get activeContracts => throw UnimplementedError();
+
+  @override
+  // TODO: implement nextPaymentAmount
+  double get nextPaymentAmount => throw UnimplementedError();
+
+  @override
+  // TODO: implement nextPaymentDate
+  String? get nextPaymentDate => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement totalContractAmount
+  double get totalContractAmount => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalPaid
+  double get totalPaid => throw UnimplementedError();
+
+  @override
+  // TODO: implement totalRemaining
+  double get totalRemaining => throw UnimplementedError();
+}
+
+@freezed
 class DashboardDataModel with _$DashboardDataModel {
   const factory DashboardDataModel({
-    // Customer fields
+    // New customer fields
+    @JsonKey(name: 'sale_contracts') ContractDataModel? saleContracts,
+    @JsonKey(name: 'purchase_contracts') ContractDataModel? purchaseContracts,
+    // Legacy customer fields
     @JsonKey(name: 'total_contract_amount') double? totalContractAmount,
     @JsonKey(name: 'total_paid') double? totalPaid,
     @JsonKey(name: 'total_remaining') double? totalRemaining,
@@ -63,7 +123,10 @@ class DashboardDataModel with _$DashboardDataModel {
 
   DashboardData toEntity() {
     return DashboardData(
-      // Customer fields
+      // New customer fields
+      saleContracts: saleContracts?.toEntity(),
+      purchaseContracts: purchaseContracts?.toEntity(),
+      // Legacy customer fields
       totalContractAmount: totalContractAmount,
       totalPaid: totalPaid,
       totalRemaining: totalRemaining,
@@ -104,6 +167,14 @@ class DashboardDataModel with _$DashboardDataModel {
   @override
   // TODO: implement pendingPaymentsCount
   int? get pendingPaymentsCount => throw UnimplementedError();
+
+  @override
+  // TODO: implement purchaseContracts
+  ContractDataModel? get purchaseContracts => throw UnimplementedError();
+
+  @override
+  // TODO: implement saleContracts
+  ContractDataModel? get saleContracts => throw UnimplementedError();
 
   @override
   Map<String, dynamic> toJson() {

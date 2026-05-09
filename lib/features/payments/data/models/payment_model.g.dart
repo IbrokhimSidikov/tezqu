@@ -36,8 +36,17 @@ _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
       productName: json['product_name'] as String? ?? '',
       dueDate: json['due_date'] as String? ?? '',
       amount: _toDouble(json['amount']),
+      amountPaid: json['amount_paid'] == null
+          ? 0.0
+          : _toDouble(json['amount_paid']),
+      amountRemaining: json['amount_remaining'] == null
+          ? 0.0
+          : _toDouble(json['amount_remaining']),
       status: json['status'] as String? ?? '',
       contractId: _toInt(json['contract_id']),
+      paymentNumber: json['payment_number'] == null
+          ? 0
+          : _toInt(json['payment_number']),
       productImage: json['product_image'] as String?,
       productCategory: json['product_category'] as String?,
       contract: json['contract'] == null
@@ -51,8 +60,11 @@ Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
       'product_name': instance.productName,
       'due_date': instance.dueDate,
       'amount': instance.amount,
+      'amount_paid': instance.amountPaid,
+      'amount_remaining': instance.amountRemaining,
       'status': instance.status,
       'contract_id': instance.contractId,
+      'payment_number': instance.paymentNumber,
       'product_image': instance.productImage,
       'product_category': instance.productCategory,
       'contract': instance.contract,

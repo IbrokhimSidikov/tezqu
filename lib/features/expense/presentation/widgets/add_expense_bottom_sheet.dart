@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -100,13 +101,8 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Rasm muvaffaqiyatli yuklandi'),
-            backgroundColor: AppColors.cx43C19F,
-            duration: Duration(seconds: 2),
-          ),
-        );
+        showAppSnackBar(context, 'Rasm muvaffaqiyatli yuklandi',
+            type: SnackBarType.success, duration: Duration(seconds: 2));
       }
     } catch (e) {
       setState(() {
@@ -115,13 +111,8 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Rasmni yuklashda xatolik: ${e.toString()}'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
-          ),
-        );
+        showAppSnackBar(context, 'Rasmni yuklashda xatolik: ${e.toString()}',
+            type: SnackBarType.error);
       }
     }
   }
@@ -180,21 +171,13 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
 
         if (mounted) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Chiqim muvaffaqiyatli qo\'shildi'),
-              backgroundColor: AppColors.cx43C19F,
-            ),
-          );
+          showAppSnackBar(context, 'Chiqim muvaffaqiyatli qo\'shildi',
+              type: SnackBarType.success);
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Xatolik yuz berdi: ${e.toString()}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, 'Xatolik yuz berdi: ${e.toString()}',
+              type: SnackBarType.error);
         }
       } finally {
         if (mounted) {

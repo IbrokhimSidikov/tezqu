@@ -7,6 +7,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/skeleton_loader.dart';
@@ -167,17 +168,16 @@ class _WarehouseState extends State<Warehouse> {
                     // Check if it's an unauthorized error
                     if (state.message.toLowerCase().contains('unauthorized')) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Iltimos, tizimga kiring'),
-                            backgroundColor: Colors.red,
-                            action: SnackBarAction(
-                              label: 'Kirish',
-                              textColor: Colors.white,
-                              onPressed: () {
-                                context.go(AppRoutes.login);
-                              },
-                            ),
+                        showAppSnackBar(
+                          context,
+                          'Iltimos, tizimga kiring',
+                          type: SnackBarType.error,
+                          action: SnackBarAction(
+                            label: 'Kirish',
+                            textColor: Colors.white,
+                            onPressed: () {
+                              context.go(AppRoutes.login);
+                            },
                           ),
                         );
                       });

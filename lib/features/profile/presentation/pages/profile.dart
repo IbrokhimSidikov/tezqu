@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_images.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/providers/locale_provider.dart';
 import '../../../../core/di/injection.dart';
@@ -159,12 +159,9 @@ class _ProfileState extends State<Profile> {
     } catch (e) {
       // Show error message if logout fails
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).errorOccurred}: $e',
+            type: SnackBarType.error);
       }
     }
   }
@@ -257,12 +254,8 @@ class _ProfileState extends State<Profile> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).errorOccurred),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+            type: SnackBarType.error);
       }
     }
   }
@@ -274,32 +267,14 @@ class _ProfileState extends State<Profile> {
       await Clipboard.setData(ClipboardData(text: playStoreUrl));
       
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.check_circle, color: AppColors.cxWhite),
-                SizedBox(width: 12.w),
-                Text(AppLocalizations.of(context).linkCopied),
-              ],
-            ),
-            backgroundColor: AppColors.cx78D9BF,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            duration: Duration(seconds: 2),
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).linkCopied,
+            type: SnackBarType.success,
+            duration: Duration(seconds: 2));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).errorOccurred),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+            type: SnackBarType.error);
       }
     }
   }
@@ -309,21 +284,13 @@ class _ProfileState extends State<Profile> {
       const String playStoreUrl = 'https://play.google.com/store/apps/details?id=com.tezqu.app';
       
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).playStoreOpening),
-            duration: Duration(seconds: 1),
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).playStoreOpening,
+            type: SnackBarType.info, duration: Duration(seconds: 1));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).errorOccurred),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+            type: SnackBarType.error);
       }
     }
   }
@@ -490,21 +457,13 @@ class _ProfileState extends State<Profile> {
   }
 
   void _showPrivacyPolicy() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context).privacyOpening),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    showAppSnackBar(context, AppLocalizations.of(context).privacyOpening,
+        type: SnackBarType.info, duration: Duration(seconds: 2));
   }
 
   void _showTermsOfService() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context).termsOpening),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    showAppSnackBar(context, AppLocalizations.of(context).termsOpening,
+        type: SnackBarType.info, duration: Duration(seconds: 2));
   }
 
   Future<void> _rateApp() async {
@@ -524,22 +483,15 @@ class _ProfileState extends State<Profile> {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context).errorOccurred),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+              type: SnackBarType.error);
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).errorOccurred}: $e',
+            type: SnackBarType.error);
       }
     }
   }
@@ -760,25 +712,11 @@ class _ProfileState extends State<Profile> {
         Navigator.pop(context);
         
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: AppColors.cxWhite),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text('${AppLocalizations.of(context).languageSnackbar} : $name'),
-                  ),
-                ],
-              ),
-              backgroundColor: AppColors.cx78D9BF,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              duration: Duration(seconds: 2),
-            ),
-          );
+        showAppSnackBar(
+            context,
+            '${AppLocalizations.of(context).languageSnackbar} : $name',
+            type: SnackBarType.success,
+            duration: Duration(seconds: 2));
         }
       },
       borderRadius: BorderRadius.circular(12.r),
@@ -955,22 +893,15 @@ class _ProfileState extends State<Profile> {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context).errorOccurred),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+              type: SnackBarType.error);
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).errorOccurred}: $e',
+            type: SnackBarType.error);
       }
     }
   }
@@ -984,22 +915,15 @@ class _ProfileState extends State<Profile> {
         await launchUrl(uri);
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context).errorOccurred),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+              type: SnackBarType.error);
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context).errorOccurred}: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).errorOccurred}: $e',
+            type: SnackBarType.error);
       }
     }
   }
@@ -1015,45 +939,16 @@ class _ProfileState extends State<Profile> {
       } else {
         if (mounted) {
           await Clipboard.setData(ClipboardData(text: emailAddress));
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.check_circle, color: AppColors.cxWhite),
-                  SizedBox(width: 12.w),
-                  Text('${AppLocalizations.of(context).linkCopied}'),
-                ],
-              ),
-              backgroundColor: AppColors.cxFEDA84,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              duration: Duration(seconds: 2),
-            ),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).linkCopied,
+              type: SnackBarType.success, duration: Duration(seconds: 2));
         }
       }
     } catch (e) {
       if (mounted) {
         await Clipboard.setData(ClipboardData(text: emailAddress));
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.check_circle, color: AppColors.cxWhite),
-                SizedBox(width: 12.w),
-                Text('${AppLocalizations.of(context).linkCopied}: $emailAddress'),
-              ],
-            ),
-            backgroundColor: AppColors.cxFEDA84,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).linkCopied}: $emailAddress',
+            type: SnackBarType.success);
       }
     }
   }
@@ -1738,12 +1633,8 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _handleAccountDeletion() async {
     if (_currentUser?.id == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).userDataNotFound),
-            backgroundColor: AppColors.cxFF8B92,
-          ),
-      );
+      showAppSnackBar(context, AppLocalizations.of(context).userDataNotFound,
+          type: SnackBarType.error);
       return;
     }
 
@@ -1766,24 +1657,16 @@ class _ProfileState extends State<Profile> {
                 await authLocalDataSource.clearCache();
                 
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context).deleteAccountSnackbar),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  
+                  showAppSnackBar(context,
+                      AppLocalizations.of(context).deleteAccountSnackbar,
+                      type: SnackBarType.success);
+
                   context.go(AppRoutes.auth);
                 }
               },
               error: (message) {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                    backgroundColor: AppColors.cxFF8B92,
-                  ),
-                );
+                showAppSnackBar(context, message, type: SnackBarType.error);
               },
             );
           },

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/di.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../expense/data/models/payment_method_model.dart';
@@ -685,15 +686,12 @@ class _CollectableCard extends StatelessWidget {
                     
                     final l10n = AppLocalizations.of(context);
                     // Show success or error message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          success 
-                            ? l10n.paymentRecordedSuccessfully
-                            : l10n.failedToRecordPayment,
-                        ),
-                        backgroundColor: success ? AppColors.cx78D9BF : AppColors.cxFF8B92,
-                      ),
+                    showAppSnackBar(
+                      context,
+                      success
+                          ? l10n.paymentRecordedSuccessfully
+                          : l10n.failedToRecordPayment,
+                      type: success ? SnackBarType.success : SnackBarType.error,
                     );
                   }
                 }

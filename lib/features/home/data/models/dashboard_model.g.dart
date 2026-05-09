@@ -15,8 +15,40 @@ _DashboardModel _$DashboardModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$DashboardModelToJson(_DashboardModel instance) =>
     <String, dynamic>{'role': instance.role, 'data': instance.data};
 
+_ContractDataModel _$ContractDataModelFromJson(Map<String, dynamic> json) =>
+    _ContractDataModel(
+      totalContractAmount:
+          (json['total_contract_amount'] as num?)?.toDouble() ?? 0.0,
+      totalPaid: (json['total_paid'] as num?)?.toDouble() ?? 0.0,
+      totalRemaining: (json['total_remaining'] as num?)?.toDouble() ?? 0.0,
+      nextPaymentAmount:
+          (json['next_payment_amount'] as num?)?.toDouble() ?? 0.0,
+      nextPaymentDate: json['next_payment_date'] as String?,
+      activeContracts: (json['active_contracts'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$ContractDataModelToJson(_ContractDataModel instance) =>
+    <String, dynamic>{
+      'total_contract_amount': instance.totalContractAmount,
+      'total_paid': instance.totalPaid,
+      'total_remaining': instance.totalRemaining,
+      'next_payment_amount': instance.nextPaymentAmount,
+      'next_payment_date': instance.nextPaymentDate,
+      'active_contracts': instance.activeContracts,
+    };
+
 _DashboardDataModel _$DashboardDataModelFromJson(Map<String, dynamic> json) =>
     _DashboardDataModel(
+      saleContracts: json['sale_contracts'] == null
+          ? null
+          : ContractDataModel.fromJson(
+              json['sale_contracts'] as Map<String, dynamic>,
+            ),
+      purchaseContracts: json['purchase_contracts'] == null
+          ? null
+          : ContractDataModel.fromJson(
+              json['purchase_contracts'] as Map<String, dynamic>,
+            ),
       totalContractAmount: (json['total_contract_amount'] as num?)?.toDouble(),
       totalPaid: (json['total_paid'] as num?)?.toDouble(),
       totalRemaining: (json['total_remaining'] as num?)?.toDouble(),
@@ -37,6 +69,8 @@ _DashboardDataModel _$DashboardDataModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$DashboardDataModelToJson(_DashboardDataModel instance) =>
     <String, dynamic>{
+      'sale_contracts': instance.saleContracts,
+      'purchase_contracts': instance.purchaseContracts,
       'total_contract_amount': instance.totalContractAmount,
       'total_paid': instance.totalPaid,
       'total_remaining': instance.totalRemaining,

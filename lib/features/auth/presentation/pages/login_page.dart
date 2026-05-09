@@ -5,16 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:tezqu/core/shared/button_widget.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/constants/app_images.dart';
-import '../../../../core/constants/app_style.dart';
-import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
@@ -36,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   final _phoneController = TextEditingController(text: '+998 ');
   final _codeController = TextEditingController();
   final _phoneFocusNode = FocusNode();
+  final _codeFocusNode = FocusNode();
   bool _isCodeSent = false;
 
   @override
@@ -52,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     _phoneController.dispose();
     _codeController.dispose();
     _phoneFocusNode.dispose();
+    _codeFocusNode.dispose();
     super.dispose();
   }
 
@@ -71,19 +70,13 @@ class _LoginPageState extends State<LoginPage> {
             setState(() {
               _isCodeSent = true;
             });
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
+            showAppSnackBar(context, state.message, type: SnackBarType.success);
+            // Auto-focus the OTP field after the widget is built
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              FocusScope.of(context).requestFocus(_codeFocusNode);
+            });
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            showAppSnackBar(context, state.message, type: SnackBarType.error);
           } else if (state is AuthSuccess) {
             // Get FCM token and send to backend
             final fcmToken = await FirebaseMessagingService().getToken();
@@ -121,13 +114,13 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           spacing: 10,
                           children: [
-                            SizedBox(height: 36.h,),
+                            36.verticalSpace,
                             Center(
                               child: TextWidget(
                                 text: AppLocalizations.of(context).welcome,
                               ),
                             ),
-                            SizedBox(height: 32.h,),
+                            36.verticalSpace,
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -176,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.all(20.0),
                                 child: PinCodeTextField(
                                   controller: _codeController,
+                                  focusNode: _codeFocusNode,
                                   textStyle: TextStyle(fontSize: 36),
                                   appContext: context,
                                   length: 4,
@@ -202,6 +196,14 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   },
                                   onCompleted: (value) {
+                                    FocusScope.of(context).unfocus();
+                                    if (_formKey.currentState?.validate() ?? false) {
+                                      final phone = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
+                                      context.read<AuthCubit>().login(
+                                        phone: phone,
+                                        code: value,
+                                      );
+                                    }
                                   },
                                 ),
                               ),

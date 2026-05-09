@@ -314,6 +314,14 @@ class AppLocalizations {
       'transmissionType': 'Transmission Type',
       'contactMethod': 'Choose your preferred contact method',
 
+      // Contract Breakdown
+      'contractBreakdown': 'Contract Breakdown',
+      'saleContracts': 'Sale Contracts',
+      'purchaseContracts': 'Purchase Contracts',
+      'netBalance': 'Net Balance',
+      'totalAmount': 'Total Amount',
+      'close': 'Close',
+
     },
     'uz': {
       'totalPayments': 'Jami to‘lovlar',
@@ -610,10 +618,17 @@ class AppLocalizations {
       'failedToRecordPayment':'To\'lovni qayd etib bo\'lmadi',
       'cashInHand':'Qo\'lda naqd pul',
 
-
       'carCondition': 'Avtomobil holati',
       'transmissionType': 'Uzatmalar qutisi turi',
-      'contactMethod': 'O‘zingizga qulay aloqa usulini tanlang'
+      'contactMethod': 'O‘zingizga qulay aloqa usulini tanlang',
+
+      // Contract Breakdown
+      'contractBreakdown': 'Shartnomalar tafsiloti',
+      'saleContracts': 'Xarid qilinganlar',
+      'purchaseContracts': 'Sotilgan shartnomalar',
+      'netBalance': 'Sof balans',
+      'totalAmount': 'Umumiy summa',
+      'close': 'Yopish',
     },
     'ru': {
       'totalPayments': 'Всего платежей',
@@ -912,7 +927,15 @@ class AppLocalizations {
 
       'carCondition': 'Состояние автомобиля',
       'transmissionType': 'Тип коробки передач',
-      'contactMethod': 'Выберите удобный способ связи'
+      'contactMethod': 'Выберите удобный способ связи',
+
+      // Contract Breakdown
+      'contractBreakdown': 'Детализация контрактов',
+      'saleContracts': 'Контракты продажи',
+      'purchaseContracts': 'Контракты покупки',
+      'netBalance': 'Чистый баланс',
+      'totalAmount': 'Общая сумма',
+      'close': 'Закрыть',
     },
   };
 
@@ -1204,5 +1227,11 @@ class AppLocalizations {
   String get transmissionType => translate('transmissionType');
   String get contactMethod => translate('contactMethod');
 
-
+  // Contract Breakdown getters
+  String get contractBreakdown => translate('contractBreakdown');
+  String get saleContracts => translate('saleContracts');
+  String get purchaseContracts => translate('purchaseContracts');
+  String get netBalance => translate('netBalance');
+  String get totalAmount => translate('totalAmount');
+  String get close => translate('close');
 }

@@ -8,10 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_images.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
-import '../../../../core/shared/app_textfield.dart';
 import '../../../../core/shared/back_button_circle.dart';
 import '../../../../core/shared/button_widget.dart';
 import '../../../../core/shared/text_widget.dart';
@@ -45,9 +44,8 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
         code: _otpCode,
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('4 raqamli kodni kiriting')),
-      );
+      showAppSnackBar(context, '4 raqamli kodni kiriting',
+          type: SnackBarType.info);
     }
   }
 
@@ -66,9 +64,8 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) async {
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message ?? 'Muvaffaqiyatli')),
-            );
+            showAppSnackBar(context, state.message ?? 'Muvaffaqiyatli',
+                type: SnackBarType.success);
             // Get FCM token and send to backend
             final fcmToken = await FirebaseMessagingService().getToken();
             if (fcmToken != null) {
@@ -76,12 +73,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
             }
             context.go(AppRoutes.home);
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            showAppSnackBar(context, state.message, type: SnackBarType.error);
           }
         },
         builder: (context, state) {
@@ -109,7 +101,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
                   child: Column(
                     spacing: 10,
                     children: [
-                      SizedBox(height: 36.h,),
+                      36.verticalSpace,
                       Center(
                         child: TextWidget(
                           text: 'SMS kodni kiriting',
@@ -122,14 +114,12 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
                             fontWeight: FontWeight.w500,
                           ),
                       ),
-                      SizedBox(
-                        height: 92.h,
-                      ),
+                      92.verticalSpace,
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.h),
                         child: PinCodeTextField(
                           controller: _otpController,
-                          textStyle: TextStyle(fontSize: 36),
+                          textStyle: TextStyle(fontSize: 36.sp),
                           appContext: context,
                           length: 4,
                           animationType: AnimationType.fade,

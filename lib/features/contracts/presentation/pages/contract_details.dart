@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/di.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/contract_entity.dart';
@@ -484,24 +485,16 @@ class _ContractDetailsState extends State<ContractDetails> {
               if (success) {
                 // Show success message
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context).contractRejected),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  showAppSnackBar(context, AppLocalizations.of(context).contractRejected,
+                      type: SnackBarType.success);
                   // Go back to contracts list
                   Navigator.pop(context);
                 }
               } else {
                 // Show error message
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context).error),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  showAppSnackBar(context, AppLocalizations.of(context).error,
+                      type: SnackBarType.error);
                 }
               }
             },
@@ -549,24 +542,16 @@ class _ContractDetailsState extends State<ContractDetails> {
               if (success) {
                 // Show success message
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context).contractApproved),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  showAppSnackBar(context, AppLocalizations.of(context).contractApproved,
+                      type: SnackBarType.success);
                   // Go back to contracts list
                   Navigator.pop(context);
                 }
               } else {
                 // Show error message
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context).error),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  showAppSnackBar(context, AppLocalizations.of(context).error,
+                      type: SnackBarType.error);
                 }
               }
             },

@@ -51,8 +51,11 @@ class PaymentModel with _$PaymentModel {
     @JsonKey(name: 'product_name') @Default('') String productName,
     @JsonKey(name: 'due_date') @Default('') String dueDate,
     @JsonKey(fromJson: _toDouble) required double amount,
+    @JsonKey(name: 'amount_paid', fromJson: _toDouble) @Default(0.0) double amountPaid,
+    @JsonKey(name: 'amount_remaining', fromJson: _toDouble) @Default(0.0) double amountRemaining,
     @Default('') String status,
     @JsonKey(name: 'contract_id', fromJson: _toInt) required int contractId,
+    @JsonKey(name: 'payment_number', fromJson: _toInt) @Default(0) int paymentNumber,
     @JsonKey(name: 'product_image') String? productImage,
     @JsonKey(name: 'product_category') String? productCategory,
     ContractModel? contract,
@@ -69,8 +72,11 @@ class PaymentModel with _$PaymentModel {
       productName: productName,
       dueDate: dueDate,
       amount: amount,
+      amountPaid: amountPaid,
+      amountRemaining: amountRemaining,
       status: status,
       contractId: contractId,
+      paymentNumber: paymentNumber,
       productImage: productImage,
       productCategory: productCategory,
       contract: contract?.toEntity(),
@@ -112,6 +118,18 @@ class PaymentModel with _$PaymentModel {
   @override
   // TODO: implement status
   String get status => throw UnimplementedError();
+
+  @override
+  // TODO: implement paymentNumber
+  int get paymentNumber => throw UnimplementedError();
+
+  @override
+  // TODO: implement amountPaid
+  double get amountPaid => throw UnimplementedError();
+
+  @override
+  // TODO: implement amountRemaining
+  double get amountRemaining => throw UnimplementedError();
 
   @override
   Map<String, dynamic> toJson() {

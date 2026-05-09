@@ -320,7 +320,7 @@ $SummaryModelCopyWith<$Res>? get summary {
 /// @nodoc
 mixin _$PaymentModel {
 
-@JsonKey(fromJson: _toInt) int get id;@JsonKey(name: 'product_name') String get productName;@JsonKey(name: 'due_date') String get dueDate;@JsonKey(fromJson: _toDouble) double get amount; String get status;@JsonKey(name: 'contract_id', fromJson: _toInt) int get contractId;@JsonKey(name: 'product_image') String? get productImage;@JsonKey(name: 'product_category') String? get productCategory; ContractModel? get contract;
+@JsonKey(fromJson: _toInt) int get id;@JsonKey(name: 'product_name') String get productName;@JsonKey(name: 'due_date') String get dueDate;@JsonKey(fromJson: _toDouble) double get amount;@JsonKey(name: 'amount_paid', fromJson: _toDouble) double get amountPaid;@JsonKey(name: 'amount_remaining', fromJson: _toDouble) double get amountRemaining; String get status;@JsonKey(name: 'contract_id', fromJson: _toInt) int get contractId;@JsonKey(name: 'payment_number', fromJson: _toInt) int get paymentNumber;@JsonKey(name: 'product_image') String? get productImage;@JsonKey(name: 'product_category') String? get productCategory; ContractModel? get contract;
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -333,16 +333,16 @@ $PaymentModelCopyWith<PaymentModel> get copyWith => _$PaymentModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.status, status) || other.status == status)&&(identical(other.contractId, contractId) || other.contractId == contractId)&&(identical(other.productImage, productImage) || other.productImage == productImage)&&(identical(other.productCategory, productCategory) || other.productCategory == productCategory)&&(identical(other.contract, contract) || other.contract == contract));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountPaid, amountPaid) || other.amountPaid == amountPaid)&&(identical(other.amountRemaining, amountRemaining) || other.amountRemaining == amountRemaining)&&(identical(other.status, status) || other.status == status)&&(identical(other.contractId, contractId) || other.contractId == contractId)&&(identical(other.paymentNumber, paymentNumber) || other.paymentNumber == paymentNumber)&&(identical(other.productImage, productImage) || other.productImage == productImage)&&(identical(other.productCategory, productCategory) || other.productCategory == productCategory)&&(identical(other.contract, contract) || other.contract == contract));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productName,dueDate,amount,status,contractId,productImage,productCategory,contract);
+int get hashCode => Object.hash(runtimeType,id,productName,dueDate,amount,amountPaid,amountRemaining,status,contractId,paymentNumber,productImage,productCategory,contract);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, productName: $productName, dueDate: $dueDate, amount: $amount, status: $status, contractId: $contractId, productImage: $productImage, productCategory: $productCategory, contract: $contract)';
+  return 'PaymentModel(id: $id, productName: $productName, dueDate: $dueDate, amount: $amount, amountPaid: $amountPaid, amountRemaining: $amountRemaining, status: $status, contractId: $contractId, paymentNumber: $paymentNumber, productImage: $productImage, productCategory: $productCategory, contract: $contract)';
 }
 
 
@@ -353,7 +353,7 @@ abstract mixin class $PaymentModelCopyWith<$Res>  {
   factory $PaymentModelCopyWith(PaymentModel value, $Res Function(PaymentModel) _then) = _$PaymentModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_name') String productName,@JsonKey(name: 'due_date') String dueDate,@JsonKey(fromJson: _toDouble) double amount, String status,@JsonKey(name: 'contract_id', fromJson: _toInt) int contractId,@JsonKey(name: 'product_image') String? productImage,@JsonKey(name: 'product_category') String? productCategory, ContractModel? contract
+@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_name') String productName,@JsonKey(name: 'due_date') String dueDate,@JsonKey(fromJson: _toDouble) double amount,@JsonKey(name: 'amount_paid', fromJson: _toDouble) double amountPaid,@JsonKey(name: 'amount_remaining', fromJson: _toDouble) double amountRemaining, String status,@JsonKey(name: 'contract_id', fromJson: _toInt) int contractId,@JsonKey(name: 'payment_number', fromJson: _toInt) int paymentNumber,@JsonKey(name: 'product_image') String? productImage,@JsonKey(name: 'product_category') String? productCategory, ContractModel? contract
 });
 
 
@@ -370,14 +370,17 @@ class _$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productName = null,Object? dueDate = null,Object? amount = null,Object? status = null,Object? contractId = null,Object? productImage = freezed,Object? productCategory = freezed,Object? contract = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productName = null,Object? dueDate = null,Object? amount = null,Object? amountPaid = null,Object? amountRemaining = null,Object? status = null,Object? contractId = null,Object? paymentNumber = null,Object? productImage = freezed,Object? productCategory = freezed,Object? contract = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,productName: null == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,amountPaid: null == amountPaid ? _self.amountPaid : amountPaid // ignore: cast_nullable_to_non_nullable
+as double,amountRemaining: null == amountRemaining ? _self.amountRemaining : amountRemaining // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,contractId: null == contractId ? _self.contractId : contractId // ignore: cast_nullable_to_non_nullable
+as int,paymentNumber: null == paymentNumber ? _self.paymentNumber : paymentNumber // ignore: cast_nullable_to_non_nullable
 as int,productImage: freezed == productImage ? _self.productImage : productImage // ignore: cast_nullable_to_non_nullable
 as String?,productCategory: freezed == productCategory ? _self.productCategory : productCategory // ignore: cast_nullable_to_non_nullable
 as String?,contract: freezed == contract ? _self.contract : contract // ignore: cast_nullable_to_non_nullable
@@ -478,10 +481,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount, @JsonKey(name: 'amount_paid', fromJson: _toDouble)  double amountPaid, @JsonKey(name: 'amount_remaining', fromJson: _toDouble)  double amountRemaining,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'payment_number', fromJson: _toInt)  int paymentNumber, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.status,_that.contractId,_that.productImage,_that.productCategory,_that.contract);case _:
+return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.amountPaid,_that.amountRemaining,_that.status,_that.contractId,_that.paymentNumber,_that.productImage,_that.productCategory,_that.contract);case _:
   return orElse();
 
 }
@@ -499,10 +502,10 @@ return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.stat
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount, @JsonKey(name: 'amount_paid', fromJson: _toDouble)  double amountPaid, @JsonKey(name: 'amount_remaining', fromJson: _toDouble)  double amountRemaining,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'payment_number', fromJson: _toInt)  int paymentNumber, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel():
-return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.status,_that.contractId,_that.productImage,_that.productCategory,_that.contract);case _:
+return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.amountPaid,_that.amountRemaining,_that.status,_that.contractId,_that.paymentNumber,_that.productImage,_that.productCategory,_that.contract);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -519,10 +522,10 @@ return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.stat
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toInt)  int id, @JsonKey(name: 'product_name')  String productName, @JsonKey(name: 'due_date')  String dueDate, @JsonKey(fromJson: _toDouble)  double amount, @JsonKey(name: 'amount_paid', fromJson: _toDouble)  double amountPaid, @JsonKey(name: 'amount_remaining', fromJson: _toDouble)  double amountRemaining,  String status, @JsonKey(name: 'contract_id', fromJson: _toInt)  int contractId, @JsonKey(name: 'payment_number', fromJson: _toInt)  int paymentNumber, @JsonKey(name: 'product_image')  String? productImage, @JsonKey(name: 'product_category')  String? productCategory,  ContractModel? contract)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.status,_that.contractId,_that.productImage,_that.productCategory,_that.contract);case _:
+return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.amountPaid,_that.amountRemaining,_that.status,_that.contractId,_that.paymentNumber,_that.productImage,_that.productCategory,_that.contract);case _:
   return null;
 
 }
@@ -534,15 +537,18 @@ return $default(_that.id,_that.productName,_that.dueDate,_that.amount,_that.stat
 @JsonSerializable()
 
 class _PaymentModel extends PaymentModel {
-  const _PaymentModel({@JsonKey(fromJson: _toInt) required this.id, @JsonKey(name: 'product_name') this.productName = '', @JsonKey(name: 'due_date') this.dueDate = '', @JsonKey(fromJson: _toDouble) required this.amount, this.status = '', @JsonKey(name: 'contract_id', fromJson: _toInt) required this.contractId, @JsonKey(name: 'product_image') this.productImage, @JsonKey(name: 'product_category') this.productCategory, this.contract}): super._();
+  const _PaymentModel({@JsonKey(fromJson: _toInt) required this.id, @JsonKey(name: 'product_name') this.productName = '', @JsonKey(name: 'due_date') this.dueDate = '', @JsonKey(fromJson: _toDouble) required this.amount, @JsonKey(name: 'amount_paid', fromJson: _toDouble) this.amountPaid = 0.0, @JsonKey(name: 'amount_remaining', fromJson: _toDouble) this.amountRemaining = 0.0, this.status = '', @JsonKey(name: 'contract_id', fromJson: _toInt) required this.contractId, @JsonKey(name: 'payment_number', fromJson: _toInt) this.paymentNumber = 0, @JsonKey(name: 'product_image') this.productImage, @JsonKey(name: 'product_category') this.productCategory, this.contract}): super._();
   factory _PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
 @override@JsonKey(fromJson: _toInt) final  int id;
 @override@JsonKey(name: 'product_name') final  String productName;
 @override@JsonKey(name: 'due_date') final  String dueDate;
 @override@JsonKey(fromJson: _toDouble) final  double amount;
+@override@JsonKey(name: 'amount_paid', fromJson: _toDouble) final  double amountPaid;
+@override@JsonKey(name: 'amount_remaining', fromJson: _toDouble) final  double amountRemaining;
 @override@JsonKey() final  String status;
 @override@JsonKey(name: 'contract_id', fromJson: _toInt) final  int contractId;
+@override@JsonKey(name: 'payment_number', fromJson: _toInt) final  int paymentNumber;
 @override@JsonKey(name: 'product_image') final  String? productImage;
 @override@JsonKey(name: 'product_category') final  String? productCategory;
 @override final  ContractModel? contract;
@@ -560,16 +566,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.status, status) || other.status == status)&&(identical(other.contractId, contractId) || other.contractId == contractId)&&(identical(other.productImage, productImage) || other.productImage == productImage)&&(identical(other.productCategory, productCategory) || other.productCategory == productCategory)&&(identical(other.contract, contract) || other.contract == contract));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.amountPaid, amountPaid) || other.amountPaid == amountPaid)&&(identical(other.amountRemaining, amountRemaining) || other.amountRemaining == amountRemaining)&&(identical(other.status, status) || other.status == status)&&(identical(other.contractId, contractId) || other.contractId == contractId)&&(identical(other.paymentNumber, paymentNumber) || other.paymentNumber == paymentNumber)&&(identical(other.productImage, productImage) || other.productImage == productImage)&&(identical(other.productCategory, productCategory) || other.productCategory == productCategory)&&(identical(other.contract, contract) || other.contract == contract));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productName,dueDate,amount,status,contractId,productImage,productCategory,contract);
+int get hashCode => Object.hash(runtimeType,id,productName,dueDate,amount,amountPaid,amountRemaining,status,contractId,paymentNumber,productImage,productCategory,contract);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, productName: $productName, dueDate: $dueDate, amount: $amount, status: $status, contractId: $contractId, productImage: $productImage, productCategory: $productCategory, contract: $contract)';
+  return 'PaymentModel(id: $id, productName: $productName, dueDate: $dueDate, amount: $amount, amountPaid: $amountPaid, amountRemaining: $amountRemaining, status: $status, contractId: $contractId, paymentNumber: $paymentNumber, productImage: $productImage, productCategory: $productCategory, contract: $contract)';
 }
 
 
@@ -580,7 +586,7 @@ abstract mixin class _$PaymentModelCopyWith<$Res> implements $PaymentModelCopyWi
   factory _$PaymentModelCopyWith(_PaymentModel value, $Res Function(_PaymentModel) _then) = __$PaymentModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_name') String productName,@JsonKey(name: 'due_date') String dueDate,@JsonKey(fromJson: _toDouble) double amount, String status,@JsonKey(name: 'contract_id', fromJson: _toInt) int contractId,@JsonKey(name: 'product_image') String? productImage,@JsonKey(name: 'product_category') String? productCategory, ContractModel? contract
+@JsonKey(fromJson: _toInt) int id,@JsonKey(name: 'product_name') String productName,@JsonKey(name: 'due_date') String dueDate,@JsonKey(fromJson: _toDouble) double amount,@JsonKey(name: 'amount_paid', fromJson: _toDouble) double amountPaid,@JsonKey(name: 'amount_remaining', fromJson: _toDouble) double amountRemaining, String status,@JsonKey(name: 'contract_id', fromJson: _toInt) int contractId,@JsonKey(name: 'payment_number', fromJson: _toInt) int paymentNumber,@JsonKey(name: 'product_image') String? productImage,@JsonKey(name: 'product_category') String? productCategory, ContractModel? contract
 });
 
 
@@ -597,14 +603,17 @@ class __$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productName = null,Object? dueDate = null,Object? amount = null,Object? status = null,Object? contractId = null,Object? productImage = freezed,Object? productCategory = freezed,Object? contract = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productName = null,Object? dueDate = null,Object? amount = null,Object? amountPaid = null,Object? amountRemaining = null,Object? status = null,Object? contractId = null,Object? paymentNumber = null,Object? productImage = freezed,Object? productCategory = freezed,Object? contract = freezed,}) {
   return _then(_PaymentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,productName: null == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,amountPaid: null == amountPaid ? _self.amountPaid : amountPaid // ignore: cast_nullable_to_non_nullable
+as double,amountRemaining: null == amountRemaining ? _self.amountRemaining : amountRemaining // ignore: cast_nullable_to_non_nullable
 as double,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,contractId: null == contractId ? _self.contractId : contractId // ignore: cast_nullable_to_non_nullable
+as int,paymentNumber: null == paymentNumber ? _self.paymentNumber : paymentNumber // ignore: cast_nullable_to_non_nullable
 as int,productImage: freezed == productImage ? _self.productImage : productImage // ignore: cast_nullable_to_non_nullable
 as String?,productCategory: freezed == productCategory ? _self.productCategory : productCategory // ignore: cast_nullable_to_non_nullable
 as String?,contract: freezed == contract ? _self.contract : contract // ignore: cast_nullable_to_non_nullable

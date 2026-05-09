@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tezqu/core/shared/button_widget.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/router/app_routes.dart';
@@ -35,12 +36,8 @@ class _LoginPageExampleState extends State<LoginPageExample> {
   }
 
   void _showSnackBar(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError ? Colors.red : AppColors.cx43C19F,
-      ),
-    );
+    showAppSnackBar(context, message,
+        type: isError ? SnackBarType.error : SnackBarType.success);
   }
 
   @override

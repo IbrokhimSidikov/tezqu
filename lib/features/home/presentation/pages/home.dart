@@ -74,6 +74,195 @@ class _HomePageContentState extends State<_HomePageContent> {
     return DateFormat('MMMM yyyy').format(now);
   }
 
+  void _showContractBreakdownDialog(BuildContext context, ContractData? saleContracts, ContractData? purchaseContracts) {
+    final saleRemaining = saleContracts?.totalRemaining ?? 0;
+    final purchaseRemaining = purchaseContracts?.totalRemaining ?? 0;
+    final totalRemaining = saleRemaining - purchaseRemaining;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        title: Row(
+          children: [
+            Icon(Icons.info_outline, color: AppColors.cx43C19F, size: 28.sp),
+            SizedBox(width: 8.w),
+            Text(
+              AppLocalizations.of(context).contractBreakdown,
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Sale Contracts Section
+            if (saleContracts != null) ...[
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: AppColors.cx43C19F.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: AppColors.cx43C19F.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.sell, color: AppColors.cx43C19F, size: 20.sp),
+                        SizedBox(width: 8.w),
+                        Text(
+                          AppLocalizations.of(context).saleContracts,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.cx43C19F,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    _buildBreakdownRow(AppLocalizations.of(context).totalAmount, _formatCurrency(saleContracts.totalContractAmount)),
+                    _buildBreakdownRow(AppLocalizations.of(context).paidAmount, _formatCurrency(saleContracts.totalPaid)),
+                    _buildBreakdownRow(AppLocalizations.of(context).remainingPayments, _formatCurrency(saleRemaining), isHighlight: true, color: AppColors.cx43C19F),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12.h),
+            ],
+            // Purchase Contracts Section
+            if (purchaseContracts != null) ...[
+              Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: AppColors.cxFEC700.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: AppColors.cxFEC700.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.shopping_cart, color: AppColors.cxFEC700, size: 20.sp),
+                        SizedBox(width: 8.w),
+                        Text(
+                          AppLocalizations.of(context).purchaseContracts,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.cxFEC700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    _buildBreakdownRow(AppLocalizations.of(context).totalAmount, _formatCurrency(purchaseContracts.totalContractAmount)),
+                    _buildBreakdownRow(AppLocalizations.of(context).paidAmount, _formatCurrency(purchaseContracts.totalPaid)),
+                    _buildBreakdownRow(AppLocalizations.of(context).remainingPayments, _formatCurrency(purchaseRemaining), isHighlight: true, color: AppColors.cxFEC700),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12.h),
+            ],
+            // Total Difference
+            Divider(thickness: 1.5),
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: totalRemaining < 0 
+                    ? [AppColors.cx43C19F.withOpacity(0.2), AppColors.cx43C19F.withOpacity(0.1)]
+                    : [Colors.grey.shade200, Colors.grey.shade100],
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).netBalance,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    totalRemaining == 0 
+                      ? _formatCurrency(totalRemaining.abs())
+                      : totalRemaining > 0
+                        ? '- ${_formatCurrency(totalRemaining)}'
+                        : '+ ${_formatCurrency(totalRemaining.abs())}',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w800,
+                      color: totalRemaining < 0 ? AppColors.cx43C19F : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              AppLocalizations.of(context).close,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.cx43C19F,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBreakdownRow(String label, String value, {bool isHighlight = false, Color? color}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: isHighlight ? FontWeight.w600 : FontWeight.w400,
+              color: isHighlight && color != null ? color : Colors.grey.shade700,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: isHighlight ? FontWeight.w700 : FontWeight.w500,
+              color: isHighlight && color != null ? color : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   List<Widget> _buildDashboardCards(BuildContext context, UserRole userRole, DashboardEntity? dashboard) {
     final totalIncomeThisMonth = dashboard?.data.totalIncomeThisMonth ?? 0;
     final totalProductsQty = dashboard?.data.totalProductsQty ?? 0;
@@ -527,12 +716,28 @@ class _HomePageContentState extends State<_HomePageContent> {
             final userRole = UserRole.fromString(dashboard?.role);
             final isAdmin = userRole == UserRole.admin;
 
-            // Customer fields
-            final totalContractAmount = dashboard?.data.totalContractAmount ?? 0;
-            final totalPaid = dashboard?.data.totalPaid ?? 0;
-            final totalRemaining = dashboard?.data.totalRemaining ?? 0;
-            final nextPaymentAmount = dashboard?.data.nextPaymentAmount ?? 0;
-            final activeContracts = dashboard?.data.activeContracts ?? 0;
+            // New contract structure
+            final saleContracts = dashboard?.data.saleContracts;
+            final purchaseContracts = dashboard?.data.purchaseContracts;
+            
+            // Calculate total remaining (difference between sale and purchase)
+            final saleRemaining = saleContracts?.totalRemaining ?? 0;
+            final purchaseRemaining = purchaseContracts?.totalRemaining ?? 0;
+            final totalRemaining = saleRemaining - purchaseRemaining;
+            
+            // Calculate next payment amount (prioritize nearest payment)
+            final saleNextPayment = saleContracts?.nextPaymentAmount ?? 0;
+            final purchaseNextPayment = purchaseContracts?.nextPaymentAmount ?? 0;
+            final nextPaymentAmount = saleNextPayment + purchaseNextPayment;
+            
+            // Calculate total paid and contract amount for progress
+            final salePaid = saleContracts?.totalPaid ?? 0;
+            final purchasePaid = purchaseContracts?.totalPaid ?? 0;
+            final totalPaid = salePaid + purchasePaid;
+            
+            final saleContractAmount = saleContracts?.totalContractAmount ?? 0;
+            final purchaseContractAmount = purchaseContracts?.totalContractAmount ?? 0;
+            final totalContractAmount = saleContractAmount + purchaseContractAmount;
             
             // Admin fields
             final totalPaymentsThisMonth = dashboard?.data.totalPaymentsThisMonth ?? 0;
@@ -570,21 +775,40 @@ class _HomePageContentState extends State<_HomePageContent> {
                       ],
                     ),
                     SizedBox(height: 0),
-                    Row(
-                      children: [
-                        Text(
-                          isAdmin 
-                            ? _formatCurrency(netProfitThisMonth)
-                            : totalRemaining == 0 
-                              ? _formatCurrency(totalRemaining)
-                              : ' - ${_formatCurrency(totalRemaining)}',
-                          style: TextStyle(
-                            fontSize: 53.sp, 
-                            fontWeight: FontWeight.bold,
-                            color: isAdmin && netProfitThisMonth < 0 ? AppColors.cxFF8B92 : Colors.black,
-                          )
-                        ),
-                      ],
+                    GestureDetector(
+                      onTap: !isAdmin && (saleContracts != null || purchaseContracts != null) ? () {
+                        _showContractBreakdownDialog(context, saleContracts, purchaseContracts);
+                      } : null,
+                      child: Row(
+                        children: [
+                          Text(
+                            isAdmin 
+                              ? _formatCurrency(netProfitThisMonth)
+                              : totalRemaining == 0 
+                                ? _formatCurrency(totalRemaining.abs())
+                                : totalRemaining > 0
+                                  ? ' - ${_formatCurrency(totalRemaining)}'
+                                  : ' + ${_formatCurrency(totalRemaining.abs())}',
+                            style: TextStyle(
+                              fontSize: 53.sp, 
+                              fontWeight: FontWeight.bold,
+                              color: isAdmin && netProfitThisMonth < 0 
+                                ? AppColors.cxFF8B92 
+                                : totalRemaining < 0 
+                                  ? AppColors.cx43C19F
+                                  : Colors.black,
+                            )
+                          ),
+                          if (!isAdmin && (saleContracts != null || purchaseContracts != null)) ...[
+                            SizedBox(width: 8.w),
+                            Icon(
+                              Icons.info_outline,
+                              size: 24.sp,
+                              color: Colors.grey.shade600,
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 15.h),
                     // Next payment section with progress bar (same for both)

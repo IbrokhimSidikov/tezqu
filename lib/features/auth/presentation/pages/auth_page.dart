@@ -9,6 +9,7 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/tabler.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/di/di.dart';
@@ -61,9 +62,8 @@ class _AuthPageState extends State<AuthPage> {
         dateOfBirth = _convertToISO8601(_dateOfBirthController.text);
         
         if (dateOfBirth == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context).enterDateCorrectFormat)),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).enterDateCorrectFormat,
+              type: SnackBarType.error);
           return;
         }
       }
@@ -118,19 +118,13 @@ class _AuthPageState extends State<AuthPage> {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message ?? AppLocalizations.of(context).success)),
-            );
+            showAppSnackBar(context, state.message ?? AppLocalizations.of(context).success,
+                type: SnackBarType.success);
             // Pass phone number to OTP page
             final phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^0-9]'), '');
             context.push('${AppRoutes.loginOtp}?phone=$phoneNumber');
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-              ),
-            );
+            showAppSnackBar(context, state.message, type: SnackBarType.error);
           }
         },
         builder: (context, state) {

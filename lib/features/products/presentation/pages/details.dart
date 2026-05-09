@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/snackbar_helper.dart';
 import '../../../../core/di/di.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/services/wishlist_service.dart';
@@ -115,13 +116,9 @@ class _DetailsState extends State<Details> {
           });
         }
         Navigator.of(context).pop(); // Close the purchase dialog
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${AppLocalizations.of(context).errorOccurred}: ${e.toString()}'),
-            duration: Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context,
+            '${AppLocalizations.of(context).errorOccurred}: ${e.toString()}',
+            type: SnackBarType.error);
       }
     }
   }
@@ -133,24 +130,15 @@ class _DetailsState extends State<Details> {
         await launchUrl(phoneUri);
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context).cannotOpenPhone),
-              duration: Duration(seconds: 2),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showAppSnackBar(context, AppLocalizations.of(context).cannotOpenPhone,
+              type: SnackBarType.error,
+              duration: Duration(seconds: 2));
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context).errorOccurred),
-            duration: Duration(seconds: 2),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showAppSnackBar(context, AppLocalizations.of(context).errorOccurred,
+            type: SnackBarType.error, duration: Duration(seconds: 2));
       }
     }
   }
@@ -231,13 +219,10 @@ class _DetailsState extends State<Details> {
                             }
                           } catch (e) {
                             if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(AppLocalizations.of(context).errorOccurred),
-                                  duration: Duration(seconds: 2),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              showAppSnackBar(context,
+                                  AppLocalizations.of(context).errorOccurred,
+                                  type: SnackBarType.error,
+                                  duration: Duration(seconds: 2));
                             }
                           }
                         }

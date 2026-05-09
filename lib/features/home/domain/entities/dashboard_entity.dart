@@ -13,8 +13,40 @@ class DashboardEntity extends Equatable {
   List<Object?> get props => [role, data];
 }
 
+class ContractData extends Equatable {
+  final double totalContractAmount;
+  final double totalPaid;
+  final double totalRemaining;
+  final double nextPaymentAmount;
+  final String? nextPaymentDate;
+  final int activeContracts;
+
+  const ContractData({
+    required this.totalContractAmount,
+    required this.totalPaid,
+    required this.totalRemaining,
+    required this.nextPaymentAmount,
+    this.nextPaymentDate,
+    required this.activeContracts,
+  });
+
+  @override
+  List<Object?> get props => [
+        totalContractAmount,
+        totalPaid,
+        totalRemaining,
+        nextPaymentAmount,
+        nextPaymentDate,
+        activeContracts,
+      ];
+}
+
 class DashboardData extends Equatable {
-  // Customer fields
+  // Customer fields - new structure
+  final ContractData? saleContracts;
+  final ContractData? purchaseContracts;
+  
+  // Legacy customer fields (for backward compatibility)
   final double? totalContractAmount;
   final double? totalPaid;
   final double? totalRemaining;
@@ -32,7 +64,10 @@ class DashboardData extends Equatable {
   final int? pendingPaymentsCount;
 
   const DashboardData({
-    // Customer fields
+    // New customer fields
+    this.saleContracts,
+    this.purchaseContracts,
+    // Legacy customer fields
     this.totalContractAmount,
     this.totalPaid,
     this.totalRemaining,
@@ -51,6 +86,8 @@ class DashboardData extends Equatable {
 
   @override
   List<Object?> get props => [
+        saleContracts,
+        purchaseContracts,
         totalContractAmount,
         totalPaid,
         totalRemaining,
