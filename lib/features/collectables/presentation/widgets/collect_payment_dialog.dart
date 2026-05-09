@@ -106,7 +106,6 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
                 ),
               ),
               SizedBox(height: 24.h),
-              
               // Amount Field
               Text(
                 l10n.amount,
@@ -158,57 +157,57 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.h),
+              // SizedBox(height: 20.h),
 
               // Payment Method Dropdown
-              Text(
-                l10n.paymentMethod,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.cxBlack,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              DropdownButtonFormField<String>(
-                value: _selectedPaymentMethodId,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    borderSide: const BorderSide(color: AppColors.cx78D9BF, width: 2),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                ),
-                hint: Text(l10n.selectPaymentMethod),
-                items: widget.paymentMethods
-                    .where((method) => method.name.toUpperCase() == 'NAQD')
-                    .map((method) {
-                  return DropdownMenuItem<String>(
-                    value: method.id,
-                    child: Text(method.name),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedPaymentMethodId = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a payment method';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20.h),
+              // Text(
+              //   l10n.paymentMethod,
+              //   style: TextStyle(
+              //     fontSize: 14.sp,
+              //     fontWeight: FontWeight.w500,
+              //     color: AppColors.cxBlack,
+              //   ),
+              // ),
+              // SizedBox(height: 8.h),
+              // DropdownButtonFormField<String>(
+              //   value: _selectedPaymentMethodId,
+              //   decoration: InputDecoration(
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(color: Colors.grey.shade300),
+              //     ),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: BorderSide(color: Colors.grey.shade300),
+              //     ),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(8.r),
+              //       borderSide: const BorderSide(color: AppColors.cx78D9BF, width: 2),
+              //     ),
+              //     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              //   ),
+              //   hint: Text(l10n.selectPaymentMethod),
+              //   items: widget.paymentMethods
+              //       .where((method) => method.name.toUpperCase() == 'NAQD')
+              //       .map((method) {
+              //     return DropdownMenuItem<String>(
+              //       value: method.id,
+              //       child: Text(method.name),
+              //     );
+              //   }).toList(),
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _selectedPaymentMethodId = value;
+              //     });
+              //   },
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please select a payment method';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // SizedBox(height: 20.h),
 
               // Payment Date
               // Text(
@@ -248,7 +247,6 @@ class _CollectPaymentDialogState extends State<CollectPaymentDialog> {
               //   ),
               // ),
               SizedBox(height: 32.h),
-
               // Buttons
               Row(
                 children: [

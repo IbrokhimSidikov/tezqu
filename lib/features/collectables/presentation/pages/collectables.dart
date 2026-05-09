@@ -488,7 +488,7 @@ class _CollectablesPageContentState extends State<_CollectablesPageContent> {
   }
 }
 
-class _CollectableCard extends StatelessWidget {
+class _CollectableCard extends StatefulWidget {
   final String paymentId;
   final String customerName;
   final double amount;
@@ -522,198 +522,236 @@ class _CollectableCard extends StatelessWidget {
   });
 
   @override
+  State<_CollectableCard> createState() => _CollectableCardState();
+}
+
+class _CollectableCardState extends State<_CollectableCard> {
+  bool _isExpanded = false;
+
+  void _toggleExpand() => setState(() => _isExpanded = !_isExpanded);
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColors.cxWhite,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      customerName,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.cxBlack,
-                      ),
-                    ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      paymentNumber == -1 
-                        ? '${l10n.initialPayment}${productName != null ? ' - $productName' : ''}'
-                        : 'Payment #$paymentNumber${productName != null ? ' - $productName' : ''}',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: getStatusColor(status, daysOverdue).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Text(
-                  formatDate(dueDate),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: getStatusColor(status, daysOverdue),
-                  ),
-                ),
+    final statusColor = widget.getStatusColor(widget.status, widget.daysOverdue);
+
+    return GestureDetector(
+      onTap: _toggleExpand,
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        alignment: Alignment.topCenter,
+        child: Container(
+          margin: EdgeInsets.only(bottom: 12.h),
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: AppColors.cxWhite,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: Colors.grey.shade200),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-          SizedBox(height: 12.h),
-          Divider(color: Colors.grey.shade200, height: 1),
-          SizedBox(height: 12.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // ── Collapsed header (always visible) ──
+              Row(
                 children: [
-                  Text(
-                    l10n.amount,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade600,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.customerName,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.cxBlack,
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          widget.paymentNumber == -1
+                              ? '${l10n.initialPayment}${widget.productName != null ? ' - ${widget.productName}' : ''}'
+                              : 'Payment #${widget.paymentNumber}${widget.productName != null ? ' - ${widget.productName}' : ''}',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(width: 8.w),
                   Text(
-                    formatCurrency(amount),
+                    widget.formatCurrency(widget.amount),
                     style: TextStyle(
-                      fontSize: 20.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.cx78D9BF,
                     ),
                   ),
+                  SizedBox(width: 8.w),
+                  AnimatedRotation(
+                    turns: _isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 22.sp,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    l10n.dueDate,
+
+              // ── Expanded content ──
+              if (_isExpanded) ...[
+                SizedBox(height: 12.h),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Text(
+                    widget.getStatusText(widget.status, widget.daysOverdue, context),
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w600,
+                      color: statusColor,
                     ),
                   ),
-                  SizedBox(height: 4.h),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 14.sp,
-                        color: Colors.grey.shade600,
-                      ),
-                      SizedBox(width: 4.w),
-                      Text(
-                        formatDate(dueDate),
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.cxBlack,
+                ),
+                SizedBox(height: 12.h),
+                Divider(color: Colors.grey.shade200, height: 1),
+                SizedBox(height: 12.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.amount,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          widget.formatCurrency(widget.amount),
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.cx78D9BF,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          l10n.dueDate,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        SizedBox(height: 4.h),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 14.sp,
+                              color: Colors.grey.shade600,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              widget.formatDate(widget.dueDate),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.cxBlack,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12.h),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final result = await showDialog<Map<String, dynamic>>(
+                        context: context,
+                        builder: (context) => CollectPaymentDialog(
+                          amount: widget.amount,
+                          paymentMethods: widget.paymentMethods,
+                        ),
+                      );
+
+                      if (result != null && context.mounted) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.cx78D9BF,
+                            ),
+                          ),
+                        );
+
+                        final success = await context.read<CollectablesCubit>().recordPayment(
+                          paymentId: widget.paymentId,
+                          amount: result['amount'],
+                          paymentMethodId: result['payment_method_id'],
+                          paymentDate: result['payment_date'],
+                        );
+
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          final l10n = AppLocalizations.of(context);
+                          showAppSnackBar(
+                            context,
+                            success
+                                ? l10n.paymentRecordedSuccessfully
+                                : l10n.failedToRecordPayment,
+                            type: success ? SnackBarType.success : SnackBarType.error,
+                          );
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.cxBlack,
+                      foregroundColor: AppColors.cxWhite,
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
-                    ],
+                    ),
+                    child: Text(
+                      l10n.collectPayment,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ],
           ),
-          SizedBox(height: 12.h),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () async {
-                final result = await showDialog<Map<String, dynamic>>(
-                  context: context,
-                  builder: (context) => CollectPaymentDialog(
-                    amount: amount,
-                    paymentMethods: paymentMethods,
-                  ),
-                );
-                
-                if (result != null && context.mounted) {
-                  // Show loading indicator
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.cx78D9BF,
-                      ),
-                    ),
-                  );
-
-                  // Record payment
-                  final success = await context.read<CollectablesCubit>().recordPayment(
-                    paymentId: paymentId,
-                    amount: result['amount'],
-                    paymentMethodId: result['payment_method_id'],
-                    paymentDate: result['payment_date'],
-                  );
-
-                  // Close loading indicator
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                    
-                    final l10n = AppLocalizations.of(context);
-                    // Show success or error message
-                    showAppSnackBar(
-                      context,
-                      success
-                          ? l10n.paymentRecordedSuccessfully
-                          : l10n.failedToRecordPayment,
-                      type: success ? SnackBarType.success : SnackBarType.error,
-                    );
-                  }
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.cxBlack,
-                foregroundColor: AppColors.cxWhite,
-                padding: EdgeInsets.symmetric(vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context).collectPayment,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

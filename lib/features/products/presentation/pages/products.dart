@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -126,7 +124,7 @@ class _ProductsState extends State<Products> {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
+              blurRadius: 10.r,
               offset: Offset(0, 2),
             ),
           ],
@@ -159,7 +157,7 @@ class _ProductsState extends State<Products> {
                       ),
               ),
             ),
-            SizedBox(width: 12.w),
+            12.horizontalSpace,
             // Product info - flexible middle section
             Expanded(
               child: Column(

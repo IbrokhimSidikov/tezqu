@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/tabler.dart';
 import 'package:intl/intl.dart';
 import 'package:tezqu/core/shared/button_widget_iconless.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -366,7 +364,9 @@ class _DetailsState extends State<Details> {
                             entry.key != 'type' && 
                             entry.key != 'vin' &&
                             entry.key != 'avtomobil_modeli' &&
-                            entry.key != 'avtomobil_brendi')
+                            entry.key != 'avtomobil_brendi' &&
+                            entry.key != 'avtomobil_raqami' &&
+                            entry.key != 'avtomobil_xolati')
                         .map((entry) {
                       String displayKey = entry.key;
                       dynamic displayValue = entry.value;
