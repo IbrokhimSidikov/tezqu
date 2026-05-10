@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/network/dio_client.dart';
 import '../models/balance_model.dart';
@@ -11,6 +12,11 @@ abstract class CollectableRemoteDataSource {
     required double amount,
     required String paymentMethodId,
     required String paymentDate,
+  });
+  Future<void> delayPayment({
+    required String paymentId,
+    required String delayUntil,
+    required String delayReason,
   });
   Future<UserBalanceModel> getUserBalanceDetails(String userId);
 }
@@ -49,13 +55,40 @@ class CollectableRemoteDataSourceImpl implements CollectableRemoteDataSource {
     required String paymentDate,
   }) async {
     try {
-      await dioClient.post('/payments/record', data: {
+      debugPrint('[CollectableDS] recordPayment → POST /payments/record'
+          ' | paymentId=$paymentId amount=$amount'
+          ' paymentMethodId=$paymentMethodId paymentDate=$paymentDate');
+      final response = await dioClient.post('/payments/record', data: {
         'payment_id': paymentId,
         'amount': amount,
         'payment_method_id': paymentMethodId,
         'payment_date': paymentDate,
       });
+      debugPrint('[CollectableDS] recordPayment ✓ status=${response.statusCode}'
+          ' | body=${response.data}');
     } catch (e) {
+      debugPrint('[CollectableDS] recordPayment ✗ error=$e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> delayPayment({
+    required String paymentId,
+    required String delayUntil,
+    required String delayReason,
+  }) async {
+    try {
+      debugPrint('[CollectableDS] delayPayment → POST /payments/$paymentId/delay'
+          ' | delayUntil=$delayUntil delayReason=$delayReason');
+      final response = await dioClient.post('/payments/$paymentId/delay', data: {
+        'delay_until': delayUntil,
+        'delay_reason': delayReason,
+      });
+      debugPrint('[CollectableDS] delayPayment ✓ status=${response.statusCode}'
+          ' | body=${response.data}');
+    } catch (e) {
+      debugPrint('[CollectableDS] delayPayment ✗ error=$e');
       rethrow;
     }
   }

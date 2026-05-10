@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
@@ -72,6 +73,7 @@ class CollectableRepositoryImpl implements CollectableRepository {
     required String paymentMethodId,
     required String paymentDate,
   }) async {
+    debugPrint('[CollectableRepo] recordPayment called | paymentId=$paymentId');
     try {
       await remoteDataSource.recordPayment(
         paymentId: paymentId,
@@ -79,12 +81,39 @@ class CollectableRepositoryImpl implements CollectableRepository {
         paymentMethodId: paymentMethodId,
         paymentDate: paymentDate,
       );
+      debugPrint('[CollectableRepo] recordPayment ✓');
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ServerFailure(
-        e.response?.data['message'] ?? 'Failed to record payment',
-      ));
+      final msg = e.response?.data['message'] ?? 'Failed to record payment';
+      debugPrint('[CollectableRepo] recordPayment DioException: $msg | status=${e.response?.statusCode} | data=${e.response?.data}');
+      return Left(ServerFailure(msg));
     } catch (e) {
+      debugPrint('[CollectableRepo] recordPayment unexpected error: $e');
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> delayPayment({
+    required String paymentId,
+    required String delayUntil,
+    required String delayReason,
+  }) async {
+    debugPrint('[CollectableRepo] delayPayment called | paymentId=$paymentId delayUntil=$delayUntil');
+    try {
+      await remoteDataSource.delayPayment(
+        paymentId: paymentId,
+        delayUntil: delayUntil,
+        delayReason: delayReason,
+      );
+      debugPrint('[CollectableRepo] delayPayment ✓');
+      return const Right(null);
+    } on DioException catch (e) {
+      final msg = e.response?.data['message'] ?? 'Failed to delay payment';
+      debugPrint('[CollectableRepo] delayPayment DioException: $msg | status=${e.response?.statusCode} | data=${e.response?.data}');
+      return Left(ServerFailure(msg));
+    } catch (e) {
+      debugPrint('[CollectableRepo] delayPayment unexpected error: $e');
       return Left(ServerFailure(e.toString()));
     }
   }

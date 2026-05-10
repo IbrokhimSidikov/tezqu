@@ -37,6 +37,8 @@ import '../../features/collectables/data/repositories/collectable_repository_imp
     as _i1024;
 import '../../features/collectables/domain/repositories/collectable_repository.dart'
     as _i59;
+import '../../features/collectables/domain/usecases/delay_payment.dart'
+    as _i998;
 import '../../features/collectables/domain/usecases/get_collectables.dart'
     as _i313;
 import '../../features/collectables/domain/usecases/get_user_balance.dart'
@@ -321,6 +323,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i252.RecordPayment>(
       () => _i252.RecordPayment(gh<_i59.CollectableRepository>()),
     );
+    gh.lazySingleton<_i998.DelayPayment>(
+      () => _i998.DelayPayment(gh<_i59.CollectableRepository>()),
+    );
     gh.lazySingleton<_i751.GetUserBalance>(
       () => _i751.GetUserBalance(gh<_i59.CollectableRepository>()),
     );
@@ -340,6 +345,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i896.CollectablesCubit(
         gh<_i313.GetCollectables>(),
         gh<_i252.RecordPayment>(),
+        gh<_i998.DelayPayment>(),
         gh<_i31.ExpenseRepository>(),
         gh<_i751.GetUserBalance>(),
         gh<_i787.AuthRepository>(),

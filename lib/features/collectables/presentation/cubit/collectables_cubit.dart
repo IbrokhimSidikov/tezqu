@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/usecase/use_case.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
 import '../../../expense/domain/repositories/expense_repository.dart';
+import '../../domain/usecases/delay_payment.dart';
 import '../../domain/usecases/get_collectables.dart';
 import '../../domain/usecases/get_user_balance.dart';
 import '../../domain/usecases/record_payment.dart';
@@ -12,6 +13,7 @@ import 'collectables_state.dart';
 class CollectablesCubit extends Cubit<CollectablesState> {
   final GetCollectables getCollectables;
   final RecordPayment recordPaymentUseCase;
+  final DelayPayment delayPaymentUseCase;
   final ExpenseRepository expenseRepository;
   final GetUserBalance getUserBalance;
   final AuthRepository authRepository;
@@ -19,6 +21,7 @@ class CollectablesCubit extends Cubit<CollectablesState> {
   CollectablesCubit(
     this.getCollectables,
     this.recordPaymentUseCase,
+    this.delayPaymentUseCase,
     this.expenseRepository,
     this.getUserBalance,
     this.authRepository,
@@ -59,6 +62,36 @@ class CollectablesCubit extends Cubit<CollectablesState> {
     await loadCollectables();
   }
 
+  /// Refreshes data in the background WITHOUT emitting [CollectablesLoading],
+  /// so the UI keeps showing its current content while data updates silently.
+  Future<void> _refreshSilently() async {
+    try {
+      final result = await getCollectables(NoParams());
+      final paymentMethods = await expenseRepository.getPaymentMethods();
+
+      final currentUser = await authRepository.getCurrentUser();
+      double? pendingCollections;
+      if (currentUser?.id != null) {
+        final balanceResult = await getUserBalance(currentUser!.id!);
+        balanceResult.fold(
+          (failure) => null,
+          (balance) => pendingCollections = balance.pendingCollections,
+        );
+      }
+
+      result.fold(
+        (failure) => null, // keep current state on silent-refresh failure
+        (collectables) => emit(CollectablesLoaded(
+          collectables,
+          paymentMethods: paymentMethods,
+          pendingCollections: pendingCollections,
+        )),
+      );
+    } catch (e) {
+      // swallow — silent refresh should never crash the page
+    }
+  }
+
   Future<bool> recordPayment({
     required String paymentId,
     required double amount,
@@ -80,8 +113,32 @@ class CollectablesCubit extends Cubit<CollectablesState> {
         return false;
       },
       (_) {
-        // Reload collectables after successful payment recording
-        loadCollectables();
+        _refreshSilently();
+        return true;
+      },
+    );
+  }
+
+  Future<bool> delayPayment({
+    required String paymentId,
+    required String delayUntil,
+    required String delayReason,
+  }) async {
+    final result = await delayPaymentUseCase(
+      DelayPaymentParams(
+        paymentId: paymentId,
+        delayUntil: delayUntil,
+        delayReason: delayReason,
+      ),
+    );
+
+    return result.fold(
+      (failure) {
+        emit(CollectablesError(failure.message));
+        return false;
+      },
+      (_) {
+        _refreshSilently();
         return true;
       },
     );

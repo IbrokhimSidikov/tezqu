@@ -309,6 +309,21 @@ class AppLocalizations {
       'paymentRecordedSuccessfully':'Payment recorded successfully',
       'failedToRecordPayment':'Failed to record payment',
       'cashInHand':'Cash in Hand',
+      'delayPayment':'Delay Payment',
+      'delayUntil':'Delay Until',
+      'delayReason':'Delay Reason',
+      'delayReasonHint':'e.g. Customer said they will pay in 3 days',
+      'confirmDelay':'Confirm Delay',
+      'paymentDelayedSuccessfully':'Payment delayed successfully',
+      'failedToDelayPayment':'Failed to delay payment',
+      'maxDelayOneMonth':'Cannot delay more than 1 month from today',
+      'pleaseSelectDate':'Please select a date',
+      'pleaseEnterReason':'Please enter a reason',
+      'selectDelayDate':'Select Delay Date',
+      'delayEntirePayment':'Delay entire payment',
+      'delayRemainingAmount':'Delay remaining amount',
+      'remainingAmount':'Remaining amount',
+      'partialPaymentInfo':'You are paying less than the full amount. Please select a delay date for the remaining balance.',
 
       'carCondition': 'Car Condition',
       'transmissionType': 'Transmission Type',
@@ -617,6 +632,21 @@ class AppLocalizations {
       'paymentRecordedSuccessfully':'To\'lov muvaffaqiyatli qayd etildi',
       'failedToRecordPayment':'To\'lovni qayd etib bo\'lmadi',
       'cashInHand':'Qo\'lda naqd pul',
+      'delayPayment':'To\'lovni kechiktirish',
+      'delayUntil':'Kechiktirilgan sana',
+      'delayReason':'Kechiktirish sababi',
+      'delayReasonHint':'Masalan: Mijoz 3 kundan keyin to\'lashini aytdi',
+      'confirmDelay':'Kechiktirishni tasdiqlash',
+      'paymentDelayedSuccessfully':'To\'lov muvaffaqiyatli kechiktirildi',
+      'failedToDelayPayment':'To\'lovni kechiktirib bo\'lmadi',
+      'maxDelayOneMonth':'1 oydan ko\'proq kechiktirish mumkin emas',
+      'pleaseSelectDate':'Iltimos, sanani tanlang',
+      'pleaseEnterReason':'Iltimos, sababni kiriting',
+      'selectDelayDate':'Kechiktirish sanasini tanlang',
+      'delayEntirePayment':'Barcha to\'lovni kechiktirish',
+      'delayRemainingAmount':'Qolgan miqdorni kechiktirish',
+      'remainingAmount':'Qolgan miqdor',
+      'partialPaymentInfo':'Siz to\'liq miqdordan kam to\'layapsiz. Qolgan qarz uchun kechiktirish sanasini tanlang.',
 
       'carCondition': 'Avtomobil holati',
       'transmissionType': 'Uzatmalar qutisi turi',
@@ -924,6 +954,21 @@ class AppLocalizations {
       'paymentRecordedSuccessfully':'Платеж успешно записан',
       'failedToRecordPayment':'Не удалось записать платеж',
       'cashInHand':'Наличные в руках',
+      'delayPayment':'Отложить платеж',
+      'delayUntil':'Отложить до',
+      'delayReason':'Причина отсрочки',
+      'delayReasonHint':'Например: Клиент сказал, что оплатит через 3 дня',
+      'confirmDelay':'Подтвердить отсрочку',
+      'paymentDelayedSuccessfully':'Платёж успешно отложен',
+      'failedToDelayPayment':'Не удалось отложить платёж',
+      'maxDelayOneMonth':'Нельзя откладывать более чем на 1 месяц',
+      'pleaseSelectDate':'Пожалуйста, выберите дату',
+      'pleaseEnterReason':'Пожалуйста, введите причину',
+      'selectDelayDate':'Выберите дату отсрочки',
+      'delayEntirePayment':'Отложить весь платёж',
+      'delayRemainingAmount':'Отложить остаток',
+      'remainingAmount':'Остаток',
+      'partialPaymentInfo':'Вы платите меньше полной суммы. Выберите дату отсрочки для остатка.',
 
       'carCondition': 'Состояние автомобиля',
       'transmissionType': 'Тип коробки передач',
@@ -1223,6 +1268,20 @@ class AppLocalizations {
   String get paymentRecordedSuccessfully => translate('paymentRecordedSuccessfully');
   String get failedToRecordPayment => translate('failedToRecordPayment');
   String get cashInHand => translate('cashInHand');
+  String get delayPayment => translate('delayPayment');
+  String get delayUntil => translate('delayUntil');
+  String get delayReason => translate('delayReason');
+  String get delayReasonHint => translate('delayReasonHint');
+  String get confirmDelay => translate('confirmDelay');
+  String get paymentDelayedSuccessfully => translate('paymentDelayedSuccessfully');
+  String get failedToDelayPayment => translate('failedToDelayPayment');
+  String get maxDelayOneMonth => translate('maxDelayOneMonth');
+  String get pleaseSelectDate => translate('pleaseSelectDate');
+  String get pleaseEnterReason => translate('pleaseEnterReason');
+  String get selectDelayDate => translate('selectDelayDate');
+  String get delayEntirePayment => translate('delayEntirePayment');
+  String get delayRemainingAmount => translate('delayRemainingAmount');
+  String get partialPaymentInfo => translate('partialPaymentInfo');
   String get carCondition => translate('carCondition');
   String get transmissionType => translate('transmissionType');
   String get contactMethod => translate('contactMethod');

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -700,35 +701,85 @@ class _CollectableCardState extends State<_CollectableCard> {
                         ),
                       );
 
-                      if (result != null && context.mounted) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.cx78D9BF,
-                            ),
+                      if (result == null || !context.mounted) return;
+
+                      debugPrint('[CollectCard] dialog result=$result');
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.cx78D9BF,
                           ),
-                        );
+                        ),
+                      );
 
-                        final success = await context.read<CollectablesCubit>().recordPayment(
-                          paymentId: widget.paymentId,
-                          amount: result['amount'],
-                          paymentMethodId: result['payment_method_id'],
-                          paymentDate: result['payment_date'],
-                        );
+                      final cubit = context.read<CollectablesCubit>();
+                      final delayAll = result['delay_all'] as bool? ?? false;
+                      final hasDelay = result['has_delay'] as bool? ?? false;
 
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          final l10n = AppLocalizations.of(context);
-                          showAppSnackBar(
-                            context,
-                            success
-                                ? l10n.paymentRecordedSuccessfully
-                                : l10n.failedToRecordPayment,
-                            type: success ? SnackBarType.success : SnackBarType.error,
+                      bool collectSuccess = true;
+                      bool delaySuccess = true;
+
+                      try {
+                        // Step 1: record payment (skip if delaying whole amount)
+                        if (!delayAll) {
+                          debugPrint('[CollectCard] calling recordPayment amount=${result['amount']}');
+                          collectSuccess = await cubit.recordPayment(
+                            paymentId: widget.paymentId,
+                            amount: result['amount'],
+                            paymentMethodId: result['payment_method_id'],
+                            paymentDate: result['payment_date'],
                           );
+                          debugPrint('[CollectCard] recordPayment returned=$collectSuccess');
                         }
+
+                        // Step 2: delay remaining (or whole amount)
+                        if (hasDelay && collectSuccess) {
+                          debugPrint('[CollectCard] calling delayPayment until=${result['delay_until']}');
+                          delaySuccess = await cubit.delayPayment(
+                            paymentId: widget.paymentId,
+                            delayUntil: result['delay_until'],
+                            delayReason: result['delay_reason'],
+                          );
+                          debugPrint('[CollectCard] delayPayment returned=$delaySuccess');
+                        }
+                      } catch (e, st) {
+                        debugPrint('[CollectCard] unexpected error: $e\n$st');
+                        collectSuccess = false;
+                      } finally {
+                        if (context.mounted) {
+                          Navigator.of(context).pop(); // always close spinner
+                        }
+                      }
+
+                      if (context.mounted) {
+                        final l10n = AppLocalizations.of(context);
+                        final allOk = collectSuccess && delaySuccess;
+
+                        String message;
+                        if (delayAll) {
+                          message = delaySuccess
+                              ? l10n.paymentDelayedSuccessfully
+                              : l10n.failedToDelayPayment;
+                        } else if (hasDelay) {
+                          message = allOk
+                              ? '${l10n.paymentRecordedSuccessfully}. ${l10n.paymentDelayedSuccessfully}'
+                              : (!collectSuccess
+                                  ? l10n.failedToRecordPayment
+                                  : l10n.failedToDelayPayment);
+                        } else {
+                          message = collectSuccess
+                              ? l10n.paymentRecordedSuccessfully
+                              : l10n.failedToRecordPayment;
+                        }
+
+                        showAppSnackBar(
+                          context,
+                          message,
+                          type: allOk ? SnackBarType.success : SnackBarType.error,
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(

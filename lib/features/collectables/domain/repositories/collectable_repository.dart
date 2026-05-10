@@ -12,5 +12,10 @@ abstract class CollectableRepository {
     required String paymentMethodId,
     required String paymentDate,
   });
+  Future<Either<Failure, void>> delayPayment({
+    required String paymentId,
+    required String delayUntil,
+    required String delayReason,
+  });
   Future<Either<Failure, UserBalanceEntity>> getUserBalanceDetails(String userId);
 }
